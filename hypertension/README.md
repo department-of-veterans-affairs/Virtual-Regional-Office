@@ -17,7 +17,7 @@ Note that this setup has so far only been deployed locally, it is necessary to d
 
 You can set it up yourself via the downloadable version of AWS step functions. To do so, see instructions [here](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-docker.html):
 
-1. Follow [this](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-lambda.html) guide to setup local SAM lambdas, and deploy. take note of ARN files.
+1. Follow [this](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-lambda.html) guide to setup local SAM lambdas. For each, do `sam local start-lambda` to start it running on localhost.
 
 2. Pull the AWS Step functions docker image:
 
@@ -25,7 +25,7 @@ You can set it up yourself via the downloadable version of AWS step functions. T
    docker pull amazon/aws-stepfunctions-local
    ```
 
-3. Create config file by copying `aws-stepfunctions-local-credentials-sample.txt` and setup according to [this](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-config-options.html#docker-credentials) link
+3. Create config file by copying `aws-stepfunctions-local-credentials-sample.txt` and setup according to [this](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-config-options.html#docker-credentials) link. NOTE: leave the `LAMBDA_ENDPOINT` variable as-is in order to use locally-running lambda functions
 
 4. Run the image:
 

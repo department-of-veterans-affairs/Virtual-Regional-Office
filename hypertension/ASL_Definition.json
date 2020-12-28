@@ -4,7 +4,7 @@
   "States": {
     "DetermineApplicability": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:DetermineApplicability",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:DetermineApplicability",
       "Next": "IsApplicable"
     },
     "IsApplicable": {
@@ -29,7 +29,7 @@
     },
     "FindMedicalRecordID": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:FindMedicalRecordID",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:FindMedicalRecordID",
       "Next": "DoesClaimHaveAssociatedMedicalData"
     },
     "DoesClaimHaveAssociatedMedicalData": {
@@ -54,7 +54,7 @@
     },
     "GetDataForRecordID": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:GetDataForRecordID",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:GetDataForRecordID",
       "Next": "IsSufficientDataAvailable"
     },
     "IsSufficientDataAvailable": {
@@ -79,12 +79,12 @@
     },
     "ClassifyClaim": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:ClassifyClaim",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:ClassifyClaim",
       "Next": "UpdateVBMS"
     },
     "UpdateVBMS": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:UpdateVBMS",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:UpdateVBMS",
       "End":true
     }
   }
