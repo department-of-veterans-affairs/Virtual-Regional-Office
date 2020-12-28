@@ -1,0 +1,91 @@
+{
+  "Comment": "An example of the Amazon States Language using a choice state.",
+  "StartAt": "DetermineApplicability",
+  "States": {
+    "DetermineApplicability": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:DetermineApplicability",
+      "Next": "IsApplicable"
+    },
+    "IsApplicable": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.body.claim_status.applicable",
+          "BooleanEquals": true,
+          "Next": "FindMedicalRecordID"
+        },
+        {
+          "Variable": "$.body.claim_status.applicable",
+          "BooleanEquals": false,
+          "Next": "NotApplicableState"
+        }
+      ]
+    },
+    "NotApplicableState" : {
+      "Type" : "Fail",
+      "Error": "NotApplicableError",
+      "Cause": "Claim not benefit type"
+    },
+    "FindMedicalRecordID": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:FindMedicalRecordID",
+      "Next": "DoesClaimHaveAssociatedMedicalData"
+    },
+    "DoesClaimHaveAssociatedMedicalData": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.body.icn",
+          "IsNull": true,
+          "Next": "GetDataForRecordID"
+        },
+        {
+          "Variable": "$.body.icn",
+          "IsNull": false,
+          "Next": "MedicalRecordMissingState"
+        }
+      ]
+    },
+    "MedicalRecordMissingState" : {
+      "Type" : "Fail",
+      "Error": "MedicalRecordMissingError",
+      "Cause": "Missing associated medical record"
+    },
+    "GetDataForRecordID": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:GetDataForRecordID",
+      "Next": "IsSufficientDataAvailable"
+    },
+    "IsSufficientDataAvailable": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.body.hasEnoughData",
+          "BooleanEquals": true,
+          "Next": "ClassifyClaim"
+        },
+        {
+          "Variable": "$.body.hasEnoughData",
+          "BooleanEquals": false,
+          "Next": "InsufficientDataState"
+        }
+      ]
+    },
+    "InsufficientDataState" : {
+      "Type" : "Fail",
+      "Error": "InsufficientDataError",
+      "Cause": "Inssuficient medical data"
+    },
+    "ClassifyClaim": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:ClassifyClaim",
+      "Next": "UpdateVBMS"
+    },
+    "UpdateVBMS": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:583093205194:function:UpdateVBMS",
+      "End":true
+    }
+  }
+}
