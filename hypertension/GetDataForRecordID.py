@@ -19,10 +19,12 @@ def get_data(icn):
     """
     import pandas as pd  # pandas==1.0.3
     import sqlalchemy as sql  # SQLAlchemy==1.3.16
-    query = f"EXECUTE VBA_AVD.Dflt.{stored_proc} @Icn = N'{icn}'"
+    bp_query = f"EXECUTE VBA_AVD.Dflt.IDRC_BloodPressure @Icn = N'{icn}'"
     engine = sql.create_engine("mssql+pyodbc://{}/{}?driver={}".format(server, database, "SQL+Server"))
-    readings = pd.read_sql_query(query, engine)
-    return readings
+    readings = pd.read_sql_query(bp_query, engine)
+    med_query = f"EXECUTE VBA_AVD.Dflt.IDRC_Medication @Icn = N'{icn}' @VASRDCode = N'7101'"
+    medication = pd.read_sql_query(med_query, engine)
+    return (readings, medication)
     """
     readings = []
     if icn == "1234567890": # intentionally insufficient
