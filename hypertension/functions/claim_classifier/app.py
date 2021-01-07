@@ -9,13 +9,13 @@ def lambda_handler(event, context):
     data = claim_status.get('data')
     has_hypertension = assess_criteria(data)
     print(f"Patient has hypertension? {has_hypertension}")
-    event.update({"has_hypertension": has_hypertension})
+    claim_status.update({"has_hypertension": has_hypertension})
     return {
         'statusCode': 200,
         'body': {"claim_status": claim_status}
     }
 
-def assess_criteria(readings):
+def assess_criteria(data):
     '''
     From Business Rule Description:
     Blood Pressure Readings at required levels, taken at least 2 times on at least 3 different days.
@@ -24,6 +24,11 @@ def assess_criteria(readings):
     '''
     hypertension_identified = False
 
+    reading_assessment = assess_blood_pressure(data.get('readings'))
+    medication_assessment = assess_medication(data.get('medication'))
+    return reading_assessment and medication_assessment
+
+def assess_blood_pressure(readings):
     abnormal_count = 0
     seen_dates = set()
     number_of_readings_sufficient = (len(readings) >= 2)
@@ -48,9 +53,9 @@ def assess_criteria(readings):
     number_of_abnormal_readings_sufficient = (abnormal_count >= 2)
 
     print(f"Number of abnormal readings: {abnormal_count}, number of days these readings were taken:{number_of_days}")
-
-    if number_of_readings_sufficient and number_of_days_sufficient and number_of_abnormal_readings_sufficient:
-        hypertension_identified = True
+    hypertension_identified = number_of_readings_sufficient and number_of_days_sufficient and number_of_abnormal_readings_sufficient
     return hypertension_identified
 
-
+def assess_medication(medication):
+    # TODO: Implement better medication logic
+    return len(medication) > 0

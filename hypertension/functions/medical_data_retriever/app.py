@@ -1,20 +1,22 @@
 import json
 import csv
 from pathlib import Path
+import pandas as pd
+import sqlalchemy
 
 def lambda_handler(event, context):
     print(f"Incoming event: {event}")
     claim_status = event["body"]["claim_status"] or {}
     icn = claim_status.get('icn')
     readings, medication = get_data(icn)
-    has_enough_data = has_enough_data(readings)
+    enough_data = has_enough_data(readings)
     claim_status.update(
         {
             "data": {
                 "readings": readings,
-                "medication": medication,
-                "hasEnoughData": has_enough_data
-            }
+                "medication": medication
+            },
+            "hasEnoughData": enough_data
         }
     )
     return {
@@ -27,8 +29,6 @@ def get_data(icn: str):
     return get_data_dummy(icn)
 
 def get_data_real(icn: str):
-    import pandas as pd
-    import sqlalchemy
     engine = initialize_engine()
     readings = get_bloodpressure_data(engine, icn)
     medication = get_medication_data(engine, icn)

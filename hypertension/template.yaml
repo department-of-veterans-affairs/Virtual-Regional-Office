@@ -23,10 +23,10 @@ Resources:
             FunctionName: !Ref MedicalRecordLocatorFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref MedicalDataRetrieverFunction
-        - DynamoDBWritePolicy:
-            TableName: !Ref ClaimClassifierFunction
-        - DynamoDBWritePolicy:
-            TableName: !Ref RecordUpdaterFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref ClaimClassifierFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref RecordUpdaterFunction
   
   ApplicabilityDeterminerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
