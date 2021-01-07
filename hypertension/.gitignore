@@ -1,2 +1,5 @@
 .aws-sam
 samconfig.toml
+.coverage
+test.xml
+coverage.xml
