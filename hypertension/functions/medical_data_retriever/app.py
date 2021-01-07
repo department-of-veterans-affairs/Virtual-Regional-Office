@@ -3,6 +3,7 @@ import csv
 from pathlib import Path
 import pandas as pd
 import sqlalchemy
+from importlib_resources import files
 
 def lambda_handler(event, context):
     print(f"Incoming event: {event}")
@@ -46,12 +47,12 @@ def get_data_dummy(icn: str):
                         "datetime" : "2020-11-19 01:22"
                     }]
     else:
-        bp_data_path=Path.cwd().joinpath("BloodPressure.csv")
+        bp_data_path=Path(files("functions.medical_data_retriever").joinpath("BloodPressure.csv"))
         with open(bp_data_path, "r") as infile:
             reader = csv.DictReader(infile)
             readings = [row for row in reader]
 
-    med_data_path=Path.cwd().joinpath("Meds.csv")
+    med_data_path=Path(files("functions.medical_data_retriever").joinpath("Meds.csv"))
     with open(med_data_path, "r") as infile:
         reader = csv.DictReader(infile)
         medication = [row for row in reader]

@@ -1,11 +1,13 @@
-from functions.record_uploader import app
-from tests import utils
+from functions.record_updater import app
 
-def test_record_uploader():
+def test_record_updater():
     input_payload = {
         "body": {
             "claim_status": {}
         }
     }
     data = app.lambda_handler(input_payload, "")
-    utils.confirm_response(data)
+    assert data["statusCode"] == 200
+    assert "body" in data
+    body = data["body"]
+    assert "claim_status" in body

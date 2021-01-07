@@ -3,11 +3,53 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
-            "name": "hypertension:GetProducts",
+            "name": "hypertension:ApplicabilityDeterminerFunction",
             "invokeTarget": {
                 "target": "template",
                 "templatePath": "template.yaml",
-                "logicalId": "GetProducts"
+                "logicalId": "ApplicabilityDeterminerFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "hypertension:MedicalRecordLocatorFunction",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "template.yaml",
+                "logicalId": "MedicalRecordLocatorFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "hypertension:MedicalDataRetrieverFunction",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "template.yaml",
+                "logicalId": "MedicalDataRetrieverFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "hypertension:ClaimClassifierFunction",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "template.yaml",
+                "logicalId": "ClaimClassifierFunction"
             },
             "lambda": {
                 "payload": {},

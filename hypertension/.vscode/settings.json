@@ -3,5 +3,6 @@
     "yaml.customTags": [
         "!Ref",
         "!GetAtt"
-    ]
+    ],
+    "python.pythonPath": "/Users/nhillard/.pyenv/versions/3.8.6/bin/python3.8"
 }

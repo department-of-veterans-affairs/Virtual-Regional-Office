@@ -1,5 +1,4 @@
 from functions.medical_data_retriever import app
-from tests import utils
 
 def test_insufficient_data():
     input_payload = {
@@ -10,10 +9,15 @@ def test_insufficient_data():
         }
     }
     data = app.lambda_handler(input_payload, "")
-    utils.confirm_response(data)
-    claim_status = data["claim_status"]
-    assert "medication" in claim_status
-    assert "readings" in claim_status
+    assert data["statusCode"] == 200
+    assert "body" in data
+    body = data["body"]
+    assert "claim_status" in body
+    claim_status = body["claim_status"]
+    assert "data" in claim_status
+    data = claim_status["data"]
+    assert "medication" in data
+    assert "readings" in data
     assert "hasEnoughData" in claim_status
 
 def test_has_enough_data():
