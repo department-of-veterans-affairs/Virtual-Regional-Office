@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  hypertension-decider
+
+  App to take CDW medical data as input and decide on appropriate disability grade
+
+Resources:
+  HypertensionStateMachine:
+    Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
+    Properties:
+      DefinitionUri: statemachine/hypertension.asl.json
+      DefinitionSubstitutions:
+        ApplicabilityDeterminerFunctionArn: !GetAtt ApplicabilityDeterminerFunction.Arn
+        MedicalRecordLocatorFunctionArn: !GetAtt MedicalRecordLocatorFunction.Arn
+        MedicalDataRetrieverFunctionArn: !GetAtt MedicalDataRetrieverFunction.Arn
+        ClaimClassifierFunctionArn: !GetAtt ClaimClassifierFunction.Arn
+        RecordUpdaterFunctionArn: !GetAtt RecordUpdaterFunction.Arn
+      Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - LambdaInvokePolicy:
+            FunctionName: !Ref ApplicabilityDeterminerFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref MedicalRecordLocatorFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref MedicalDataRetrieverFunction
+        - DynamoDBWritePolicy:
+            TableName: !Ref ClaimClassifierFunction
+        - DynamoDBWritePolicy:
+            TableName: !Ref RecordUpdaterFunction
+  
+  ApplicabilityDeterminerFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
+    Properties:
+      Handler: app.handler
+      Runtime: python3.8
+
+  MedicalRecordLocatorFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: app.handler
+      Runtime: python3.8
+
+  MedicalDataRetrieverFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: app.handler
+      Runtime: python3.8
+
+  ClaimClassifierFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: app.handler
+      Runtime: python3.8
+
+  RecordUpdaterFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: app.handler
+      Runtime: python3.8

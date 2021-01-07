@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "hypertension:GetProducts",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "template.yaml",
+                "logicalId": "GetProducts"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        }
+    ]
+}

@@ -1,90 +1,90 @@
 {
-  "Comment": "An example of the Amazon States Language using a choice state.",
-  "StartAt": "DetermineApplicability",
+  "Comment": "A state machine that uses medical record data to determine hypertension disability level",
+  "StartAt": "Determine Applicability",
   "States": {
-    "DetermineApplicability": {
+    "Determine Applicability": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:DetermineApplicability",
-      "Next": "IsApplicable"
+      "Resource": "${ApplicabilityDeterminerFunctionArn}",
+      "Next": "Is It Applicable?"
     },
-    "IsApplicable": {
+    "Is It Applicable?": {
       "Type": "Choice",
       "Choices": [
         {
           "Variable": "$.body.claim_status.applicable",
           "BooleanEquals": true,
-          "Next": "FindMedicalRecordID"
+          "Next": "Locate Medical Record"
         },
         {
           "Variable": "$.body.claim_status.applicable",
           "BooleanEquals": false,
-          "Next": "NotApplicableState"
+          "Next": "Not Applicable State"
         }
       ]
     },
-    "NotApplicableState" : {
+    "Not Applicable State" : {
       "Type" : "Fail",
       "Error": "NotApplicableError",
       "Cause": "Claim not benefit type"
     },
-    "FindMedicalRecordID": {
+    "Locate Medical Record": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:FindMedicalRecordID",
-      "Next": "DoesClaimHaveAssociatedMedicalData"
+      "Resource": "${MedicalRecordLocatorFunctionArn}",
+      "Next": "Does Claim Have Associated Medical Data?"
     },
-    "DoesClaimHaveAssociatedMedicalData": {
+    "Does Claim Have Associated Medical Data?": {
       "Type": "Choice",
       "Choices": [
         {
           "Variable": "$.body.icn",
           "IsNull": true,
-          "Next": "GetDataForRecordID"
+          "Next": "Retrieve Medical Data"
         },
         {
           "Variable": "$.body.icn",
           "IsNull": false,
-          "Next": "MedicalRecordMissingState"
+          "Next": "Medical Record Missing State"
         }
       ]
     },
-    "MedicalRecordMissingState" : {
+    "Medical Record Missing State" : {
       "Type" : "Fail",
       "Error": "MedicalRecordMissingError",
       "Cause": "Missing associated medical record"
     },
-    "GetDataForRecordID": {
+    "Retrieve Medical Data": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:GetDataForRecordID",
-      "Next": "IsSufficientDataAvailable"
+      "Resource": "${MedicalDataRetrieverFunctionArn}",
+      "Next": "Is Sufficient Data Available?"
     },
-    "IsSufficientDataAvailable": {
+    "Is Sufficient Data Available?": {
       "Type": "Choice",
       "Choices": [
         {
           "Variable": "$.body.hasEnoughData",
           "BooleanEquals": true,
-          "Next": "ClassifyClaim"
+          "Next": "Classify Claim"
         },
         {
           "Variable": "$.body.hasEnoughData",
           "BooleanEquals": false,
-          "Next": "InsufficientDataState"
+          "Next": "Insufficient Data State"
         }
       ]
     },
-    "InsufficientDataState" : {
+    "Insufficient Data State" : {
       "Type" : "Fail",
       "Error": "InsufficientDataError",
       "Cause": "Inssuficient medical data"
     },
-    "ClassifyClaim": {
+    "Classify Claim": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:ClassifyClaim",
-      "Next": "UpdateVBMS"
+      "Resource": "${ClaimClassifierFunctionArn}",
+      "Next": "Update Record"
     },
-    "UpdateVBMS": {
+    "Update Record": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:UpdateVBMS",
+      "Resource": "${RecordUpdaterFunctionArn}",
       "End":true
     }
   }

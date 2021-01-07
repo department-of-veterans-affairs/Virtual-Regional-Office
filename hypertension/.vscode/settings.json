@@ -1,0 +1,7 @@
+{
+    // ... other settings
+    "yaml.customTags": [
+        "!Ref",
+        "!GetAtt"
+    ]
+}
