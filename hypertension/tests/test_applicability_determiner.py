@@ -1,4 +1,5 @@
 from functions.applicability_determiner import app
+from tests import utils
 
 def test_disability_increase():
     input_payload = {
@@ -7,7 +8,7 @@ def test_disability_increase():
         "pvid": "123"
     }
     data = app.lambda_handler(input_payload, "")
-    confirm_response(data)
+    utils.confirm_response(data)
     claim_status = body["claim_status"]
     assert "claim_type" in claim_status
     assert "claim_subtype" in claim_status
@@ -19,13 +20,7 @@ def test_disability_new():
         "claim_subtype": "new"
     }
     data = app.lambda_handler(input_payload, "")
-    confirm_response(data)
+    utils.confirm_response(data)
     assert "claim_type" in claim_status
     assert "claim_subtype" in claim_status
     assert claim_status["applicable"] == False
-
-def confirm_response(data):
-    assert data["statusCode"] == 200
-    assert "body" in data
-    body = data["body"]
-    assert "claim_status" in body

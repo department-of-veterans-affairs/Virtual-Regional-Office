@@ -36,12 +36,12 @@
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.body.icn",
+          "Variable": "$.body.claim_status.icn",
           "IsNull": true,
           "Next": "Retrieve Medical Data"
         },
         {
-          "Variable": "$.body.icn",
+          "Variable": "$.body.claim_status.icn",
           "IsNull": false,
           "Next": "Medical Record Missing State"
         }
@@ -61,12 +61,12 @@
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.body.hasEnoughData",
+          "Variable": "$.body.claim_status.hasEnoughData",
           "BooleanEquals": true,
           "Next": "Classify Claim"
         },
         {
-          "Variable": "$.body.hasEnoughData",
+          "Variable": "$.body.claim_status.hasEnoughData",
           "BooleanEquals": false,
           "Next": "Insufficient Data State"
         }

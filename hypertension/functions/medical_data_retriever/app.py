@@ -6,27 +6,36 @@ def lambda_handler(event, context):
     print(f"Incoming event: {event}")
     claim_status = event["body"]["claim_status"] or {}
     icn = claim_status.get('icn')
-    readings = get_data(icn)
-    enough_data = has_enough_data(readings)
-    claim_status.update({"data": readings, "hasEnoughData": enough_data})
+    readings, medication = get_data(icn)
+    has_enough_data = has_enough_data(readings)
+    claim_status.update(
+        {
+            "data": {
+                "readings": readings,
+                "medication": medication,
+                "hasEnoughData": has_enough_data
+            }
+        }
+    )
     return {
         'statusCode': 200,
         'body': {"claim_status": claim_status}
     }
-    
-def get_data(icn):
+
+def get_data(icn: str):
     print(f"Getting info for person with ICN '{icn}'")
-    """
-    import pandas as pd  # pandas==1.0.3
-    import sqlalchemy as sql  # SQLAlchemy==1.3.16
-    bp_query = f"EXECUTE VBA_AVD.Dflt.IDRC_BloodPressure @Icn = N'{icn}'"
-    engine = sql.create_engine("mssql+pyodbc://{}/{}?driver={}".format(server, database, "SQL+Server"))
-    readings = pd.read_sql_query(bp_query, engine)
-    med_query = f"EXECUTE VBA_AVD.Dflt.IDRC_Medication @Icn = N'{icn}' @VASRDCode = N'7101'"
-    medication = pd.read_sql_query(med_query, engine)
-    return (readings, medication)
-    """
+    return get_data_dummy(icn)
+
+def get_data_real(icn: str):
+    import pandas as pd
+    import sqlalchemy
+    engine = initialize_engine()
+    readings = get_bloodpressure_data(engine, icn)
+    medication = get_medication_data(engine, icn)
+
+def get_data_dummy(icn: str):
     readings = []
+    medication = []
     if icn == "1234567890": # intentionally insufficient
         readings = [
                     {
@@ -37,12 +46,29 @@ def get_data(icn):
                         "datetime" : "2020-11-19 01:22"
                     }]
     else:
-        data_path=Path.cwd().joinpath("BloodPressure.csv")
-        with open(data_path, "r") as infile:
+        bp_data_path=Path.cwd().joinpath("BloodPressure.csv")
+        with open(bp_data_path, "r") as infile:
             reader = csv.DictReader(infile)
             readings = [row for row in reader]
-    return readings
-    
+
+    med_data_path=Path.cwd().joinpath("Meds.csv")
+    with open(med_data_path, "r") as infile:
+        reader = csv.DictReader(infile)
+        medication = [row for row in reader]
+    return (readings, medication)
+
+def initialize_engine():
+    return sqlalchemy.create_engine("mssql+pyodbc://{}/{}?driver={}".format(server, database, "SQL+Server"))
+
+def get_bloodpressure_data(engine: sqlalchemy.engine.Engine, icn: str):
+    print("Getting bloodpressure data...")
+    bp_query = f"EXECUTE VBA_AVD.Dflt.IDRC_BloodPressure @Icn = N'{icn}'"
+    return pd.read_sql_query(bp_query, engine)
+
+def get_medication_data(engine: sqlalchemy.engine.Engine, icn: str):
+    print("Getting medication data...")
+    med_query = f"EXECUTE VBA_AVD.Dflt.IDRC_Medication @Icn = N'{icn}' @VASRDCode = N'7101'"
+    return pd.read_sql_query(med_query, engine)
 
 def has_enough_data(readings):
     enough_data = True

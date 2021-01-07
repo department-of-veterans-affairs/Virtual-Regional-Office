@@ -31,33 +31,34 @@ Resources:
   ApplicabilityDeterminerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
     Properties:
-      Handler: app.handler
+      CodeUri: functions/applicability_determiner/
+      Handler: app.lambda_handler
       Runtime: python3.8
 
   MedicalRecordLocatorFunction:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: functions/medical_record_locator/
-      Handler: app.handler
+      Handler: app.lambda_handler
       Runtime: python3.8
 
   MedicalDataRetrieverFunction:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: functions/medical_data_retriever/
-      Handler: app.handler
+      Handler: app.lambda_handler
       Runtime: python3.8
 
   ClaimClassifierFunction:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: functions/claim_classifier/
-      Handler: app.handler
+      Handler: app.lambda_handler
       Runtime: python3.8
 
   RecordUpdaterFunction:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: functions/record_updater/
-      Handler: app.handler
+      Handler: app.lambda_handler
       Runtime: python3.8
