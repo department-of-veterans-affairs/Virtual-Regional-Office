@@ -15,7 +15,7 @@ clean: ##=> Deletes current build environment and latest build
 
 .PHONY: build
 build: build.requirements
-	$(SAM) build --use-container
+	$(SAM) build
 
 .PHONY: build.requirements
 build.requirements:

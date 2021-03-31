@@ -37,12 +37,12 @@
       "Choices": [
         {
           "Variable": "$.body.claim_status.icn",
-          "IsNull": true,
+          "IsNull": false,
           "Next": "Retrieve Medical Data"
         },
         {
           "Variable": "$.body.claim_status.icn",
-          "IsNull": false,
+          "IsNull": true,
           "Next": "Medical Record Missing State"
         }
       ]
