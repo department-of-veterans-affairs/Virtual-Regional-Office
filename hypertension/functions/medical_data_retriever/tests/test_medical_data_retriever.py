@@ -1,4 +1,5 @@
-from functions.medical_data_retriever import app
+import app
+
 
 def test_insufficient_data():
     input_payload = {
@@ -19,6 +20,7 @@ def test_insufficient_data():
     assert "medication" in data
     assert "readings" in data
     assert "hasEnoughData" in claim_status
+
 
 def test_has_enough_data():
     insufficient_data = [{}]

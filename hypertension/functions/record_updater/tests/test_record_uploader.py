@@ -1,4 +1,5 @@
-from functions.record_updater import app
+import app
+
 
 def test_record_updater():
     input_payload = {
