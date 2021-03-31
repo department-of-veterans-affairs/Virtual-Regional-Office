@@ -1,2 +1,3 @@
 *csv
 aws-stepfunctions-local-credentials.txt
+build/*
