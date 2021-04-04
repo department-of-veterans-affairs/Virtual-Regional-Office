@@ -1,4 +1,4 @@
-.aws-sam/*
+.aws-sam
 samconfig.toml
 .coverage
 test.xml
