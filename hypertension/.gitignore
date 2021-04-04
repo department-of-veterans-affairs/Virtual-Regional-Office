@@ -4,3 +4,4 @@ samconfig.toml
 test.xml
 coverage.xml
 __pycache__
+build/*
