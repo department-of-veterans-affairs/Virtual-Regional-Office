@@ -16,7 +16,7 @@ def test_located_record():
     body = data["body"]
     assert "claim_status" in body
     claim_status = body["claim_status"]
-    assert claim_status["icn"] == "1001096151"
+    assert claim_status["icn"] == "3456789101"
 
 
 def test_missing_record():

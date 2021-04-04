@@ -23,7 +23,6 @@ build.requirements:
 		echo "Building requirements for $$service ..."; \
 		cd ./${FUNCTIONS_DIR}/$${service} ; \
 		$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ; \
-		pip install --target ./package/python -r requirements.txt ; \
 		cd ../..; \
 	done
 
@@ -41,7 +40,6 @@ test.local: build.local
 	@for service in $(SERVICES) ; do \
 		echo "Testing $$service ..."; \
 		cd ./${FUNCTIONS_DIR}/$${service} ; \
-		$(POETRY) install ; \
 		$(POETRY) run pytest --capture=no --verbose --cov=app --cov-report term-missing ; \
 		cd ../..; \
 	done

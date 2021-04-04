@@ -5,7 +5,7 @@ def lambda_handler(event, context):
     print(f"Incoming event: {event}")
     claim_status = event["body"]["claim_status"]
     pvid_to_icn = {
-        "123": "1001096151",
+        "123": "3456789101",
         "666": "1234567890"
     }
     pvid = claim_status.get('pvid')

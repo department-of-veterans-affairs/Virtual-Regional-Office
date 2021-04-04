@@ -77,7 +77,7 @@ def main():
                 "claim_type": "disability",
                 "claim_subtype": "increase",
                 "applicable": True,
-                "icn": "1001096151",
+                "icn": "3456789101",
                 "data": {
                     "readings": [
                         {

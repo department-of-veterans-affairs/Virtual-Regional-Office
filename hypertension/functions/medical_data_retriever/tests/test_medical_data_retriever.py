@@ -5,7 +5,7 @@ def test_insufficient_data():
     input_payload = {
         "body": {
             "claim_status": {
-                "icn": 1001096151
+                "icn": 3456789101
             }
         }
     }
