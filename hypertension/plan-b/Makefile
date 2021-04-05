@@ -5,7 +5,7 @@ POETRY:=$$(which poetry || echo "install poetry. see https://python-poetry.org/"
 SAM ?= sam
 
 .PHONY: build.requirements.txt
-build.requirements.txt:
+build.requirements.txt: build.plan.b
 	cd ./lambda ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ;
 
