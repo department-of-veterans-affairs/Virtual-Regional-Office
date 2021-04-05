@@ -1,18 +1,20 @@
-## Run Lambda locally
+## Run in the Cloud
 
-### Build
 ```sh
-make build.requirements.txt
-
-make build.plan.b
+make build.sam.cloud
+sam deploy --guided
 ```
 
-### Invocation Options
+## Run Locally
 
+Build:
+```sh
+make build.sam.local
+```
+
+Invocation Options:
 ```sh
 sam local invoke --event lambda-invoke-test.json
-```
-
-```sh
+# OR
 sam local start-api --template template-local.yaml
 ```
