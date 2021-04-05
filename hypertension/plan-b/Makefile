@@ -7,8 +7,7 @@ SAM ?= sam
 .PHONY: build.requirements.txt
 build.requirements.txt:
 	cd ./lambda ; \
-	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ; \
-	pip install --target ./package/python -r requirements.txt ; \
+	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ;
 
 .PHONY: build.plan.b
 build.plan.b:
