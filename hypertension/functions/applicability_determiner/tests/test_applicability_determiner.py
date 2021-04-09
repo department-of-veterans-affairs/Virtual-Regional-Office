@@ -1,4 +1,5 @@
-from functions.applicability_determiner import app
+import app
+
 
 def test_disability_increase():
     input_payload = {
@@ -15,6 +16,7 @@ def test_disability_increase():
     assert "claim_type" in claim_status
     assert "claim_subtype" in claim_status
     assert claim_status["applicable"] == True
+
 
 def test_disability_new():
     input_payload = {

@@ -1,4 +1,5 @@
-from functions.claim_classifier import app
+import app
+
 
 def test_function():
     input_payload = {
@@ -6,7 +7,7 @@ def test_function():
             "claim_status": {
                 "claim_type": "disability",
                 "data": {
-                    "medication": [1,2,3],
+                    "medication": [1, 2, 3],
                     "readings": [{
                         "stationNumber": "689",
                         "facility": "(689) Connecticut HCS (Westhaven)",
@@ -14,7 +15,7 @@ def test_function():
                         "diastolic": "54",
                         "datetime": "2020-11-19 01:22"
                     },
-                    {
+                        {
                         "stationNumber": "689",
                         "facility": "(689) Connecticut HCS (Westhaven)",
                         "systolic": "106",
@@ -31,6 +32,7 @@ def test_function():
     body = data["body"]
     assert "claim_status" in body
     claim_status = body["claim_status"]
+
 
 def test_assess_criteria():
     # TODO: Add various test cases for classifier logic
