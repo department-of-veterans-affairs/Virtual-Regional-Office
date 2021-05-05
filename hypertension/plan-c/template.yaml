@@ -1,0 +1,31 @@
+Transform: AWS::Serverless-2016-10-31
+
+Description: >
+  Plan C
+
+  Using AWS Secrets Manager with Lambda
+
+Parameters:
+  LighthouseClientId:
+    Type: String
+  LighthousePrivateRsaKey:
+    Type: String
+
+Resources:
+  houliTestLambda20210429:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdaHandler.handler
+      Runtime: nodejs14.x
+      CodeUri: lambdaFunction/
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref LighthouseClientId
+          PRIVATE_RSA_KEY: !Ref houliVroLhPrivateRsaKey
+
+  houliVroLhPrivateRsaKey:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: 'houli test fake RSA private keyz'
+      SecretString:
+        Ref: LighthousePrivateRsaKey
