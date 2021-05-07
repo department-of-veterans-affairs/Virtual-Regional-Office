@@ -6,13 +6,19 @@ Description: >
   Using AWS Secrets Manager with Lambda
 
 Parameters:
+  LighthouseTokenUrl:
+    Type: String
   LighthouseClientId:
+    Type: String
+  LighthouseJwtAud:
     Type: String
   LighthousePrivateRsaKey:
     Type: String
+  KmsCmkId: 
+    Type: String
 
 Resources:
-  houliTestLambda20210429:
+  vroLambda:
     Type: AWS::Serverless::Function
     Description: "test description"
     Properties:
@@ -21,22 +27,25 @@ Resources:
       CodeUri: lambdaFunction/
       Environment:
         Variables:
+          LH_TOKEN_URL: !Ref LighthouseTokenUrl
           LH_CLIENT_ID: !Ref LighthouseClientId
-          # # TODO: Cleanup this comment: For some reason !GetAtt houliVroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
-          LH_PRIVATE_RSA_KEY_SECRET_ARN: !Ref houliVroLhPrivateRsaKey
-      Role: !GetAtt houliSecMgrLambdaExecutionRole.Arn
+          LH_JWT_AUD: !Ref LighthouseJwtAud
+            # # TODO: Cleanup this comment: For some reason !GetAtt vroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
+          LH_PRIVATE_RSA_KEY_SECRET_ARN: !Ref vroLhPrivateRsaKey
+      Role: !GetAtt vroLambdaExecutionRole.Arn
 
-  houliVroLhPrivateRsaKey:
+  vroLhPrivateRsaKey:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Description: "houli test fake RSA private key"
+      Description: "VBA Virtual Regional Office: Your RSA private key to access Lighthouse APIs via the Client Credentials OAuth grant type"
       SecretString:
         Ref: LighthousePrivateRsaKey
+      # KmsKeyId: KmsCmkId
 
-  houliSecMgrLambdaExecutionRole:
+  vroLambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: 'houli-sec-mgr-lambda-execution-role'
+      RoleName: 'vro-lambda-execution-role'
       # "Allows Lambda to assume this role"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
@@ -52,11 +61,11 @@ Resources:
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
       Policies:
-        - PolicyName: "houliLambdaSecm"
+        - PolicyName: "vroLambdaSecretsManagerPolicy"
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: "Allow"
                 Action:
                   - "secretsmanager:GetSecretValue"
-                Resource: !Ref houliVroLhPrivateRsaKey
+                Resource: !Ref vroLhPrivateRsaKey
