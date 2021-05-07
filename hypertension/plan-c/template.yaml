@@ -14,18 +14,49 @@ Parameters:
 Resources:
   houliTestLambda20210429:
     Type: AWS::Serverless::Function
+    Description: "test description"
     Properties:
       Handler: lambdaHandler.handler
       Runtime: nodejs14.x
       CodeUri: lambdaFunction/
       Environment:
         Variables:
-          CLIENT_ID: !Ref LighthouseClientId
-          PRIVATE_RSA_KEY: !Ref houliVroLhPrivateRsaKey
+          LH_CLIENT_ID: !Ref LighthouseClientId
+          # # TODO: Cleanup this comment: For some reason !GetAtt houliVroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
+          LH_PRIVATE_RSA_KEY_SECRET_ARN: !Ref houliVroLhPrivateRsaKey
+      Role: !GetAtt houliSecMgrLambdaExecutionRole.Arn
 
   houliVroLhPrivateRsaKey:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Description: 'houli test fake RSA private keyz'
+      Description: "houli test fake RSA private key"
       SecretString:
         Ref: LighthousePrivateRsaKey
+
+  houliSecMgrLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: 'houli-sec-mgr-lambda-execution-role'
+      # "Allows Lambda to assume this role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action: "sts:AssumeRole"
+            # TODO: Limit this down. Allowing all lambda to assume this role is too much. Limit it
+            # to just the ARN of your lambda function.
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+      # TODO: Cleanup this comment: It's unfortunate that they use the word "Role" in the name, because it's actually a policy.
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      Policies:
+        - PolicyName: "houliLambdaSecm"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "secretsmanager:GetSecretValue"
+                Resource: !Ref houliVroLhPrivateRsaKey
