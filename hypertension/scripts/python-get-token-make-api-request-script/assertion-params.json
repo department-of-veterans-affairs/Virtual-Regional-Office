@@ -1,0 +1,7 @@
+{
+    "audience": "https://deptva-eval.okta.com/oauth2/aus8nm1q0f7VQ0a482p7/v1/token",
+    "token_url": "https://sandbox-api.va.gov/oauth2/health/system/v1/token",
+    "grant_type": "client_credentials",
+    "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+    "scope": "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
+}
