@@ -132,8 +132,7 @@ def http_get_api_request(url: str, params: dict, token: str) -> dict:
     headers = {"Authorization": f"Bearer {token}"}
 
     api_response = requests.get(url, params=params, headers=headers)
-    if api_response.status_code != 200:
-        pdb.set_trace()
+    assert assertion_response.status_code == 200
 
     return api_response.json()
 
