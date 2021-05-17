@@ -62,6 +62,10 @@ def cli_main() -> None:
     handle_api_response(api_response)
 
 
+def get_cli_args() -> argparse.Namespace:
+    return setup_cli_parser().parse_args()
+
+
 def setup_cli_parser() -> argparse.ArgumentParser:
     # Configures argument parsing. See above for expected arguments.
     parser = argparse.ArgumentParser()
@@ -79,12 +83,13 @@ def setup_cli_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def get_cli_args() -> argparse.Namespace:
-    return setup_cli_parser().parse_args()
-
-
-def build_jwt(payload: dict, secret: str) -> str:
-    return jwt.encode(payload, secret, algorithm="RS256")
+def build_token_params(
+    params: dict, client_id: str, icn: str, secret: str
+) -> dict:
+    # Build the JWT and the params for posting to the token provider endpoint.
+    payload = build_jwt_payload(params["audience"], client_id)
+    assertion = build_jwt(payload, secret)
+    return build_form_params(params, assertion, icn)
 
 
 def build_jwt_payload(audience: str, client_id: str) -> dict:
@@ -100,19 +105,20 @@ def build_jwt_payload(audience: str, client_id: str) -> dict:
     }
 
 
+def build_jwt(payload: dict, secret: str) -> str:
+    return jwt.encode(payload, secret, algorithm="RS256")
+
+
 def build_form_params(params: dict, assertion: str, icn: str) -> dict:
     # Add: client_assertion and launch. Remove: token_url and audience.
     full_params = params | {"client_assertion": assertion, "launch": icn}
     return omit(["token_url", "audience"], full_params)
 
 
-def build_token_params(
-    params: dict, client_id: str, icn: str, secret: str
-) -> dict:
-    # Build the JWT and the params for posting to the token provider endpoint.
-    payload = build_jwt_payload(params["audience"], client_id)
-    assertion = build_jwt(payload, secret)
-    return build_form_params(params, assertion, icn)
+def build_api_params(params: dict, icn: str) -> dict:
+    # Add: patient. Remove: api_url.
+    full_params = params | {"patient": icn}
+    return omit(["api_url"], full_params)
 
 
 def http_post_for_access_token(url: str, params: dict) -> str:
@@ -120,12 +126,6 @@ def http_post_for_access_token(url: str, params: dict) -> str:
     assert assertion_response.status_code == 200
 
     return assertion_response.json()["access_token"]
-
-
-def build_api_params(params: dict, icn: str) -> dict:
-    # Add: patient. Remove: api_url.
-    full_params = params | {"patient": icn}
-    return omit(["api_url"], full_params)
 
 
 def http_get_api_request(url: str, params: dict, token: str) -> dict:
@@ -136,6 +136,10 @@ def http_get_api_request(url: str, params: dict, token: str) -> dict:
         pdb.set_trace()
 
     return api_response.json()
+
+
+def handle_api_response(api_response: Union[dict, list]) -> None:
+    print(api_response)
 
 
 def load_secret(key: Union[Path, str]) -> str:
@@ -149,14 +153,6 @@ def load_secret(key: Union[Path, str]) -> str:
     raise SystemError(f"{key} not found as file or environment variable")
 
 
-def handle_api_response(api_response: Union[dict, list]) -> None:
-    print(api_response)
-
-
-def omit(keys_to_remove: list, d: dict) -> dict:
-    return {k: d[k] for k in d if k not in keys_to_remove}
-
-
 def load_text(path: Union[Path, str]) -> str:
     return Path(path).read_text()
 
@@ -164,6 +160,10 @@ def load_text(path: Union[Path, str]) -> str:
 def load_json(path: Union[Path, str]) -> dict:
     raw = load_text(path)
     return json.loads(raw)
+
+
+def omit(keys_to_remove: list, d: dict) -> dict:
+    return {k: d[k] for k in d if k not in keys_to_remove}
 
 
 if __name__ == "__main__":
