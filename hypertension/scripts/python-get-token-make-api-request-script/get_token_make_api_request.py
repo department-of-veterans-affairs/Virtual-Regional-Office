@@ -2,7 +2,6 @@ import argparse
 import datetime
 import json
 import os
-import pdb
 from pathlib import Path
 from typing import Union
 from uuid import uuid1
@@ -10,6 +9,7 @@ from uuid import uuid1
 import jwt
 import requests
 
+Json = Union[dict, list]
 
 """
 Usage example:
@@ -117,7 +117,7 @@ def build_form_params(params: dict, assertion: str, icn: str) -> dict:
 
 def build_api_params(params: dict, icn: str) -> dict:
     # Add: patient. Remove: api_url.
-    full_params = {**params,  **{"patient": icn}}
+    full_params = {**params, **{"patient": icn}}
     return omit(["api_url"], full_params)
 
 
@@ -128,16 +128,16 @@ def http_post_for_access_token(url: str, params: dict) -> str:
     return assertion_response.json()["access_token"]
 
 
-def http_get_api_request(url: str, params: dict, token: str) -> dict:
+def http_get_api_request(url: str, params: dict, token: str) -> Json:
     headers = {"Authorization": f"Bearer {token}"}
 
     api_response = requests.get(url, params=params, headers=headers)
-    assert assertion_response.status_code == 200
+    assert api_response.status_code == 200
 
     return api_response.json()
 
 
-def handle_api_response(api_response: Union[dict, list]) -> None:
+def handle_api_response(api_response: Json) -> None:
     print(api_response)
 
 
@@ -146,7 +146,7 @@ def load_secret(key: Union[Path, str]) -> str:
     if Path(key).exists():
         return load_text(key)
 
-    if secret := os.environ.get(key):
+    if secret := os.environ.get(str(key)):
         return secret
 
     raise SystemError(f"{key} not found as file or environment variable")
