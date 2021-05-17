@@ -111,13 +111,13 @@ def build_jwt(payload: dict, secret: str) -> str:
 
 def build_form_params(params: dict, assertion: str, icn: str) -> dict:
     # Add: client_assertion and launch. Remove: token_url and audience.
-    full_params = params | {"client_assertion": assertion, "launch": icn}
+    full_params = {**params, **{"client_assertion": assertion, "launch": icn}}
     return omit(["token_url", "audience"], full_params)
 
 
 def build_api_params(params: dict, icn: str) -> dict:
     # Add: patient. Remove: api_url.
-    full_params = params | {"patient": icn}
+    full_params = {**params,  **{"patient": icn}}
     return omit(["api_url"], full_params)
 
 
