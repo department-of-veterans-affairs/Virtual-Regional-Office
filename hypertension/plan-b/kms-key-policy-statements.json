@@ -1,0 +1,61 @@
+[
+  {
+    "Sid": "Allow use of the key",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": THE_ARN_OF_THE_IAM_USER_WHO_OWNS_THE_SECRET
+    },
+    "Action": [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "kms:GetKeyPolicy",
+      "kms:PutKeyPolicy"
+    ],
+    "Resource": "*"
+  },
+  {
+    "Sid": "Admins",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": [
+        LIST_OF_ARNS_OF_ADMINS
+      ]
+    },
+    "Action": [
+      "kms:CancelKeyDeletion",
+      "kms:CreateAlias",
+      "kms:DeleteAlias",
+      "kms:DescribeKey",
+      "kms:DisableKey",
+      "kms:DisableKeyRotation",
+      "kms:EnableKey",
+      "kms:EnableKeyRotation",
+      "kms:GetKeyPolicy",
+      "kms:GetKeyRotationStatus",
+      "kms:ListGrants",
+      "kms:ListKeyPolicies",
+      "kms:ListResourceTags",
+      "kms:ListRetirableGrants",
+      "kms:RetireGrant",
+      "kms:RevokeGrant",
+      "kms:ScheduleKeyDeletion",
+      "kms:TagResource",
+      "kms:UntagResource",
+      "kms:UpdateAlias",
+      "kms:UpdateKeyDescription"
+    ],
+    "Resource": "*"
+  },
+  {
+    "Sid": "Allow the VRO Lambda to secretsmanager:GetSecretValue",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": ARN_OF_THE_ROLE_THAT_EXECUTES_THE_LAMBDA_FUNCTION____SHOULD_BE_arn:aws:iam::ACCOUNT_NUMBER:role/vro-lambda-execution-role
+    },
+    "Action": "kms:Decrypt",
+    "Resource": "*"
+  }
+]
