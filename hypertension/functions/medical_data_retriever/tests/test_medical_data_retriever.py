@@ -1,10 +1,11 @@
-from functions.medical_data_retriever import app
+import app
+
 
 def test_insufficient_data():
     input_payload = {
         "body": {
             "claim_status": {
-                "icn": 1001096151
+                "icn": 3456789101
             }
         }
     }
@@ -19,6 +20,7 @@ def test_insufficient_data():
     assert "medication" in data
     assert "readings" in data
     assert "hasEnoughData" in claim_status
+
 
 def test_has_enough_data():
     insufficient_data = [{}]
