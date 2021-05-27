@@ -1,15 +1,10 @@
 import json
 
-import requests
+from lib.get_requests import get_canned_json
 
 def lambda_handler(event, context):
 
-    res = requests.get('https://httpbin.org/get')
-
-    print('res.text is')
-    print(res.text)
-
     return {
         "statusCode": 200,
-        "body": res.text
+        "body": get_canned_json()
     }
