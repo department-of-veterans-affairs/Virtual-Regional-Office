@@ -1,6 +1,6 @@
 import json
 
-from lib.get_requests import get_canned_json
+from src.get_requests import get_canned_json
 
 def lambda_handler(event, context):
 
