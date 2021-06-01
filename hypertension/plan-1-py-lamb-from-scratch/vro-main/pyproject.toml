@@ -8,6 +8,7 @@ authors = ["Aaron Houlihan <aaron@amida.com>"]
 python = "^3.8"
 requests = "^2.25.1"
 pytest = "^6.2.4"
+boto3 = "^1.17.85"
 
 [tool.poetry.dev-dependencies]
 
