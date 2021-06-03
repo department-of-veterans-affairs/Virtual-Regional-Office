@@ -12,6 +12,11 @@ Resources:
       CodeUri: lambda/
       Handler: app.lambda_handler
       Runtime: python3.8
+      Layers:
+        - !Ref PdfGeneratorLayer
+      Environment: 
+        Variables:
+          FONTCONFIG_PATH: /opt/fonts
       Events:
         HelloWorld:
           # If you `sam deploy` this (not intend, given that this file is intended for local dev
@@ -22,3 +27,14 @@ Resources:
           Properties:
             Path: /
             Method: get
+
+  PdfGeneratorLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - python3.8
+      ContentUri: layer/.
+      Description: PDF Generator binary - wkhtmltopdf
+      LayerName: pdf-generator-layer
+    # Metadata:
+    #   BuildMethod: makefile

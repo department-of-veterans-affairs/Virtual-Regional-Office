@@ -12,3 +12,24 @@ Resources:
       CodeUri: lambda/
       Handler: app.lambda_handler
       Runtime: python3.8
+      Layers:
+        - !Ref PdfGeneratorLayer
+
+  PdfGeneratorLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - python3.8
+      ContentUri: layer/.
+      Description: PDF Generator library - wkhtmltopdf
+      LayerName: pdf-generator-layer
+    # Metadata:
+    #   BuildMethod: makefile
+  # PDFGeneratorLayer:
+  #   Type: AWS::Lambda::LayerVersion
+  #   Properties:
+  #     ContentUri: wkhtmltopdf/
+  #     CompatibleRuntimes:
+  #       - python3.8
+  #   Metadata:
+  #     BuildMethod: python

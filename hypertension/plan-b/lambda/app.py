@@ -1,7 +1,4 @@
+import pdfkit
 def lambda_handler(event, context):
-    print(f"Incoming event: {event}")
-
-    return {
-        'statusCode': 200,
-        'body': event
-    }
+    pdf = pdfkit.from_file(event.file, 'test-html.pdf')
+    print(pdf, file='test-pdf-output.pdf')
