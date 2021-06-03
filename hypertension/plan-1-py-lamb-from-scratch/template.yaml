@@ -28,11 +28,11 @@ Resources:
       Runtime: python3.8
       Environment:
         Variables:
-          LH_TOKEN_URL: !Ref LighthouseTokenUrl
-          LH_CLIENT_ID: !Ref LighthouseClientId
-          LH_JWT_AUD: !Ref LighthouseJwtAud
+          LighthouseTokenUrl: !Ref LighthouseTokenUrl
+          LighthouseClientId: !Ref LighthouseClientId
+          LighthouseJwtAud: !Ref LighthouseJwtAud
             # # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
-          LH_PRIVATE_RSA_KEY_SECRET_ARN: !Ref VroLhPrivateRsaKey
+          LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
       Role: !GetAtt VroLambdaExecutionRole.Arn
 
   VroLhPrivateRsaKey:
