@@ -8,6 +8,7 @@ authors = ["Aaron Houlihan <aaron@amida.com>"]
 python = "^3.8"
 
 [tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
