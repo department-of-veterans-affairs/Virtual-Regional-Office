@@ -12,6 +12,7 @@ boto3 = "^1.17.85"
 
 [tool.poetry.dev-dependencies]
 pytest-watch = "^4.2.0"
+python-dotenv = "^0.17.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
