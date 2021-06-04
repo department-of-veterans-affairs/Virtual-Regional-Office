@@ -6,11 +6,6 @@ This project uses [AWS step functions](https://aws.amazon.com/step-functions/) t
 
 It is currently a proof of concept, and uses a set of predefined data to mimic calls and responses from various external systems. It should not be too much extra work to make this real.
 
-## Git Workflow
-We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
-
-Pull requests are submitted on Github and require review in order to be merged. Our process is that reviewers approve and the submitter of the PR then merges to `develop`.
-
 ## System setup
 
 Below is a diagram of the setup of the services:
@@ -239,3 +234,8 @@ Deploy a Step Functions state machine to Step Functions Local
   - Note:
     - `sam local start-api` starts your Lambda functions (locally) with a REST API in front of them (also locally), so that you can make HTTP requests against them.
     - `sam local start-lambda` starts Lambda as if it was AWS running on your machine. This allows Step Functions Local to communicate with your Lambdas the way this these AWS systems communicate with each other in the cloud.
+
+## Git Workflow
+We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
+
+Pull requests are submitted on Github and require review in order to be merged. Our process is that reviewers approve and the submitter of the PR then merges to `develop`.
