@@ -1,9 +1,0 @@
-{
-  "name": "houli_aws_sam_lambda_secrets_manager_test",
-  "author": "Aaron Houlihan",
-  "description": "AWS SAM and Lambda and Secrets Manager Test",
-  "version": "0.0.1",
-  "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.14.0"
-  }
-}
