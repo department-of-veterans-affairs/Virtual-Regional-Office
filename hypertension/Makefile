@@ -30,7 +30,7 @@ build.local:
 	cd ../..; \
 
 .PHONY: pytest
-pytest: build.python
+pytest: build.local
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run ptw -c -- --capture=no ; \
 	cd ../..; \
