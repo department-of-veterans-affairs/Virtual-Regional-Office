@@ -12,6 +12,7 @@ Parameters:
     Type: String
   LighthousePrivateRsaKey:
     Type: String
+    NoEcho: true
   KmsCmkId:
     Type: String
 
