@@ -16,6 +16,15 @@ The Hypertension Fast-Track System is built in these technologies:
 
 ## Development
 
+**WARNING!! Dont use your (or any) real private RSA key here until we fix the code to make it stop returning the RSA key in the lambda response body!!**
+
+Create and fill out our cloud formation template variables
+```sh
+cp cf-template-params-example.env cf-template-params.env
+```
+
+**WARNING!! Dont use your (or any) real private RSA key here until we fix the code to make it stop returning the RSA key in the lambda response body!!**
+
 ### Develop and Test the Python Functions Locally
 
 This workflow is for locally developing the individual Python functions and locally running the their automated tests, via Python, pytest, and pytest-watch on your machine.
