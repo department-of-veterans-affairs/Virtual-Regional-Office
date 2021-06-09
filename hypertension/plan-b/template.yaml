@@ -14,7 +14,9 @@ Resources:
       Runtime: python3.8
       Layers:
         - !Ref PdfGeneratorLayer
-
+      Environment:
+        Variables:
+          FONTCONFIG_PATH: /opt/fonts
   PdfGeneratorLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
