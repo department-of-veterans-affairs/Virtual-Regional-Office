@@ -1,5 +1,0 @@
-{
-    "api_url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Observation",
-    "category": "vital-signs",
-    "code": "85354-9"
-}

@@ -22,19 +22,24 @@ This script expects the following arguments, in order:
     key_loc: the location of a private .pem file or the name of an environment
         variable containing the key.
     assertions_file: the location of a JSON file containing a dictionary with
-        the following fields:
+        the following structure:
 
-            audience: the aud value (a URL) for the JWT.
-            token_url: the URL of the endpoint for requesting a token from.
-            grant_type: the kind of credentials you want.
-            client_assertion_type: e.g.
-                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-            scope: the various permisions you're requesting.
+            urls:
+                audience: the aud value (a URL) for the JWT.
+                token_url: the URL of the endpoint for requesting a token from.
+            parameters:
+                grant_type: the kind of credentials you want.
+                client_assertion_type: e.g.
+                    "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+                scope: the various permisions you're requesting.
 
     params_file: the location of a JSON file containing the params of your
-        request to the API. Must include the url of the API endpoint to query
-        in the api_url field.  Other fields will be passed as parameters to
-        that endpoint with a GET request.
+        request to the API, with the following structure:
+            urls:
+                endpoint: the URL of the API endpoint to query.
+            parameters:
+                [any keys and values here will be passed to the enpoint as
+                parameters]
 
     icn: the ICN of the individual to query for.
 
@@ -45,15 +50,16 @@ necessary.
 
 def cli_main() -> None:
     opts = get_cli_args()
-    auth_params = load_json(opts.assertions_file)
-    base_params = load_json(opts.params_file)
+    auth_data = load_json(opts.assertions_file)
+    api_data = load_json(opts.params_file)
     secret = load_secret(opts.key_loc)
 
-    token_url, api_url = auth_params["token_url"], base_params["api_url"]
+    token_url = auth_data["urls"]["token"]
+    api_url = api_data["urls"]["endpoint"]
     client_id, icn = opts.client_id, opts.icn
 
-    token_params = build_token_params(auth_params, client_id, icn, secret)
-    api_params = build_api_params(base_params, icn)
+    token_params = build_token_params(auth_data, client_id, icn, secret)
+    api_params = build_api_params(api_data["parameters"], icn)
 
     access_token = http_post_for_access_token(token_url, token_params)
 
@@ -84,12 +90,12 @@ def setup_cli_parser() -> argparse.ArgumentParser:
 
 
 def build_token_params(
-    params: dict, client_id: str, icn: str, secret: str
+    data: dict, client_id: str, icn: str, secret: str
 ) -> dict:
     # Build the JWT and the params for posting to the token provider endpoint.
-    payload = build_jwt_payload(params["audience"], client_id)
+    payload = build_jwt_payload(data["urls"]["audience"], client_id)
     assertion = build_jwt(payload, secret)
-    return build_form_params(params, assertion, icn)
+    return build_form_params(data["parameters"], assertion, icn)
 
 
 def build_jwt_payload(audience: str, client_id: str) -> dict:
@@ -110,15 +116,13 @@ def build_jwt(payload: dict, secret: str) -> str:
 
 
 def build_form_params(params: dict, assertion: str, icn: str) -> dict:
-    # Add: client_assertion and launch. Remove: token_url and audience.
-    full_params = {**params, **{"client_assertion": assertion, "launch": icn}}
-    return omit(["token_url", "audience"], full_params)
+    # Add: client_assertion and launch.
+    return {**params, "client_assertion": assertion, "launch": icn}
 
 
 def build_api_params(params: dict, icn: str) -> dict:
-    # Add: patient. Remove: api_url.
-    full_params = {**params, **{"patient": icn}}
-    return omit(["api_url"], full_params)
+    # Add: patient
+    return {**params, "patient": icn}
 
 
 def http_post_for_access_token(url: str, params: dict) -> str:
@@ -159,10 +163,6 @@ def load_text(path: Union[Path, str]) -> str:
 def load_json(path: Union[Path, str]) -> dict:
     raw = load_text(path)
     return json.loads(raw)
-
-
-def omit(keys_to_remove: list, d: dict) -> dict:
-    return {k: d[k] for k in d if k not in keys_to_remove}
 
 
 if __name__ == "__main__":

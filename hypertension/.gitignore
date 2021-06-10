@@ -5,3 +5,4 @@ test.xml
 coverage.xml
 __pycache__
 build/*
+cf-template-params.env
