@@ -1,4 +1,6 @@
 aws-stepfunctions-local-credentials.txt
 .venv
+.metals
+.vscode
 requirements.txt
 package
