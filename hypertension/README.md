@@ -27,7 +27,7 @@ cp cf-template-params-example.env cf-template-params.env
 
 ### Develop and Test the Python Functions Locally
 
-This workflow is for locally developing the individual Python functions and locally running the their automated tests, via Python, pytest, and pytest-watch on your machine.
+This workflow is for locally developing the individual Python functions and locally running their automated tests, via Python, pytest, and pytest-watch on your machine.
 
 Install the following [tools](#Tools):
 - Python
@@ -36,7 +36,7 @@ Install the following [tools](#Tools):
 
 To build Python locally:
 ```sh
-make build.python
+make build.local
 ```
 
 To build Python locally and run pytest unit tests locally:
