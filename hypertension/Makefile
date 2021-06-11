@@ -27,6 +27,11 @@ build.requirements:
 build.local:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
+	$(POETRY) run pylint *.py ; \
+	$(POETRY) run pylint lib/*.py ; \
+	$(POETRY) run pylint test/*.py ; \
+	$(POETRY) run flake8 --exclude=.venv ; \
+	$(POETRY) run black . --exclude=/\.venv/ ; \
 	cd ../..; \
 
 .PHONY: pytest
