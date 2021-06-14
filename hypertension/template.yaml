@@ -49,7 +49,7 @@ Resources:
     Properties:
       CompatibleRuntimes:
         - python3.8
-      ContentUri: vro-main/layer/.
+      ContentUri: vro-main/layer/
       Description: PDF Generator library - wkhtmltopdf
       LayerName: pdf-generator-layer
 
