@@ -3,16 +3,35 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
+            "name": "hypertension:VroMainFunction",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/template.yaml",
+                "logicalId": "VroMainFunction"
+            },
+            "lambda": {
+                "payload": {
+                    "path": "/Users/julialallen/workspace/Virtual-Regional-Office/hypertension/vro-main/pdf-event.json"
+                },
+                "environmentVariables": {
+                    "FONTCONFIG_PATH": "/opt/fonts",
+                    "LighthouseTokenUrl": "!Ref LighthouseTokenUrl",
+                    "LighthouseClientId": "!Ref LighthouseClientId",
+                    "LighthouseJwtAud": "!Ref LighthouseJwtAud",
+                    "LighthousePrivateRsaKeySecretArn": "!Ref VroLhPrivateRsaKey"
+                }
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
             "name": "hypertension:ApplicabilityDeterminerFunction",
             "invokeTarget": {
                 "target": "template",
                 "templatePath": "template.yaml",
                 "logicalId": "ApplicabilityDeterminerFunction"
             },
-            "lambda": {
-                "payload": {},
-                "environmentVariables": {}
-            }
+            "lambda": {}
         },
         {
             "type": "aws-sam",
@@ -55,6 +74,6 @@
                 "payload": {},
                 "environmentVariables": {}
             }
-        }
+        },
     ]
 }
