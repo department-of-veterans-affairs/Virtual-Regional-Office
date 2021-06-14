@@ -13,7 +13,33 @@ pdfkit = "^0.6"
 pytest = "^6.2.4"
 pytest-watch = "^4.2.0"
 python-dotenv = "^0.17.1"
+pytest-coverage = "*"
+flake8 = "^3.9.2"
+pylint = "^2.8.2"
+black = "^21.5b2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+
+[tool.pylint."MESSAGES CONTROL"]
+enable = [
+    "use-symbolic-message-instead",
+    "useless-supression",
+    "fixme",
+]
+disable = [
+    "attribute-defined-outside-init",
+    "duplicate-code",
+    "invalid-name",
+    "missing-docstring",
+    "protected-access",
+    "too-few-public-methods",
+    "import-error",
+    "no-value-for-parameter",
+    "format",
+    "pointless-string-statement",
+]
