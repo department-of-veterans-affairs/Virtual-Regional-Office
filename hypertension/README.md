@@ -7,6 +7,7 @@
 - Python
 - [pyenv](https://github.com/pyenv/pyenv): Manage Python versions, can be used with poetry to create isolated environments
 - [Poetry](https://python-poetry.org/): Manage all your Python package dependencies
+- [wkhtmltopdf](https://wkhtmltopdf.org/): The PDF generation command line tool and one of our system dependencies
 
 # Technologies
 
@@ -23,7 +24,7 @@ Create and fill out our cloud formation template variables
 cp cf-template-params-example.env cf-template-params.env
 ```
 
-Note: For deployment to AWS, you'll to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
+Note: For deployment to AWS, you'll need to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
 
 **WARNING!! Dont use your (or any) real private RSA key here until we fix the code to make it stop returning the RSA key in the lambda response body!!**
 
@@ -35,6 +36,7 @@ Install the following [tools](#Tools):
 - Python
 - pyenv
 - Poetry
+- wkhtmltopdf
 
 To build Python locally:
 ```sh
@@ -44,6 +46,14 @@ make build.local
 To build Python locally and run pytest unit tests locally:
 ```sh
 make pytest
+```
+
+To build the lambda package locally and run the function in a container:
+
+```sh
+
+make local.sam.invoke
+
 ```
 
 ## Deploy Everything to AWS

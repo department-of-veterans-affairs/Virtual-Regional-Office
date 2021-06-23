@@ -17,6 +17,8 @@ import os  # noqa
 os.environ[
     "LighthousePrivateRsaKeySecretArn"
 ] = "Fake. Not used. Doesnt Matter. Just need something. Anything."
+
+# Set the wkhtmltopdf path environment variable by finding the local binary
 wkhtmltopdf_path = subprocess.run(
     "which wkhtmltopdf", shell=True, capture_output=True
 )
