@@ -1,3 +1,5 @@
+import subprocess
+
 # Load Env
 from dotenv import load_dotenv
 
@@ -12,9 +14,15 @@ from test.doubles.aws_secrets_manager import (  # noqa
 # Fake Env
 import os  # noqa
 
-os.environ[
-    "LighthousePrivateRsaKeySecretArn"
-] = "Fake. Not used. Doesnt Matter. Just need something. Anything."
+# os.environ[
+#     "LighthousePrivateRsaKeySecretArn"
+# ] = "Fake. Not used. Doesnt Matter. Just need something. Anything."
+# wkhtmltopdf_path = subprocess.run(
+#     "which wkhtmltopdf", shell=True, capture_output=True
+# )
+# os.environ["WKHTMLTOPDF_PATH"] = wkhtmltopdf_path.stdout.decode(
+#     "utf-8"
+# ).rstrip("\n")
 
 # Mock AWS::SecretsManager::Secret fetch
 

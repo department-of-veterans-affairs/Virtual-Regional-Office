@@ -40,6 +40,10 @@ pytest: build.local
 	$(POETRY) run ptw -c -- --capture=no ; \
 	cd ../..; \
 
+.PHONY: local.sam.invoke
+local.sam.invoke: build.sam
+	$(SAM) local invoke --parameter-overrides $$(cat cf-template-params.env) -e vro-main/pdf-event.json
+
 .PHONY: deploy.sam.guided
 deploy.sam.guided: build.sam ##=> Guided deploy that is typically run for the first time only
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $$(cat cf-template-params.env)

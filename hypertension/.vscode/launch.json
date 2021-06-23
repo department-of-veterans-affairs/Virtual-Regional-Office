@@ -14,7 +14,9 @@
                     "path": "/Users/julialallen/workspace/Virtual-Regional-Office/hypertension/vro-main/pdf-event.json"
                 },
                 "environmentVariables": {
+                    "WKHTMLTOPDF_PATH": "/opt/bin/wkhtmltopdf",
                     "FONTCONFIG_PATH": "/opt/fonts",
+                    "STAGE": "dev",
                     "LighthouseTokenUrl": "!Ref LighthouseTokenUrl",
                     "LighthouseClientId": "!Ref LighthouseClientId",
                     "LighthouseJwtAud": "!Ref LighthouseJwtAud",

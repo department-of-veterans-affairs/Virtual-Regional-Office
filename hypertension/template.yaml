@@ -15,6 +15,17 @@ Parameters:
     NoEcho: true
   KmsCmkId:
     Type: String
+  Stage:
+    Type: String
+    AllowedValues:
+      - dev
+      - prod
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        STAGE: !Ref Stage
 
 Resources:
   VroMainFunction:
@@ -29,6 +40,7 @@ Resources:
       Environment:
         Variables:
           FONTCONFIG_PATH: /opt/fonts
+          WKHTMLTOPDF_PATH: /opt/bin/wkhtmltopdf
           LighthouseTokenUrl: !Ref LighthouseTokenUrl
           LighthouseClientId: !Ref LighthouseClientId
           LighthouseJwtAud: !Ref LighthouseJwtAud
