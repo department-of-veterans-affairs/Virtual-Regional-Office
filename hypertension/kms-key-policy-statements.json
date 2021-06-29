@@ -3,7 +3,7 @@
     "Sid": "Allow use of the key",
     "Effect": "Allow",
     "Principal": {
-      "AWS": THE_ARN_OF_THE_IAM_USER_WHO_OWNS_THE_SECRET
+      "AWS": "THE_ARN_OF_THE_IAM_USER_WHO_OWNS_THE_SECRET"
     },
     "Action": [
       "kms:Encrypt",
@@ -21,7 +21,7 @@
     "Effect": "Allow",
     "Principal": {
       "AWS": [
-        LIST_OF_ARNS_OF_ADMINS
+        "LIST_OF_ARNS_OF_ADMINS"
       ]
     },
     "Action": [
@@ -53,7 +53,7 @@
     "Sid": "Allow the VRO Lambda to secretsmanager:GetSecretValue",
     "Effect": "Allow",
     "Principal": {
-      "AWS": ARN_OF_THE_ROLE_THAT_EXECUTES_THE_LAMBDA_FUNCTION____SHOULD_BE_arn:aws:iam::ACCOUNT_NUMBER:role/vro-lambda-execution-role
+      "AWS": "ARN_OF_THE_ROLE_THAT_THE_LAMBDA_FUNCTION_EXECUTES_AS____SHOULD_BE_arn:aws:iam::ACCOUNT_NUMBER:role/vro-lambda-execution-role"
     },
     "Action": "kms:Decrypt",
     "Resource": "*"
