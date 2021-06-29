@@ -7,6 +7,7 @@ authors = ["Aaron Houlihan <aaron@amida.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 boto3 = "^1.17.87"
+PyJWT = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
