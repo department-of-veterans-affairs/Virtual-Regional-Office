@@ -49,3 +49,7 @@ It will be _much_ quicker and easier for
 3. A system administrator to deploy the system...
 
 ...if we simply use the manual instructions I've included in the [README.md](../README.md).
+
+# Secret Management
+
+Design decision: we are using SecretsManager to encrypt the various secrets, rather than just using Lambda's built in encryption of environment variables (both of these, of course, use AWS KMS, by the way), because using Lambda's built in prevents _all_ env var values from being ready by folks who don't have necessary permissions on the KMS key used to encrypt them all. This could be cumbersome (e.g. difficult deal with when debugging). We want all the non-secret env vars to be readable by everyone working on the project, and only secrets need to have their visibility limited to the owner of the secret value.
