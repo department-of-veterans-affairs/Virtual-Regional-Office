@@ -6,20 +6,41 @@ Description: "Hypertension Fast-Tracker"
 Parameters:
   LighthouseTokenUrl:
     Type: String
-  LighthouseClientId:
+    Default: "https://sandbox-api.va.gov/oauth2/health/system/v1/token"
+  LighthouseJwtAudUrl:
     Type: String
-  LighthouseJwtAud:
+    Default: "https://deptva-eval.okta.com/oauth2/aus8nm1q0f7VQ0a482p7/v1/token"
+  LighthouseOauthGrantType:
+    Type: String
+    Default: "client_credentials"
+  LighthouseOauthClientAssertionType:
+    Type: String
+    Default: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+  LighthouseJwtScope:
+    Type: String
+    Default: "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
+  LighthouseClientId:
     Type: String
   LighthousePrivateRsaKey:
     Type: String
     NoEcho: true
   KmsCmkId:
     Type: String
+  LighthouseObservationUrl:
+    Type: String
+    Default: "https://sandbox-api.va.gov/services/fhir/v0/r4/Observation"
+  LighthouseObservationCategory:
+    Type: String
+    Default: "vital-signs"
+  LighthouseObservationLoincCode:
+    Type: String
+    Default: "85354-9"
 
 Resources:
   VroMainFunction:
     Type: AWS::Serverless::Function
-    Description: "test description"
+    Properties:
+      Description: "test description"
       CodeUri: py-root/
       Handler: app.lambda_handler
       Runtime: python3.8
@@ -27,7 +48,7 @@ Resources:
         Variables:
           LighthouseTokenUrl: !Ref LighthouseTokenUrl
           LighthouseClientId: !Ref LighthouseClientId
-          LighthouseJwtAud: !Ref LighthouseJwtAud
+          LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
             # # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
           LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
       Role: !GetAtt VroLambdaExecutionRole.Arn
@@ -36,8 +57,7 @@ Resources:
     Type: AWS::SecretsManager::Secret
     Properties:
       Description: "VBA Virtual Regional Office: Your RSA private key to access Lighthouse APIs via the Client Credentials OAuth grant type"
-      SecretString:
-        Ref: LighthousePrivateRsaKey
+      SecretString: !Ref LighthousePrivateRsaKey
       KmsKeyId: !Ref KmsCmkId
 
   VroLambdaExecutionRole:
