@@ -20,8 +20,7 @@ Resources:
   VroMainFunction:
     Type: AWS::Serverless::Function
     Description: "test description"
-    Properties:
-      CodeUri: vro-main/
+      CodeUri: py-root/
       Handler: app.lambda_handler
       Runtime: python3.8
       Environment:
