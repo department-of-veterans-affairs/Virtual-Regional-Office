@@ -4,7 +4,7 @@ POETRY:=$$(which poetry || echo "install poetry. see https://python-poetry.org/"
 
 SAM ?= sam
 
-PYTHON_PROJECT_DIR:=vro-main
+PYTHON_PROJECT_DIR:=py-root
 
 .PHONY: clean
 clean: ##=> Deletes current build environment and latest build
