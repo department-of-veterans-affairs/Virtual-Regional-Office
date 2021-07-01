@@ -4,87 +4,87 @@ Transform: AWS::Serverless-2016-10-31
 Description: "Hypertension Fast-Tracker"
 
 Parameters:
-  LighthouseTokenUrl:
-    Type: String
-    Default: "https://sandbox-api.va.gov/oauth2/health/system/v1/token"
-  LighthouseJwtAudUrl:
-    Type: String
-    Default: "https://deptva-eval.okta.com/oauth2/aus8nm1q0f7VQ0a482p7/v1/token"
-  LighthouseOauthGrantType:
-    Type: String
-    Default: "client_credentials"
-  LighthouseOauthClientAssertionType:
-    Type: String
-    Default: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-  LighthouseJwtScope:
-    Type: String
-    Default: "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
-  LighthouseClientId:
-    Type: String
-  LighthousePrivateRsaKey:
-    Type: String
-    NoEcho: true
-  KmsCmkId:
-    Type: String
-  LighthouseObservationUrl:
-    Type: String
-    Default: "https://sandbox-api.va.gov/services/fhir/v0/r4/Observation"
-  LighthouseObservationCategory:
-    Type: String
-    Default: "vital-signs"
-  LighthouseObservationLoincCode:
-    Type: String
-    Default: "85354-9"
+    LighthouseTokenUrl:
+        Type: String
+        Default: "https://sandbox-api.va.gov/oauth2/health/system/v1/token"
+    LighthouseJwtAudUrl:
+        Type: String
+        Default: "https://deptva-eval.okta.com/oauth2/aus8nm1q0f7VQ0a482p7/v1/token"
+    LighthouseOauthGrantType:
+        Type: String
+        Default: "client_credentials"
+    LighthouseOauthClientAssertionType:
+        Type: String
+        Default: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+    LighthouseJwtScope:
+        Type: String
+        Default: "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
+    LighthouseClientId:
+        Type: String
+    LighthousePrivateRsaKey:
+        Type: String
+        NoEcho: true
+    KmsCmkId:
+        Type: String
+    LighthouseObservationUrl:
+        Type: String
+        Default: "https://sandbox-api.va.gov/services/fhir/v0/r4/Observation"
+    LighthouseObservationCategory:
+        Type: String
+        Default: "vital-signs"
+    LighthouseObservationLoincCode:
+        Type: String
+        Default: "85354-9"
 
 Resources:
-  VroMainFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Description: "test description"
-      CodeUri: py-root/
-      Handler: app.lambda_handler
-      Runtime: python3.8
-      Environment:
-        Variables:
-          LighthouseTokenUrl: !Ref LighthouseTokenUrl
-          LighthouseClientId: !Ref LighthouseClientId
-          LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
-            # # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
-          LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
-      Role: !GetAtt VroLambdaExecutionRole.Arn
+    VroMainFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            Description: "test description"
+            CodeUri: py-root/
+            Handler: app.lambda_handler
+            Runtime: python3.8
+            Environment:
+                Variables:
+                    LighthouseTokenUrl: !Ref LighthouseTokenUrl
+                    LighthouseClientId: !Ref LighthouseClientId
+                    LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
+                      # # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
+                    LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
+            Role: !GetAtt VroLambdaExecutionRole.Arn
 
-  VroLhPrivateRsaKey:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Description: "VBA Virtual Regional Office: Your RSA private key to access Lighthouse APIs via the Client Credentials OAuth grant type"
-      SecretString: !Ref LighthousePrivateRsaKey
-      KmsKeyId: !Ref KmsCmkId
+    VroLhPrivateRsaKey:
+        Type: AWS::SecretsManager::Secret
+        Properties:
+            Description: "VBA Virtual Regional Office: Your RSA private key to access Lighthouse APIs via the Client Credentials OAuth grant type"
+            SecretString: !Ref LighthousePrivateRsaKey
+            KmsKeyId: !Ref KmsCmkId
 
-  VroLambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: "vro-lambda-execution-role"
-      # "Allows Lambda to assume this role"
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Action: "sts:AssumeRole"
-            # TODO: Limit this down. Allowing all lambda to assume this role is too much. Limit it
-            # to just the ARN of your lambda function.
-            Principal:
-              Service: "lambda.amazonaws.com"
-      # TODO: Cleanup this comment: It's unfortunate that they use the word "Role" in the name, because it's actually a policy.
-      ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-      Policies:
-        - PolicyName: "VroLambdaSecretsManagerPolicy"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Action: "secretsmanager:GetSecretValue"
-                Resource: !Ref VroLhPrivateRsaKey
-              - Effect: "Allow"
-                Action: "kms:Decrypt"
-                Resource: "*"
+    VroLambdaExecutionRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: "vro-lambda-execution-role"
+            # "Allows Lambda to assume this role"
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                - Effect: "Allow"
+                  Action: "sts:AssumeRole"
+                  # TODO: Limit this down. Allowing all lambda to assume this role is too much. Limit it
+                  # to just the ARN of your lambda function.
+                  Principal:
+                    Service: "lambda.amazonaws.com"
+            # TODO: Cleanup this comment: It's unfortunate that they use the word "Role" in the name, because it's actually a policy.
+            ManagedPolicyArns:
+              - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            Policies:
+              - PolicyName: "VroLambdaSecretsManagerPolicy"
+                PolicyDocument:
+                    Version: "2012-10-17"
+                    Statement:
+                      - Effect: "Allow"
+                        Action: "secretsmanager:GetSecretValue"
+                        Resource: !Ref VroLhPrivateRsaKey
+                      - Effect: "Allow"
+                        Action: "kms:Decrypt"
+                        Resource: "*"
