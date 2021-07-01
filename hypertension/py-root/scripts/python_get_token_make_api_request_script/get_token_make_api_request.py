@@ -2,6 +2,7 @@ import argparse
 import datetime
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Union
 from uuid import uuid1
@@ -49,7 +50,8 @@ necessary.
 
 
 def cli_main() -> None:
-    opts = get_cli_args()
+    cli_args_without_filename = sys.argv[1:]
+    opts = get_cli_args(cli_args_without_filename)
     auth_data = load_json(opts.assertions_file)
     api_data = load_json(opts.params_file)
     secret = load_secret(opts.key_loc)
@@ -68,8 +70,8 @@ def cli_main() -> None:
     handle_api_response(api_response)
 
 
-def get_cli_args() -> argparse.Namespace:
-    return setup_cli_parser().parse_args()
+def get_cli_args(args) -> argparse.Namespace:
+    return setup_cli_parser().parse_args(args)
 
 
 def setup_cli_parser() -> argparse.ArgumentParser:
