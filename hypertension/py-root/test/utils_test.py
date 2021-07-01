@@ -14,5 +14,6 @@ def test_fix_pem_formatting():
 
     assert fix_pem_formatting(key_in_our_custom_format) == normal_rsa_key
 
+
 def test_load_config():
     assert load_config(True) == "TO BE IMPLEMENTED"
