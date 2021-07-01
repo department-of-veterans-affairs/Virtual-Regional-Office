@@ -1,5 +1,5 @@
 import os
 
 
-def mock_get_lighthouse_rsa_key(awsSecretArn):
+def get_lighthouse_rsa_key_double(awsSecretArn):
     return os.environ["LighthousePrivateRsaKey"]

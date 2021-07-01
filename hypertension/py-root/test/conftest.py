@@ -6,7 +6,7 @@ import lib.aws_secrets_manager as aws_secrets_manager  # noqa
 load_dotenv("../cf-template-params.env")
 
 from test.doubles.aws_secrets_manager import (  # noqa
-    mock_get_lighthouse_rsa_key,
+    get_lighthouse_rsa_key_double,
 )
 
 # Fake Env
@@ -18,4 +18,4 @@ os.environ[
 
 # Mock AWS::SecretsManager::Secret fetch
 
-aws_secrets_manager.get_lighthouse_rsa_key = mock_get_lighthouse_rsa_key
+aws_secrets_manager.get_lighthouse_rsa_key = get_lighthouse_rsa_key_double
