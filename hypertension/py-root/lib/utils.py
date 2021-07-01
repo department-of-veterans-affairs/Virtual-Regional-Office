@@ -1,4 +1,6 @@
-from scripts.python_get_token_make_api_request_script.get_token_make_api_request import get_cli_args
+from scripts.python_get_token_make_api_request_script.get_token_make_api_request import (
+    get_cli_args,
+)
 
 # AWS SAM CLI can't (easily) take parameters that are multi-line or have
 # spaces. Thus, any private RSA key we need must be ingested as a single line
@@ -19,8 +21,32 @@ def fix_pem_formatting(custom_format_rsa_key):
 def load_config(running_as_script) -> dict:
     if running_as_script:
         config = "TO BE IMPLEMENTED"
-        opts = get_cli_args(['myClientId', 'myKeyLoc', 'myAssertionsFile', 'myParamsFile', 'myIcn' ])
+        opts = get_cli_args(
+            [
+                "myClientId",
+                "myKeyLoc",
+                "myAssertionsFile",
+                "myParamsFile",
+                "myIcn",
+            ]
+        )
+        # config["auth_data"] = load_json(opts.assertions_file)
+        # config["api_data"] = load_json(opts.params_file)
+        # config["auth_data"]["secret"] = load_secret(opts.key_loc)
     else:
         config = "TO BE IMPLEMENTED"
-
+    #     config = {
+    #         "auth_data": {
+    #             "urls": {
+    #                 "audience": os.environ["LighthouseJwtAudUrl"],
+    #                 "token": os.environ["LighthouseTokenUrl"]
+    #             },
+    #             "parameters": {
+    #                 "grant_type": os.environ["LighthouseOauthGrantType"],
+    #                 "client_assertion_type": os.environ["LighthouseOauthClientAssertionType"],
+    #                 "scope": "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
+    #             }
+    #         }
+    #     }
+    # }
     return config
