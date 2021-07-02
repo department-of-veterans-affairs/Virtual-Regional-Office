@@ -54,12 +54,12 @@ def cli_main() -> None:
     cli_options = get_cli_args(cli_args_without_filename)
     config = load_config(True, cli_options)
 
-    token_url = config["auth_data"]["urls"]["token"]
+    token_url = config["lighthouse_auth"]["urls"]["token"]
     api_url = config["api_data"]["urls"]["endpoint"]
     client_id, icn = cli_options.client_id, cli_options.icn
 
     token_params = build_token_params(
-        config["auth_data"], client_id, icn, config["auth_data"]["secret"]
+        config["lighthouse_auth"], client_id, icn, config["lighthouse_auth"]["secret"]
     )
     api_params = build_api_params(config["api_data"]["parameters"], icn)
 
@@ -74,9 +74,9 @@ def load_config(running_as_script, cli_options) -> dict:
     if running_as_script:
         config = {}
 
-        config["auth_data"] = load_json(cli_options.assertions_file)
+        config["lighthouse_auth"] = load_json(cli_options.assertions_file)
         config["api_data"] = load_json(cli_options.params_file)
-        config["auth_data"]["secret"] = load_secret(cli_options.key_loc)
+        config["lighthouse_auth"]["secret"] = load_secret(cli_options.key_loc)
     else:
         config = "TO BE IMPLEMENTED"
 
