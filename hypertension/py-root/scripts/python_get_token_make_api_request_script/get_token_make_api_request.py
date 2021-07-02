@@ -51,23 +51,36 @@ necessary.
 
 def cli_main() -> None:
     cli_args_without_filename = sys.argv[1:]
-    opts = get_cli_args(cli_args_without_filename)
-    auth_data = load_json(opts.assertions_file)
-    api_data = load_json(opts.params_file)
-    secret = load_secret(opts.key_loc)
+    cli_options = get_cli_args(cli_args_without_filename)
+    config = load_config(True, cli_options)
 
-    token_url = auth_data["urls"]["token"]
-    api_url = api_data["urls"]["endpoint"]
-    client_id, icn = opts.client_id, opts.icn
+    token_url = config["auth_data"]["urls"]["token"]
+    api_url = config["api_data"]["urls"]["endpoint"]
+    client_id, icn = cli_options.client_id, cli_options.icn
 
-    token_params = build_token_params(auth_data, client_id, icn, secret)
-    api_params = build_api_params(api_data["parameters"], icn)
+    token_params = build_token_params(
+        config["auth_data"], client_id, icn, config["auth_data"]["secret"]
+    )
+    api_params = build_api_params(config["api_data"]["parameters"], icn)
 
     access_token = http_post_for_access_token(token_url, token_params)
 
     api_response = http_get_api_request(api_url, api_params, access_token)
 
     handle_api_response(api_response)
+
+
+def load_config(running_as_script, cli_options) -> dict:
+    if running_as_script:
+        config = {}
+
+        config["auth_data"] = load_json(cli_options.assertions_file)
+        config["api_data"] = load_json(cli_options.params_file)
+        config["auth_data"]["secret"] = load_secret(cli_options.key_loc)
+    else:
+        config = "TO BE IMPLEMENTED"
+
+    return config
 
 
 def get_cli_args(args) -> argparse.Namespace:
