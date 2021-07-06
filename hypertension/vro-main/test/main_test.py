@@ -15,4 +15,4 @@ def test_main():
 
 
 def test_get_pdf():
-    assert type(get_pdf(test_event)) is bytes
+    assert isinstance(get_pdf(test_event), bytes) is True

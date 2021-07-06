@@ -2,15 +2,16 @@ from lib.pdf_generator import PdfGenerator
 
 
 def test_pdf_generator_instantiation():
-    assert type(PdfGenerator().config.wkhtmltopdf) is bytes
+    assert isinstance(PdfGenerator().config.wkhtmltopdf, bytes) is True
 
 
 def test_generate_from_string():
     assert (
-        type(
+        isinstance(
             PdfGenerator().generate_from_string(
                 "<html><body>Hello World!</body></html>"
-            )
+            ),
+            bytes,
         )
-        is bytes
+        is True
     )

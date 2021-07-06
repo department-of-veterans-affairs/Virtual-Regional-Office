@@ -1,6 +1,6 @@
+import os
 import boto3
 from lib.utils import fix_pem_formatting
-import os
 
 
 def get_lighthouse_rsa_key(awsSecretArn):  # pragma: no cover
