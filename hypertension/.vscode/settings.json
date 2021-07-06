@@ -1,8 +1,0 @@
-{
-    // ... other settings
-    "yaml.customTags": [
-        "!Ref",
-        "!GetAtt"
-    ],
-    "python.pythonPath": "/Users/julialallen/.pyenv/versions/3.8.6/bin/python"
-}
