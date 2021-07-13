@@ -55,7 +55,7 @@ def cli_main() -> None:
     config = load_config(True, cli_options)
 
     token_url = config["lighthouse"]["auth"]["token_url"]
-    api_url = config["lighthouse"]["vet_health_api"]["fhir_observation_endpoint"]
+    observation_url = config["lighthouse"]["vet_health_api"]["fhir_observation_endpoint"]
     client_id, icn = cli_options.client_id, cli_options.icn
 
     token_params = build_token_params(
@@ -65,7 +65,7 @@ def cli_main() -> None:
 
     access_token = http_post_for_access_token(token_url, token_params)
 
-    observation_response = http_get_api_request(api_url, fhir_observation_params, access_token)
+    observation_response = http_get_api_request(observation_url, fhir_observation_params, access_token)
 
     handle_api_response(observation_response)
 
