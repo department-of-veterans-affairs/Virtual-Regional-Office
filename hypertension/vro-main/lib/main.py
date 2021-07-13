@@ -1,9 +1,7 @@
 import os
 from typing import Dict
 from lib.aws_secrets_manager import get_lighthouse_rsa_key
-from lib.pdf_generator import PdfGenerator
-
-WKHTMLTOPDF_PATH = os.environ["WKHTMLTOPDF_PATH"]
+from lib.pdf_generator import generate_pdf_from_string
 
 
 def main(event: Dict):
@@ -12,15 +10,11 @@ def main(event: Dict):
     secret = os.environ["LighthousePrivateRsaKeySecretArn"]
     lighthouse_rsa_key = get_lighthouse_rsa_key(secret)
 
-    pdf = get_pdf(event)
+    assert "html" in event
+    pdf = generate_pdf_from_string(event.get("html"))
 
     # TODO: WARNING!! Don't print sensitive data -
     # remove this when we use real data
     print(pdf)
 
     return {"statusCode": 200, "body": lighthouse_rsa_key}
-
-
-def get_pdf(event: Dict) -> bytes:
-    pdf_generator = PdfGenerator(WKHTMLTOPDF_PATH)
-    return pdf_generator.generate_from_string(event.get("html"))

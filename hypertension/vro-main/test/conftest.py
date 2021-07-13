@@ -1,4 +1,5 @@
 import subprocess
+from pathlib import Path
 
 # Load Env
 from dotenv import load_dotenv
@@ -19,12 +20,14 @@ os.environ[
 ] = "Fake. Not used. Doesnt Matter. Just need something. Anything."
 
 # Set the wkhtmltopdf path environment variable by finding the local binary
-wkhtmltopdf_path = subprocess.run(
+
+which_wkhtmltopdf = subprocess.run(
     "which wkhtmltopdf", shell=True, capture_output=True
 )
-os.environ["WKHTMLTOPDF_PATH"] = wkhtmltopdf_path.stdout.decode(
-    "utf-8"
-).rstrip("\n")
+
+wkhtmltopdf_path = Path(which_wkhtmltopdf.stdout.decode().strip()).resolve()
+assert wkhtmltopdf_path.exists()
+os.environ["WKHTMLTOPDF_PATH"] = str(wkhtmltopdf_path)
 
 # Mock AWS::SecretsManager::Secret fetch
 

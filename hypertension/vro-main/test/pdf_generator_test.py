@@ -1,17 +1,14 @@
-from lib.pdf_generator import PdfGenerator
+import io
+from lib.pdf_generator import generate_pdf_from_string
+from pdfminer.high_level import extract_text
 
 
-def test_pdf_generator_instantiation():
-    assert isinstance(PdfGenerator().config.wkhtmltopdf, bytes) is True
-
-
-def test_generate_from_string():
-    assert (
-        isinstance(
-            PdfGenerator().generate_from_string(
-                "<html><body>Hello World!</body></html>"
-            ),
-            bytes,
-        )
-        is True
+def test_generate_pdf_from_string():
+    generated = generate_pdf_from_string(
+        "<html><body>Hello World!</body></html>"
     )
+    assert isinstance(generated, bytes)
+
+    extracted = extract_text(io.BytesIO(generated))
+    assert "Hello" in extracted
+    assert "World!" in extracted

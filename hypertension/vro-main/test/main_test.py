@@ -1,4 +1,4 @@
-from lib.main import main, get_pdf
+from lib.main import main
 from test.doubles.aws_secrets_manager import mock_get_lighthouse_rsa_key
 
 
@@ -12,7 +12,3 @@ def test_main():
             "Fake. Doesnt Matter. Just need something here."
         ),
     }
-
-
-def test_get_pdf():
-    assert isinstance(get_pdf(test_event), bytes) is True

@@ -1,9 +1,12 @@
+from pathlib import Path
+import os
 import pdfkit
 
+WKHTMLTOPDF_PATH = Path(os.environ["WKHTMLTOPDF_PATH"]).resolve()
 
-class PdfGenerator:
-    def __init__(self, path="") -> None:
-        self.config = pdfkit.configuration(wkhtmltopdf=path)
 
-    def generate_from_string(self, html: str):
-        return pdfkit.from_string(html, False, configuration=self.config)
+def generate_pdf_from_string(html: str) -> bytes:
+    assert WKHTMLTOPDF_PATH.exists()
+    config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+
+    return pdfkit.from_string(html, False, configuration=config)
