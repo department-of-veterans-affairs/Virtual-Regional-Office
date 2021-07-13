@@ -40,7 +40,7 @@ pytest: build.local
 	$(POETRY) run ptw -c -- --capture=no ; \
 	cd ../..; \
 
-.PHONY: local.sam.invoke
+.PHONY: invoke.sam.local
 local.sam.invoke: build.sam
 	$(SAM) local invoke --parameter-overrides $$(cat cf-template-params.env) -e vro-main/pdf-event.json
 

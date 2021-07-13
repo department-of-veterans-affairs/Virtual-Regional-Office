@@ -1,6 +1,6 @@
 import io
-from lib.pdf_generator import generate_pdf_from_string
 from pdfminer.high_level import extract_text
+from lib.pdf_generator import generate_pdf_from_string
 
 
 def test_generate_pdf_from_string():

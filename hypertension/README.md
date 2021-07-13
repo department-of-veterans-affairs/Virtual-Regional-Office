@@ -51,9 +51,7 @@ make pytest
 To build the lambda package locally and run the function in a container:
 
 ```sh
-
-make local.sam.invoke
-
+make invoke.sam.local
 ```
 
 ## Deploy Everything to AWS
