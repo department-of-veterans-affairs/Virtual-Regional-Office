@@ -54,14 +54,14 @@ def cli_main() -> None:
     cli_options = get_cli_args(cli_args_without_filename)
     config = load_config(True, cli_options)
 
-    token_url = config["lighthouse_auth"]["token_url"]
-    api_url = config["veterans_health_api"]["fhir_observation_endpoint"]
+    token_url = config["lighthouse"]["auth"]["token_url"]
+    api_url = config["lighthouse"]["vet_health_api"]["fhir_observation_endpoint"]
     client_id, icn = cli_options.client_id, cli_options.icn
 
     token_params = build_token_params(
-        config["lighthouse_auth"], client_id, icn, config["lighthouse_auth"]["secret"]
+        config["lighthouse"]["auth"], client_id, icn, config["lighthouse"]["auth"]["secret"]
     )
-    fhir_observation_params = build_api_params(config["veterans_health_api"], icn)
+    fhir_observation_params = build_api_params(config["lighthouse"]["vet_health_api"], icn)
 
     access_token = http_post_for_access_token(token_url, token_params)
 
@@ -72,11 +72,13 @@ def cli_main() -> None:
 
 def load_config(running_as_script, cli_options) -> dict:
     if running_as_script:
-        config = {}
+        config = {
+            "lighthouse": {}
+        }
 
-        config["lighthouse_auth"] = load_json(cli_options.assertions_file)
-        config["veterans_health_api"] = load_json(cli_options.params_file)
-        config["lighthouse_auth"]["secret"] = load_secret(cli_options.key_loc)
+        config["lighthouse"]["auth"] = load_json(cli_options.assertions_file)
+        config["lighthouse"]["vet_health_api"] = load_json(cli_options.params_file)
+        config["lighthouse"]["auth"]["secret"] = load_secret(cli_options.key_loc)
     else:
         config = "TO BE IMPLEMENTED"
 
