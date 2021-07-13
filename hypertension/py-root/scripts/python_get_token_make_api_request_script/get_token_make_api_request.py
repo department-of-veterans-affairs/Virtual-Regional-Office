@@ -54,7 +54,7 @@ def cli_main() -> None:
     cli_options = get_cli_args(cli_args_without_filename)
     config = load_config(True, cli_options)
 
-    token_url = config["lighthouse_auth"]["urls"]["token"]
+    token_url = config["lighthouse_auth"]["token_url"]
     api_url = config["api_data"]["urls"]["endpoint"]
     client_id, icn = cli_options.client_id, cli_options.icn
 
@@ -108,9 +108,16 @@ def build_token_params(
     data: dict, client_id: str, icn: str, secret: str
 ) -> dict:
     # Build the JWT and the params for posting to the token provider endpoint.
-    payload = build_jwt_payload(data["urls"]["audience"], client_id)
+    payload = build_jwt_payload(data["jwt_aud_url"], client_id)
     assertion = build_jwt(payload, secret)
-    return build_form_params(data["parameters"], assertion, icn)
+
+    return {
+        "grant_type": data["grant_type"],
+        "client_assertion_type": data["client_assertion_type"],
+        "scope": data["scope"],
+        "client_assertion": assertion,
+        "launch": icn
+    }
 
 
 def build_jwt_payload(audience: str, client_id: str) -> dict:
@@ -128,11 +135,6 @@ def build_jwt_payload(audience: str, client_id: str) -> dict:
 
 def build_jwt(payload: dict, secret: str) -> str:
     return jwt.encode(payload, secret, algorithm="RS256")
-
-
-def build_form_params(params: dict, assertion: str, icn: str) -> dict:
-    # Add: client_assertion and launch.
-    return {**params, "client_assertion": assertion, "launch": icn}
 
 
 def build_api_params(params: dict, icn: str) -> dict:
