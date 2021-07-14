@@ -67,26 +67,29 @@ def cli_main() -> None:
     handle_api_response(observation_response)
 
 
+__VRO_CONFIG__ = None
 def load_config(running_as_script) -> dict:
-    if running_as_script:
-        cli_options = get_cli_args()
+    global __VRO_CONFIG__
+    if __VRO_CONFIG__ is None:
+        if running_as_script:
+            cli_options = get_cli_args()
 
-        config = {
-            "lighthouse": {
-                "auth": {
-                    **load_json(cli_options.assertions_file),
-                    "secret": load_secret(cli_options.key_loc),
-                    "client_id": cli_options.client_id
-                },
-                "vet_health_api": load_json(cli_options.params_file),
-                "icn": cli_options.icn
+            __VRO_CONFIG__ = {
+                "lighthouse": {
+                    "auth": {
+                        **load_json(cli_options.assertions_file),
+                        "secret": load_secret(cli_options.key_loc),
+                        "client_id": cli_options.client_id
+                    },
+                    "vet_health_api": load_json(cli_options.params_file),
+                    "icn": cli_options.icn
+                }
             }
-        }
 
-    else:
-        config = "TO BE IMPLEMENTED"
+        else:
+            __VRO_CONFIG__ = "TO BE IMPLEMENTED"
 
-    return config
+    return __VRO_CONFIG__
 
 
 def get_cli_args() -> argparse.Namespace:
