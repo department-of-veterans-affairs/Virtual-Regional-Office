@@ -55,9 +55,7 @@ def cli_main() -> None:
     observation_url = config["lighthouse"]["vet_health_api"]["fhir_observation_endpoint"]
     icn = config["lighthouse"]["icn"]
 
-    token_params = build_token_params(
-        config["lighthouse"]["auth"], config["lighthouse"]["auth"]["client_id"], icn, config["lighthouse"]["auth"]["secret"]
-    )
+    token_params = build_token_params(config["lighthouse"]["auth"], icn)
     fhir_observation_params = build_api_params(config["lighthouse"]["vet_health_api"], icn)
 
     access_token = http_post_for_access_token(token_url, token_params)
@@ -113,12 +111,10 @@ def setup_cli_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def build_token_params(
-    data: dict, client_id: str, icn: str, secret: str
-) -> dict:
+def build_token_params(data: dict, icn: str) -> dict:
     # Build the JWT and the params for posting to the token provider endpoint.
-    payload = build_jwt_payload(data["jwt_aud_url"], client_id)
-    assertion = build_jwt(payload, secret)
+    payload = build_jwt_payload(data["jwt_aud_url"], data["client_id"])
+    assertion = build_jwt(payload, data["secret"])
 
     return {
         "grant_type": data["grant_type"],
