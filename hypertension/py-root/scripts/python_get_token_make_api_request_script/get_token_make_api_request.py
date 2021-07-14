@@ -61,7 +61,7 @@ def cli_main() -> None:
 
 
 __VRO_CONFIG__ = None
-def load_config(running_as_script) -> dict:
+def load_config(running_as_script: bool) -> dict:
     global __VRO_CONFIG__
     if __VRO_CONFIG__ is None:
         if running_as_script:
