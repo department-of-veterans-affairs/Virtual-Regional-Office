@@ -50,16 +50,14 @@ necessary.
 
 
 def cli_main() -> None:
-    cli_args_without_filename = sys.argv[1:]
-    cli_options = get_cli_args(cli_args_without_filename)
-    config = load_config(True, cli_options)
+    config = load_config(True)
 
     token_url = config["lighthouse"]["auth"]["token_url"]
     observation_url = config["lighthouse"]["vet_health_api"]["fhir_observation_endpoint"]
-    client_id, icn = cli_options.client_id, cli_options.icn
+    icn = config["lighthouse"]["icn"]
 
     token_params = build_token_params(
-        config["lighthouse"]["auth"], client_id, icn, config["lighthouse"]["auth"]["secret"]
+        config["lighthouse"]["auth"], config["lighthouse"]["auth"]["client_id"], icn, config["lighthouse"]["auth"]["secret"]
     )
     fhir_observation_params = build_api_params(config["lighthouse"]["vet_health_api"], icn)
 
@@ -70,15 +68,20 @@ def cli_main() -> None:
     handle_api_response(observation_response)
 
 
-def load_config(running_as_script, cli_options) -> dict:
+def load_config(running_as_script) -> dict:
     if running_as_script:
+        cli_args_without_filename = sys.argv[1:]
+        cli_options = get_cli_args(cli_args_without_filename)
+
         config = {
             "lighthouse": {
                 "auth": {
                     **load_json(cli_options.assertions_file),
-                    "secret": load_secret(cli_options.key_loc)
+                    "secret": load_secret(cli_options.key_loc),
+                    "client_id": cli_options.client_id
                 },
-                "vet_health_api": load_json(cli_options.params_file)
+                "vet_health_api": load_json(cli_options.params_file),
+                "icn": cli_options.icn
             }
         }
 
