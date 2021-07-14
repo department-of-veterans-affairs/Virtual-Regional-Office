@@ -55,7 +55,7 @@ def cli_main() -> None:
 
     access_token= authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
 
-    observation_response = fetch_observation_data(config["lighthouse"]["vet_health_api"], icn, access_token)
+    observation_response = fetch_observation_data(config["lighthouse"]["vet_health_api_observation"], icn, access_token)
 
     handle_api_response(observation_response)
 
@@ -74,7 +74,7 @@ def load_config(running_as_script) -> dict:
                         "secret": load_secret(cli_options.key_loc),
                         "client_id": cli_options.client_id
                     },
-                    "vet_health_api": load_json(cli_options.params_file),
+                    "vet_health_api_observation": load_json(cli_options.params_file),
                     "icn": cli_options.icn
                 }
             }
