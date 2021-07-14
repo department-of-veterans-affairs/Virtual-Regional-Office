@@ -73,12 +73,15 @@ def cli_main() -> None:
 def load_config(running_as_script, cli_options) -> dict:
     if running_as_script:
         config = {
-            "lighthouse": {}
+            "lighthouse": {
+                "auth": {
+                    **load_json(cli_options.assertions_file),
+                    "secret": load_secret(cli_options.key_loc)
+                },
+                "vet_health_api": load_json(cli_options.params_file)
+            }
         }
 
-        config["lighthouse"]["auth"] = load_json(cli_options.assertions_file)
-        config["lighthouse"]["vet_health_api"] = load_json(cli_options.params_file)
-        config["lighthouse"]["auth"]["secret"] = load_secret(cli_options.key_loc)
     else:
         config = "TO BE IMPLEMENTED"
 
