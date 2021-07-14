@@ -2,7 +2,6 @@ import argparse
 import datetime
 import json
 import os
-import sys
 from pathlib import Path
 from typing import Union
 from uuid import uuid1
@@ -70,8 +69,7 @@ def cli_main() -> None:
 
 def load_config(running_as_script) -> dict:
     if running_as_script:
-        cli_args_without_filename = sys.argv[1:]
-        cli_options = get_cli_args(cli_args_without_filename)
+        cli_options = get_cli_args()
 
         config = {
             "lighthouse": {
@@ -91,8 +89,8 @@ def load_config(running_as_script) -> dict:
     return config
 
 
-def get_cli_args(args) -> argparse.Namespace:
-    return setup_cli_parser().parse_args(args)
+def get_cli_args() -> argparse.Namespace:
+    return setup_cli_parser().parse_args()
 
 
 def setup_cli_parser() -> argparse.ArgumentParser:
