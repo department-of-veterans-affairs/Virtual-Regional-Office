@@ -20,13 +20,22 @@ os.environ[
 # Mock AWS::SecretsManager::Secret fetch
 aws_secrets_manager.get_lighthouse_rsa_key = get_lighthouse_rsa_key_double
 
+# monkeypatch is a function-scoped fuxture. Because of this, you can't use it inside a
+# session-scoped fixtures. To get around this, we create a new instance of the monkeypatch fixture
+# that is session-scoped, for use in our other fixtures that need to be session scoped.
+# This is subject to breaking if pytest changes, because it uses the internal _pytest API.
+# See https://github.com/pytest-dev/pytest/issues/1872
+@pytest.fixture(scope='session')
+def monkeypatch_session():
+    from _pytest.monkeypatch import MonkeyPatch
+    m = MonkeyPatch()
+    yield m
+    m.undo()
 
-# TODO: Scope this to the session.
-# You'll have to deal with the problem of trying to use monkey patch in a thing that's not function scoped
-# https://github.com/pytest-dev/pytest/issues/1872
-@pytest.fixture()
-def lh_access_token(monkeypatch):
-    monkeypatch.setattr(get_token_make_api_request, 'get_cli_args', get_cli_args_double)
+
+@pytest.fixture(scope="session")
+def lh_access_token(monkeypatch_session):
+    monkeypatch_session.setattr(get_token_make_api_request, 'get_cli_args', get_cli_args_double)
 
     config = load_config(True)
 
