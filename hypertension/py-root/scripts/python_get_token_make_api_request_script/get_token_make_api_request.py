@@ -49,7 +49,10 @@ necessary.
 
 
 def cli_main() -> None:
-    config = load_config(True)
+    cli_options = get_cli_args()
+    config = load_config(
+        True, cli_options.assertions_file, cli_options.params_file, cli_options.key_loc, cli_options.client_id, cli_options.icn
+    )
 
     icn = config["lighthouse"]["icn"]
 
@@ -61,21 +64,20 @@ def cli_main() -> None:
 
 
 __VRO_CONFIG__ = None
-def load_config(running_as_script: bool) -> dict:
+def load_config(running_as_script: bool, assertions_file: str, params_file: str, key_loc: str, client_id: str, icn: str) -> dict:
     global __VRO_CONFIG__
     if __VRO_CONFIG__ is None:
         if running_as_script:
-            cli_options = get_cli_args()
 
             __VRO_CONFIG__ = {
                 "lighthouse": {
                     "auth": {
-                        **load_json(cli_options.assertions_file),
-                        "secret": load_secret(cli_options.key_loc),
-                        "client_id": cli_options.client_id
+                        **load_json(assertions_file),
+                        "secret": load_secret(key_loc),
+                        "client_id": client_id
                     },
-                    "vet_health_api_observation": load_json(cli_options.params_file),
-                    "icn": cli_options.icn
+                    "vet_health_api_observation": load_json(params_file),
+                    "icn": icn
                 }
             }
 

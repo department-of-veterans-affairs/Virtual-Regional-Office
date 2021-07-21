@@ -9,7 +9,10 @@ from scripts.python_get_token_make_api_request_script.get_token_make_api_request
     load_config,
     authenticate_to_lighthouse
 )
-from test.doubles.get_token_make_api_request import get_cli_args_double
+
+from scripts.python_get_token_make_api_request_script.get_token_make_api_request import (
+    setup_cli_parser,
+)
 
 load_dotenv("../cf-template-params.env")
 
@@ -25,6 +28,8 @@ aws_secrets_manager.get_lighthouse_rsa_key = get_lighthouse_rsa_key_double
 # that is session-scoped, for use in our other fixtures that need to be session scoped.
 # This is subject to breaking if pytest changes, because it uses the internal _pytest API.
 # See https://github.com/pytest-dev/pytest/issues/1872
+
+# REMOVE THIS ???????????????????????????????????????????/
 @pytest.fixture(scope='session')
 def monkeypatch_session():
     from _pytest.monkeypatch import MonkeyPatch
@@ -41,7 +46,17 @@ def lh_access_token(config):
 
 
 @pytest.fixture(scope="session")
-def config(monkeypatch_session):
-    monkeypatch_session.setattr(get_token_make_api_request, 'get_cli_args', get_cli_args_double)
-    config = load_config(True)
+def config():
+    cli_options = setup_cli_parser().parse_args([
+        # "scripts/python_get_token_make_api_request_script/get_token_make_api_request.py",
+        os.environ["LighthouseOAuthClientId"],
+        os.environ["LighthousePrivateRsaKeyFilePath"],
+        "./scripts/python_get_token_make_api_request_script/assertion-params-example.json",
+        "./scripts/python_get_token_make_api_request_script/observation-request-params-example.json",
+        os.environ["TestVeteranIcn"],
+    ])
+
+    config = load_config(
+        True, cli_options.assertions_file, cli_options.params_file, cli_options.key_loc, cli_options.client_id, cli_options.icn
+    )
     return config
