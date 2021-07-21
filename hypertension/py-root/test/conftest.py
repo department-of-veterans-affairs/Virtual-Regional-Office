@@ -46,7 +46,15 @@ def lh_access_token(config):
 
 
 @pytest.fixture(scope="session")
-def config():
+def config(cli_options):
+    config = load_config(
+        True, cli_options.assertions_file, cli_options.params_file, cli_options.key_loc, cli_options.client_id, cli_options.icn
+    )
+    return config
+
+
+@pytest.fixture(scope="session")
+def cli_options():
     cli_options = setup_cli_parser().parse_args([
         # "scripts/python_get_token_make_api_request_script/get_token_make_api_request.py",
         os.environ["LighthouseOAuthClientId"],
@@ -56,7 +64,4 @@ def config():
         os.environ["TestVeteranIcn"],
     ])
 
-    config = load_config(
-        True, cli_options.assertions_file, cli_options.params_file, cli_options.key_loc, cli_options.client_id, cli_options.icn
-    )
-    return config
+    return cli_options
