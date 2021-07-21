@@ -34,13 +34,14 @@ def monkeypatch_session():
 
 
 @pytest.fixture(scope="session")
-def lh_access_token(monkeypatch_session):
-    monkeypatch_session.setattr(get_token_make_api_request, 'get_cli_args', get_cli_args_double)
-
-    config = load_config(True)
-
+def lh_access_token(config):
     icn = config["lighthouse"]["icn"]
-
     access_token = authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
-
     return access_token
+
+
+@pytest.fixture(scope="session")
+def config(monkeypatch_session):
+    monkeypatch_session.setattr(get_token_make_api_request, 'get_cli_args', get_cli_args_double)
+    config = load_config(True)
+    return config
