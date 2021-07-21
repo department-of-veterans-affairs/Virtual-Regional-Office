@@ -1,5 +1,5 @@
 {
     "fhir_observation_endpoint": "https://sandbox-api.va.gov/services/fhir/v0/r4/Observation",
     "fhir_category": "vital-signs",
-    "fhir_code": "85354-9"
+    "fhir_loinc_code": "85354-9"
 }

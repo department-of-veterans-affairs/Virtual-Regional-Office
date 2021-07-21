@@ -140,7 +140,7 @@ def build_jwt(payload: dict, secret: str) -> str:
 def build_api_params(params: dict, icn: str) -> dict:
     return {
         "category": params["fhir_category"],
-        "code": params["fhir_code"],
+        "code": params["fhir_loinc_code"],
         "patient": icn
     }
 

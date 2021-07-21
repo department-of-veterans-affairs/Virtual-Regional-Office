@@ -19,7 +19,7 @@ Parameters:
     LighthouseJwtScope:
         Type: String
         Default: "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
-    LighthouseClientId:
+    LighthouseOAuthClientId:
         Type: String
     LighthousePrivateRsaKey:
         Type: String
@@ -47,7 +47,7 @@ Resources:
             Environment:
                 Variables:
                     LighthouseTokenUrl: !Ref LighthouseTokenUrl
-                    LighthouseClientId: !Ref LighthouseClientId
+                    LighthouseOAuthClientId: !Ref LighthouseOAuthClientId
                     LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
                       # # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
                     LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
