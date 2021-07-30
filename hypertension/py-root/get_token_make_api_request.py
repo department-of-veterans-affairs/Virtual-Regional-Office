@@ -3,11 +3,20 @@ import datetime
 import json
 import os
 from pathlib import Path
-from typing import Union
+from typing import (
+    Union,
+    Optional
+)
 from uuid import uuid1
 
 import jwt
 import requests
+
+from lib.aws_secrets_manager import get_lighthouse_rsa_key
+
+from dotenv import load_dotenv
+
+load_dotenv('../cf-template-params.env')
 
 Json = Union[dict, list]
 
@@ -50,9 +59,7 @@ necessary.
 
 def cli_main() -> None:
     cli_options = get_cli_args()
-    config = load_config(
-        True, cli_options.assertions_file, cli_options.params_file, cli_options.key_loc, cli_options.client_id, cli_options.icn
-    )
+    config = load_config(cli_options.icn, cli_options.key_loc)
 
     icn = config["lighthouse"]["icn"]
 
@@ -63,28 +70,27 @@ def cli_main() -> None:
     handle_api_response(observation_response)
 
 
-__VRO_CONFIG__ = None
-def load_config(running_as_script: bool, assertions_file: str, params_file: str, key_loc: str, client_id: str, icn: str) -> dict:
-    global __VRO_CONFIG__
-    if __VRO_CONFIG__ is None:
-        if running_as_script:
+def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
+    return {
+        "lighthouse": {
+            "auth": {
+                "token_url": os.environ["LighthouseTokenUrl"],
+                "jwt_aud_url": os.environ["LighthouseJwtAudUrl"],
+                "grant_type": os.environ["LighthouseOAuthGrantType"],
+                "client_assertion_type": os.environ["LighthouseOAuthAssertionType"],
+                "scope": os.environ["LighthouseJwtScope"],
+                "secret": load_secret(key_loc) if key_loc else get_lighthouse_rsa_key(os.environ["LighthousePrivateRsaKeySecretArn"]),
+                "client_id": os.environ["LighthouseOAuthClientId"]
+            },
+            "vet_health_api_observation": {
+                "fhir_observation_endpoint": os.environ["LighthouseObservationUrl"],
+                "fhir_category": os.environ["LighthouseObservationCategory"],
+                "fhir_loinc_code": os.environ["LighthouseObservationLoincCode"],
+            },
+            "icn": icn
+        }
+    }
 
-            __VRO_CONFIG__ = {
-                "lighthouse": {
-                    "auth": {
-                        **load_json(assertions_file),
-                        "secret": load_secret(key_loc),
-                        "client_id": client_id
-                    },
-                    "vet_health_api_observation": load_json(params_file),
-                    "icn": icn
-                }
-            }
-
-        else:
-            __VRO_CONFIG__ = "TO BE IMPLEMENTED"
-
-    return __VRO_CONFIG__
 
 
 def get_cli_args() -> argparse.Namespace:
@@ -183,24 +189,12 @@ def handle_api_response(api_response: Json) -> None:
     print(api_response)
 
 
-def load_secret(key: Union[Path, str]) -> str:
+def load_secret(key_file: Union[Path, str]) -> str:
     # Load secret from file or env var.
-    if Path(key).exists():
-        return load_text(key)
+    if Path(key_file).exists():
+        return Path(key_file).read_text()
 
-    if secret := os.environ.get(str(key)):
-        return secret
-
-    raise SystemError(f"{key} not found as file or environment variable")
-
-
-def load_text(path: Union[Path, str]) -> str:
-    return Path(path).read_text()
-
-
-def load_json(path: Union[Path, str]) -> dict:
-    raw = load_text(path)
-    return json.loads(raw)
+    raise SystemError(f"Keyfile {key_file} not found")
 
 
 if __name__ == "__main__":

@@ -17,10 +17,12 @@ clean: ##=> Deletes current build environment and latest build
 build.sam: build.requirements
 	$(SAM) build
 
+# TODO: Cleanup the --dev once you reorganize the file structure to (which will allow you to pull
+# the usage of dotenv out of things that are imported by the lambda main function.
 .PHONY: build.requirements
 build.requirements:
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ; \
+	$(POETRY) export --dev --without-hashes -f requirements.txt -o requirements.txt --with-credentials ; \
 	cd ../..; \
 
 .PHONY: build.local
@@ -42,8 +44,8 @@ pytest: build.local
 
 .PHONY: deploy.sam.guided
 deploy.sam.guided: build.sam ##=> Guided deploy that is typically run for the first time only
-	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $$(cat cf-template-params.env)
+	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 .PHONY: deploy.sam
 deploy.sam: build.sam ##=> Deploy app using previously saved SAM CLI configuration
-	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $$(cat cf-template-params.env)
+	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM
