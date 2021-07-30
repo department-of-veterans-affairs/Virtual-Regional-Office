@@ -1,18 +1,13 @@
 import pytest
 import sys
 import os
-from test.doubles.aws_secrets_manager import get_lighthouse_rsa_key_double
 from dotenv import load_dotenv
-import lib.aws_secrets_manager as aws_secrets_manager
-import scripts.python_get_token_make_api_request_script.get_token_make_api_request as get_token_make_api_request
-from scripts.python_get_token_make_api_request_script.get_token_make_api_request import (
+from get_token_make_api_request import (
     load_config,
+    setup_cli_parser,
     authenticate_to_lighthouse
 )
 
-from scripts.python_get_token_make_api_request_script.get_token_make_api_request import (
-    setup_cli_parser,
-)
 
 load_dotenv("../cf-template-params.env")
 
@@ -20,8 +15,6 @@ os.environ[
     "LighthousePrivateRsaKeySecretArn"
 ] = "Fake. Not used. Doesnt Matter. Just need something. Anything."
 
-# Mock AWS::SecretsManager::Secret fetch
-aws_secrets_manager.get_lighthouse_rsa_key = get_lighthouse_rsa_key_double
 
 # monkeypatch is a function-scoped fuxture. Because of this, you can't use it inside a
 # session-scoped fixtures. To get around this, we create a new instance of the monkeypatch fixture
@@ -47,9 +40,7 @@ def lh_access_token(config):
 
 @pytest.fixture(scope="session")
 def config(cli_options):
-    config = load_config(
-        True, cli_options.assertions_file, cli_options.params_file, cli_options.key_loc, cli_options.client_id, cli_options.icn
-    )
+    config = load_config(cli_options.icn, cli_options.key_loc)
     return config
 
 

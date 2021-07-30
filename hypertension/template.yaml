@@ -4,37 +4,29 @@ Transform: AWS::Serverless-2016-10-31
 Description: "Hypertension Fast-Tracker"
 
 Parameters:
+    # Lighthouse Authentication
     LighthouseTokenUrl:
         Type: String
-        Default: "https://sandbox-api.va.gov/oauth2/health/system/v1/token"
     LighthouseJwtAudUrl:
         Type: String
-        Default: "https://deptva-eval.okta.com/oauth2/aus8nm1q0f7VQ0a482p7/v1/token"
-    LighthouseOauthGrantType:
-        Type: String
-        Default: "client_credentials"
-    LighthouseOauthClientAssertionType:
-        Type: String
-        Default: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
     LighthouseJwtScope:
         Type: String
-        Default: "launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"
     LighthouseOAuthClientId:
         Type: String
-    LighthousePrivateRsaKey:
+    LighthouseOAuthGrantType:
         Type: String
-        NoEcho: true
+    LighthouseOAuthAssertionType:
+        Type: String
     KmsCmkId:
         Type: String
+
+    # Lighthouse Veterans Health API, FHIR Obervation Endpoint
     LighthouseObservationUrl:
         Type: String
-        Default: "https://sandbox-api.va.gov/services/fhir/v0/r4/Observation"
     LighthouseObservationCategory:
         Type: String
-        Default: "vital-signs"
     LighthouseObservationLoincCode:
         Type: String
-        Default: "85354-9"
 
 Resources:
     VroMainFunction:
@@ -47,17 +39,24 @@ Resources:
             Environment:
                 Variables:
                     LighthouseTokenUrl: !Ref LighthouseTokenUrl
-                    LighthouseOAuthClientId: !Ref LighthouseOAuthClientId
                     LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
-                      # # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
+                    LighthouseJwtScope: !Ref LighthouseJwtScope
+                    LighthouseOAuthClientId: !Ref LighthouseOAuthClientId
+                    LighthouseOAuthGrantType: !Ref LighthouseOAuthGrantType
+                    LighthouseOAuthAssertionType: !Ref LighthouseOAuthAssertionType
+                    # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
                     LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
+
+                    LighthouseObservationUrl: !Ref LighthouseObservationUrl
+                    LighthouseObservationCategory: !Ref LighthouseObservationCategory
+                    LighthouseObservationLoincCode: !Ref LighthouseObservationLoincCode
             Role: !GetAtt VroLambdaExecutionRole.Arn
 
     VroLhPrivateRsaKey:
         Type: AWS::SecretsManager::Secret
         Properties:
             Description: "VBA Virtual Regional Office: Your RSA private key to access Lighthouse APIs via the Client Credentials OAuth grant type"
-            SecretString: !Ref LighthousePrivateRsaKey
+            SecretString: "Dummy RSA key. Upload your real key."
             KmsKeyId: !Ref KmsCmkId
 
     VroLambdaExecutionRole:
