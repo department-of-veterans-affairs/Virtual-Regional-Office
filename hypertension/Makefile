@@ -16,14 +16,15 @@ clean: ##=> Deletes current build environment and latest build
 .PHONY: build.sam
 build.sam: build.requirements
 	$(SAM) build
+	cd ./${PYTHON_PROJECT_DIR} ; \
+	$(POETRY) run python set_parameter_overrides.py ;
 
 # TODO: Cleanup the --dev once you reorganize the file structure to (which will allow you to pull
 # the usage of dotenv out of things that are imported by the lambda main function.
 .PHONY: build.requirements
 build.requirements:
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) export --dev --without-hashes -f requirements.txt -o requirements.txt --with-credentials ; \
-	cd ../..; \
+	$(POETRY) export --dev --without-hashes -f requirements.txt -o requirements.txt --with-credentials ;
 
 .PHONY: build.local
 build.local:
@@ -33,14 +34,12 @@ build.local:
 	$(POETRY) run pylint lib/*.py ; \
 	$(POETRY) run pylint test/*.py ; \
 	$(POETRY) run flake8 --exclude=.venv ; \
-	$(POETRY) run black . --exclude=/\.venv/ ; \
-	cd ../..; \
+	$(POETRY) run black . --exclude=/\.venv/ ;
 
 .PHONY: pytest
 pytest: build.local
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) run ptw -c -- --capture=no ; \
-	cd ../..; \
+	$(POETRY) run ptw -c -- --capture=no ;
 
 .PHONY: deploy.sam.guided
 deploy.sam.guided: build.sam ##=> Guided deploy that is typically run for the first time only
