@@ -58,7 +58,13 @@ Recommended: Learn [AWS tutorial number 2](#AWS-Tutorials).
 
 ### Initial Deployment
 
-Manually Create the AWS KMS Customer Managed Key (CMK). This is ideal for two reasons:
+#### Prep `samconfig.toml` to Receive `parameter_overrides` Values
+
+`cp samconfig-default.toml samconfig.toml`
+
+#### Manually Create the AWS KMS Customer Managed Key (CMK).
+
+This is ideal for two reasons:
 
 - Our SAM stack has circular dependencies that cannot be cleanly resolved. See [design-notes.md](docs/design-notes.md).
 - We don't want to accidentally create a KMS key having a policy that lacks proper administrators with proper permissions. If a key were to get created without the proper policy, it's possible we would not be able to use or delete the key. We would have to contact AWS to delete it. This manual process is the safest way to create the key policy.
@@ -87,6 +93,10 @@ Note: The key policy will be changed in step 5 below. Therefore, the only strict
 ```sh
 make deploy.sam
 ```
+
+### Set Your Lighthouse PEM
+
+In AWS Secrets Manager via the AWS Console.
 
 # AWS Tutorials
 

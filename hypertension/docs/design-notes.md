@@ -53,3 +53,37 @@ It will be _much_ quicker and easier for
 # Secret Management
 
 Design decision: we are using SecretsManager to encrypt the various secrets, rather than just using Lambda's built in encryption of environment variables (both of these, of course, use AWS KMS, by the way), because using Lambda's built in prevents _all_ env var values from being ready by folks who don't have necessary permissions on the KMS key used to encrypt them all. This could be cumbersome (e.g. difficult deal with when debugging). We want all the non-secret env vars to be readable by everyone working on the project, and only secrets need to have their visibility limited to the owner of the secret value.
+
+# Environment Variables and Parameter Passing
+
+Some of our environment variables (which are also SAM parameters) have characters that shells and/or the AWS SAM CLI handle specially.
+
+- The Lighthouse OAuth JWT scopes (`LighthouseJwtScope`) has spaces and forward slashes in it.
+- The private RSA needed to authenticate to Lighthouse is in PEM format, and it thus contains newline characters.
+
+Also, SAM CLI has quirks and limitations related to how it accepts values for the `--parameter-overrides` CLI option.
+
+Thus, we have the following list of constraints:
+
+1. With SAM CLI, You cannot specify a file URL (i.e. you can't do `--parameter-overrides file://path/to/my-params-file.env.or.json`)
+    - See https://github.com/aws/aws-sam-cli/issues/2054
+2. SAM CLI `--parameter-overrides "MyLongList=\"Of parameters with special characters\" WorksForThe="\CLI, but this is unwieldly due to the number of parameters"\"`. Also, doing things this way would mean you would have to specify params on the command line for AWS deployment, and simultaneoulsy maintain a `.env` file for Pytest and individual script purposes.
+3. If you use SAM CLI `--parameter-overrides $(cat my-params-file.env)`, the `cat` command or `$()` or something about SAM CLI causes SAM CLI to choke.
+4. In `samconfig.toml` the `parameter_overrides` list is as unwieldy as item 2 above.
+5. We want to specify configuration values in _one_ place
+    - And have them work for all of our use cases
+      - Running Pytest
+      - Running a few of our Python scripts as scripts (such as our Lighthouse authenticaiton script)
+      - `sam build` and `sam deploy`
+    - `samconfig.toml` can't support this the Pytest and script use cases. Also, an environment variable file is the a very idomatic way to doing this.
+6. The first time you deploy a stack, you must use `sam deploy --guided`, or else use `sam deploy` and specify the S3 bucket. We must use `sam deploy --guided` on the first deploy because we want AWS to auto-generate the S3 bucket.
+7. The RSA key, of course, has to be a SAM parameter that has option `NoEcho: true` set for security. Unfortunately, with this set, `sam deploy --guided` has a bug where it will not accept the value you place in `samconfig.toml` and instead will _force_ you to specify the value via its interactive CLI UI. When you try to specify a multi-line value (i.e. the RSA key in PEM format), it breaks.
+
+## Our Solution
+
+- We removed the RSA key from the set of environment variables. It must be set into AWS Secrets Manager via the AWS Console. Limitation number 7 above forces this unfortunate conclusion.
+- Environment variables are to be specified in one authoritative place: `cf-template-params.env`
+  - This makes Pytest and running individual scripts work.
+- Python script `set_parameter_overrides.py` copies the values from `cf-template-params.env` into `samconfig.toml` in a format friendly to that file. Run that script before you deploy to AWS.
+  - This makes AWS deployment work.
+- Set your Lighthouse authentication RSA key in AWS Secrets Manager via the AWS Console
