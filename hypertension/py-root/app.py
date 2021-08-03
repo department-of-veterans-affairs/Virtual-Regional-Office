@@ -1,6 +1,6 @@
 from lib.main import main  # pragma: no cover (main is tested elsewhere)
 
-from get_token_make_api_request import load_config
+from lib.utils import load_config
 
 def lambda_handler(event, context):  # pragma: no cover
     config = load_config(event["icn"])

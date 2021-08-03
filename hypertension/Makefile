@@ -19,12 +19,10 @@ build.sam: build.requirements
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run python set_parameter_overrides.py ;
 
-# TODO: Cleanup the --dev once you reorganize the file structure to (which will allow you to pull
-# the usage of dotenv out of things that are imported by the lambda main function.
 .PHONY: build.requirements
 build.requirements:
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) export --dev --without-hashes -f requirements.txt -o requirements.txt --with-credentials ;
+	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ;
 
 .PHONY: build.local
 build.local:
