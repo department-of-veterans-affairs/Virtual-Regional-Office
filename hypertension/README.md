@@ -16,16 +16,12 @@ The Hypertension Fast-Track System is built in these technologies:
 
 # Development
 
-**WARNING!! Dont use your (or any) real private RSA key here until we fix the code to make it stop returning the RSA key in the lambda response body!!**
-
 Create and fill out our cloud formation template variables
 ```sh
 cp cf-template-params-example.env cf-template-params.env
 ```
 
 Note: For deployment to AWS, you'll to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
-
-**WARNING!! Dont use your (or any) real private RSA key here until we fix the code to make it stop returning the RSA key in the lambda response body!!**
 
 ## Develop and Test the Python Functions Locally
 

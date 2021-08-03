@@ -50,6 +50,7 @@ Resources:
                     LighthouseObservationUrl: !Ref LighthouseObservationUrl
                     LighthouseObservationCategory: !Ref LighthouseObservationCategory
                     LighthouseObservationLoincCode: !Ref LighthouseObservationLoincCode
+            Timeout: 10
             Role: !GetAtt VroLambdaExecutionRole.Arn
 
     VroLhPrivateRsaKey:
