@@ -2,6 +2,15 @@ import pytest
 import sys
 import os
 from dotenv import load_dotenv
+
+from lib.utils import (
+    load_config
+)
+
+from lib.lighthouse import (
+    authenticate_to_lighthouse
+)
+
 from get_token_make_api_request import (
     load_config,
     setup_cli_parser,
