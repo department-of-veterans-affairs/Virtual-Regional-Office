@@ -1,3 +1,4 @@
+import os
 import argparse
 
 from typing import Union
@@ -19,41 +20,18 @@ Usage example:
     python get_token_make_api_request.py 000aaa ./private.pem \
         assertion-params.json observation-request-params.json 123456789
 
+This script depends on the environment variables you set in cf-template-params.env
+
 This script expects the following arguments, in order:
-
-    client_id: the client_id associated with your authorization.
-    key_loc: the location of a private .pem file or the name of an environment
-        variable containing the key.
-    assertions_file: the location of a JSON file containing a dictionary with
-        the following structure:
-
-            urls:
-                audience: the aud value (a URL) for the JWT.
-                token_url: the URL of the endpoint for requesting a token from.
-            parameters:
-                grant_type: the kind of credentials you want.
-                client_assertion_type: e.g.
-                    "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                scope: the various permisions you're requesting.
-
-    params_file: the location of a JSON file containing the params of your
-        request to the API, with the following structure:
-            urls:
-                endpoint: the URL of the API endpoint to query.
-            parameters:
-                [any keys and values here will be passed to the enpoint as
-                parameters]
 
     icn: the ICN of the individual to query for.
 
-The JSON files in this directory are samples and should be altered as
-necessary.
 """
 
 
 def cli_main() -> None:
     cli_options = get_cli_args()
-    config = load_config(cli_options.icn, cli_options.key_loc)
+    config = load_config(cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"])
 
     icn = config["lighthouse"]["icn"]
 
@@ -72,11 +50,7 @@ def setup_cli_parser() -> argparse.ArgumentParser:
     # Configures argument parsing. See above for expected arguments.
     parser = argparse.ArgumentParser()
     args = [
-        "client_id",
-        "key_loc",
-        "assertions_file",
-        "params_file",
-        "icn",
+        "icn"
     ]
 
     for arg in args:

@@ -49,19 +49,14 @@ def lh_access_token(config):
 
 @pytest.fixture(scope="session")
 def config(cli_options):
-    config = load_config(cli_options.icn, cli_options.key_loc)
+    config = load_config(cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"])
     return config
 
 
 @pytest.fixture(scope="session")
 def cli_options():
     cli_options = setup_cli_parser().parse_args([
-        # "scripts/python_get_token_make_api_request_script/get_token_make_api_request.py",
-        os.environ["LighthouseOAuthClientId"],
-        os.environ["LighthousePrivateRsaKeyFilePath"],
-        "./scripts/python_get_token_make_api_request_script/assertion-params-example.json",
-        "./scripts/python_get_token_make_api_request_script/observation-request-params-example.json",
-        os.environ["TestVeteranIcn"],
+        os.environ["TestVeteranIcn"]
     ])
 
     return cli_options
