@@ -30,7 +30,6 @@ def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
 
 
 def load_secret(key_file: Union[Path, str]) -> str:
-    # Load secret from file or env var.
     if Path(key_file).exists():
         return Path(key_file).read_text()
 

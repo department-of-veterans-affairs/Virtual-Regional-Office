@@ -1,4 +1,17 @@
+from lib.lighthouse import (
+    authenticate_to_lighthouse,
+    fetch_observation_data
+)
+
+
 def main(config):
-    # TODO: WARNING!! Dont use your (or any) real private RSA key in your env vars until
-    # you fix this to make it stop returning it in the response body!!
-    return {"statusCode": 200, "body": config}
+    icn = config["lighthouse"]["icn"]
+
+    access_token = authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
+
+    observation_response = fetch_observation_data(config["lighthouse"]["vet_health_api_observation"], icn, access_token)
+
+    return {
+        "statusCode": 200,
+        "body": observation_response
+    }
