@@ -78,12 +78,17 @@ Thus, we have the following list of constraints:
     - `samconfig.toml` can't support this the Pytest and script use cases. Also, an environment variable file is the a very idomatic way to doing this.
 6. The first time you deploy a stack, you must use `sam deploy --guided`, or else use `sam deploy` and specify the S3 bucket. We must use `sam deploy --guided` on the first deploy because we want AWS to auto-generate the S3 bucket.
 7. The RSA key, of course, has to be a SAM parameter that has option `NoEcho: true` set for security. Unfortunately, with this set, `sam deploy --guided` has a bug where it will not accept the value you place in `samconfig.toml` and instead will _force_ you to specify the value via its interactive CLI UI. When you try to specify a multi-line value (i.e. the RSA key in PEM format), it breaks.
+8. CloudFormation (SAM) only accepts parameters that are less than 4096 bytes. base64 encoding the PEM fixes the multi-line problem, but even this is more than 4096 bytes.
 
 ## Our Solution
 
-- We removed the RSA key from the set of environment variables. It must be set into AWS Secrets Manager via the AWS Console. Limitation number 7 above forces this unfortunate conclusion.
+- We removed the RSA key from the set of environment variables. It must be set into AWS Secrets Manager via the AWS Console. Limitation numbers 7 and 8 above forces this unfortunate conclusion.
 - Environment variables are to be specified in one authoritative place: `cf-template-params.env`
   - This makes Pytest and running individual scripts work.
 - Python script `set_parameter_overrides.py` copies the values from `cf-template-params.env` into `samconfig.toml` in a format friendly to that file. Run that script before you deploy to AWS.
   - This makes AWS deployment work.
-- Set your Lighthouse authentication RSA key in AWS Secrets Manager via the AWS Console
+- Set your Lighthouse authentication RSA key in AWS Secrets Manager via the AWS CLI. (See [the README](../README.md#Upload-Your-Lighthouse-Private-RSA-Key-to-Secrets-Manager)) The AWS CLI needs the key in single-line format (PEM is multi-line). base64 encode it to make it single line and upload it. The VRO code will base64 decode it.
+
+## Note
+
+The regex in `set_parameter_overrides.py` only works if your `samconfig.toml` has a line like `parameter_overrides = "SOME_STRING_VALUE___EVEN_A_DUMMY"`
