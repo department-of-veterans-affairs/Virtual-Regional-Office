@@ -94,9 +94,27 @@ Note: The key policy will be changed in step 5 below. Therefore, the only strict
 make deploy.sam
 ```
 
-### Set Your Lighthouse PEM
+### Upload Your Lighthouse Private RSA Key to Secrets Manager
 
-In AWS Secrets Manager via the AWS Console.
+Base64 encode your PEM.
+(_See [design-notes.md](docs/design-notes.md#Our-Solution) for rationale._)
+```sh
+base64 /PATH/TO/YOUR_RSA_PEM_KEY_FILE
+```
+
+Get the ARN of your Secrets Manager secret:
+```sh
+aws cloudformation describe-stack-resources --stack-name houli-vro
+```
+
+Get the name of the secret:
+```sh
+aws secretsmanager describe-secret --secret-id THE_SECRET_ARN_FROM_THE_LAST_STEP
+```
+
+```sh
+aws secretsmanager put-secret-value --secret-id THE_SECRET_NAME_FROM_THE_LAST_STEP --secret-string YOUR_BASE_64_ENCODED_SECRET
+```
 
 # AWS Tutorials
 
