@@ -35,4 +35,6 @@ def set_parameter_overrides(samconfig_file_path):
 
     update_file(samconfig_file_path, samconfig_po_regex, parameter_overrides)
 
-set_parameter_overrides('../samconfig.toml')
+
+if __name__ == "__main__":
+    set_parameter_overrides('../samconfig.toml')
