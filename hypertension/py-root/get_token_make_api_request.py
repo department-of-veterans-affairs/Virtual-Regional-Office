@@ -37,7 +37,9 @@ def cli_main() -> None:
 
     access_token = authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
 
-    observation_response = fetch_observation_data(config["lighthouse"]["vet_health_api_observation"], icn, access_token)
+    observation_response = fetch_observation_data(
+        config["lighthouse"]["vet_health_api_observation"], icn, access_token
+    )
 
     handle_api_response(observation_response)
 
