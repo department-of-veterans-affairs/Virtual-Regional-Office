@@ -1,21 +1,17 @@
 import pytest
-import sys
 import os
+
+import lib.lighthouse as lighthouse
+
+
 from dotenv import load_dotenv
 
-from lib.utils import (
-    load_config
-)
+from lib.utils import load_config
 
-from lib.lighthouse import (
-    authenticate_to_lighthouse
-)
+from get_token_make_api_request import setup_cli_parser
 
-from get_token_make_api_request import (
-    load_config,
-    setup_cli_parser,
-    authenticate_to_lighthouse
-)
+from test.doubles.lighthouse import http_post_for_access_token_double
+
 
 
 load_dotenv("../cf-template-params.env")
@@ -31,7 +27,6 @@ os.environ[
 # This is subject to breaking if pytest changes, because it uses the internal _pytest API.
 # See https://github.com/pytest-dev/pytest/issues/1872
 
-# REMOVE THIS ???????????????????????????????????????????/
 @pytest.fixture(scope='session')
 def monkeypatch_session():
     from _pytest.monkeypatch import MonkeyPatch
@@ -41,9 +36,10 @@ def monkeypatch_session():
 
 
 @pytest.fixture(scope="session")
-def lh_access_token(config):
+def lh_access_token(config, monkeypatch_session):
     icn = config["lighthouse"]["icn"]
-    access_token = authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
+    monkeypatch_session.setattr(lighthouse, 'http_post_for_access_token', http_post_for_access_token_double)
+    access_token = lighthouse.authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
     return access_token
 
 
