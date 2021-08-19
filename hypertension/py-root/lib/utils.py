@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 from typing import (
@@ -8,6 +9,12 @@ from typing import (
 from lib.aws_secrets_manager import get_lighthouse_rsa_key
 
 def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
+
+    if (key_loc):
+        secret = load_secret(key_loc)
+    else:
+        secret = get_lighthouse_rsa_key(os.environ["LighthousePrivateRsaKeySecretArn"])
+
     return {
         "lighthouse": {
             "auth": {
@@ -16,7 +23,7 @@ def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
                 "grant_type": os.environ["LighthouseOAuthGrantType"],
                 "client_assertion_type": os.environ["LighthouseOAuthAssertionType"],
                 "scope": os.environ["LighthouseJwtScope"],
-                "secret": load_secret(key_loc) if key_loc else get_lighthouse_rsa_key(os.environ["LighthousePrivateRsaKeySecretArn"]),
+                "secret": secret,
                 "client_id": os.environ["LighthouseOAuthClientId"]
             },
             "vet_health_api_observation": {
@@ -34,3 +41,12 @@ def load_secret(key_file: Union[Path, str]) -> str:
         return Path(key_file).read_text()
 
     raise SystemError(f"Keyfile {key_file} not found")
+
+
+def load_text(path: Union[Path, str]) -> str:
+    return Path(path).read_text()
+
+
+def load_json(path: Union[Path, str]) -> dict:
+    raw = load_text(path)
+    return json.loads(raw)

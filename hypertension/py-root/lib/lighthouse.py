@@ -64,15 +64,14 @@ def http_post_for_access_token(url: str, params: dict) -> str:
 
 def fetch_observation_data (lh_observation_config: dict, icn: str, access_token: str) -> str:
     fhir_observation_params = build_api_params(lh_observation_config, icn)
+    headers = {"Authorization": f"Bearer {access_token}"}
 
-    observation_response = http_get_api_request(lh_observation_config["fhir_observation_endpoint"], fhir_observation_params, access_token)
+    observation_response = http_get_api_request(lh_observation_config["fhir_observation_endpoint"], fhir_observation_params, headers)
 
     return observation_response
 
 
-def http_get_api_request(url: str, params: dict, token: str) -> Json:
-    headers = {"Authorization": f"Bearer {token}"}
-
+def http_get_api_request(url: str, params: dict, headers: dict) -> Json:
     api_response = requests.get(url, params=params, headers=headers)
     assert api_response.status_code == 200
 
