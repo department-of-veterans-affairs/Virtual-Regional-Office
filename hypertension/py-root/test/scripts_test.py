@@ -41,7 +41,20 @@ def test_set_parameter_overrides():
 parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
 """
 
-    parameter_overrides = f'parameter_overrides = \"LighthouseTokenUrl=\\"{fake_env["LighthouseTokenUrl"]}\\" LighthouseJwtAudUrl=\\"{fake_env["LighthouseJwtAudUrl"]}\\" LighthouseJwtScope=\\"{fake_env["LighthouseJwtScope"]}\\" LighthouseOAuthClientId=\\"{fake_env["LighthouseOAuthClientId"]}\\" LighthouseOAuthGrantType=\\"{fake_env["LighthouseOAuthGrantType"]}\\" LighthouseOAuthAssertionType=\\"{fake_env["LighthouseOAuthAssertionType"]}\\" KmsCmkId=\\"{fake_env["KmsCmkId"]}\\" LighthouseObservationUrl=\\"{fake_env["LighthouseObservationUrl"]}\\" LighthouseObservationCategory=\\"{fake_env["LighthouseObservationCategory"]}\\" LighthouseObservationLoincCode=\\"{fake_env["LighthouseObservationLoincCode"]}\\"\"'
+    params = ' '.join([
+        f'LighthouseTokenUrl=\\"{fake_env["LighthouseTokenUrl"]}\\"',
+        f'LighthouseJwtAudUrl=\\"{fake_env["LighthouseJwtAudUrl"]}\\"',
+        f'LighthouseJwtScope=\\"{fake_env["LighthouseJwtScope"]}\\"',
+        f'LighthouseOAuthClientId=\\"{fake_env["LighthouseOAuthClientId"]}\\"',
+        f'LighthouseOAuthGrantType=\\"{fake_env["LighthouseOAuthGrantType"]}\\"',
+        f'LighthouseOAuthAssertionType=\\"{fake_env["LighthouseOAuthAssertionType"]}\\"',
+        f'KmsCmkId=\\"{fake_env["KmsCmkId"]}\\"',
+        f'LighthouseObservationUrl=\\"{fake_env["LighthouseObservationUrl"]}\\"',
+        f'LighthouseObservationCategory=\\"{fake_env["LighthouseObservationCategory"]}\\"',
+        f'LighthouseObservationLoincCode=\\"{fake_env["LighthouseObservationLoincCode"]}\\"'
+    ])
+
+    parameter_overrides = 'parameter_overrides = \"' + params + '\"'
 
     regex = 'parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"'
     p = re.compile(regex)
