@@ -8,7 +8,7 @@ from test.doubles.lighthouse import (
 )
 
 from test.data.lighthouse import (
-    lh_observation_response
+    lh_observation_success_response
 )
 
 
@@ -18,7 +18,7 @@ def test_main(monkeypatch_session, config):
 
     expected = {
         "statusCode": 200,
-        "body": lh_observation_response
+        "body": lh_observation_success_response
     }
 
     assert main(config) == expected

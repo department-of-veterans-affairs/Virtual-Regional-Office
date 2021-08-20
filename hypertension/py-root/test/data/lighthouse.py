@@ -9,6 +9,10 @@ lh_auth_api_response = {
     "patient": os.environ["TestVeteranIcn"]
 }
 
-lh_observation_response = {
-    "some": "json"
+lh_observation_success_response = {
+    "lh_observation_success": "response body"
+}
+
+lh_observation_failure_response = {
+    "lh_observation_failure": "response body"
 }
