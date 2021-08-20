@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 from lib.utils import load_config
 
-from get_token_make_api_request import setup_cli_parser
+from fetch_bp_data import setup_cli_parser
 
 from test.doubles.lighthouse import http_post_for_access_token_double
 

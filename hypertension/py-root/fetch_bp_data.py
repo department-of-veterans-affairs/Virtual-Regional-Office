@@ -17,7 +17,7 @@ Json = Union[dict, list]
 
 """
 Usage example:
-    python get_token_make_api_request.py 000aaa ./private.pem \
+    python fetch_bp_data.py 000aaa ./private.pem \
         assertion-params.json observation-request-params.json 123456789
 
 This script depends on the environment variables you set in cf-template-params.env
