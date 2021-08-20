@@ -67,8 +67,8 @@ Thus, we have the following list of constraints:
 
 1. With SAM CLI, You cannot specify a file URL (i.e. you can't do `--parameter-overrides file://path/to/my-params-file.env.or.json`)
     - See https://github.com/aws/aws-sam-cli/issues/2054
-2. SAM CLI `--parameter-overrides "MyLongList=\"Of parameters with special characters\" WorksForThe="\CLI, but this is unwieldly due to the number of parameters"\"`. Also, doing things this way would mean you would have to specify params on the command line for AWS deployment, and simultaneoulsy maintain a `.env` file for Pytest and individual script purposes.
-3. If you use SAM CLI `--parameter-overrides $(cat my-params-file.env)`, the `cat` command or `$()` or something about SAM CLI causes SAM CLI to choke.
+2. This works: SAM CLI `--parameter-overrides "MyLongList=\"Of parameters with special characters\" WorksForThe="\CLI, but this is unwieldly due to the number of parameters"\"`. Also, doing things this way would mean you would have to specify params on the command line for AWS deployment, and simultaneoulsy maintain a `.env` file for Pytest and individual script purposes.
+3. If you use SAM CLI `--parameter-overrides $(cat my-params-file.env)` and any of your variables have spaces or slashes, the `cat` command or `$()` or something about SAM CLI causes SAM CLI to choke.
 4. In `samconfig.toml` the `parameter_overrides` list is as unwieldy as item 2 above.
 5. We want to specify configuration values in _one_ place
     - And have them work for all of our use cases
