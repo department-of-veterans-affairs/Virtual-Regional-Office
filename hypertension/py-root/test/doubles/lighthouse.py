@@ -7,7 +7,8 @@ from requests.models import Response
 
 from test.data.lighthouse import (
     lh_auth_api_response,
-    lh_observation_response
+    lh_observation_success_response,
+    lh_observation_failure_response
 )
 
 
@@ -22,9 +23,9 @@ def http_get_api_request_double(url: str, params: dict, headers: dict) -> Json:
 
     if headers["Authorization"] == f"Bearer {access_token}":
         response.status_code = 200
-        response._content = str.encode(json.dumps(lh_observation_response))
+        response._content = str.encode(json.dumps(lh_observation_success_response))
     else:
         response.status_code = 401
-        str.encode(json.dumps({"response": "body", "failure": "failure"}))
+        response._content = str.encode(json.dumps(lh_observation_failure_response))
 
     return response.json()
