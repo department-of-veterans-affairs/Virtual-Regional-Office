@@ -6,7 +6,10 @@ import lib.lighthouse as lighthouse
 
 from dotenv import load_dotenv
 
-from lib.utils import load_config
+from lib.utils import (
+    load_config,
+    load_secret
+)
 
 from fetch_bp_data import setup_cli_parser
 
@@ -56,3 +59,7 @@ def cli_options():
     ])
 
     return cli_options
+
+@pytest.fixture(scope="session")
+def public_rsa_key():
+    return load_secret(os.environ["LighthousePublicRsaKeyFilePath"])
