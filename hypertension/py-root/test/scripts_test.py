@@ -62,7 +62,7 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
     parameter_overrides = 'parameter_overrides = \"' + params + '\"'
     # fmt: on
 
-    regex = 'parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"'
+    regex = 'parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"'
     p = re.compile(regex)
     expected = p.sub(parameter_overrides, samconfig_default_content)
 
