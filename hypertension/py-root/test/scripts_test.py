@@ -23,7 +23,7 @@ fake_env = {
 @mock.patch.dict(os.environ, fake_env)
 def test_set_parameter_overrides():
     # Get actual
-    samconfig_file_path = "./samconfig-default.toml"
+    samconfig_file_path = "./test/data/samconfig-default.toml"
     set_parameter_overrides(samconfig_file_path)
     actual = Path(samconfig_file_path).read_text()
 
@@ -33,7 +33,7 @@ def test_set_parameter_overrides():
     # - then read it into here
     # - then do your operations on the copied version of the samconfig-default.toml
     # - then finish this test
-    # - thenn delete the copied version of samconfig-default.toml
+    # - then delete the copied version of samconfig-default.toml
     samconfig_default_content = """version = 0.1
 [default]
 [default.deploy]
