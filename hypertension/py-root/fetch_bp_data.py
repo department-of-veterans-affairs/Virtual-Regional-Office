@@ -17,7 +17,7 @@ Usage example:
     python fetch_bp_data.py 000aaa ./private.pem \
         assertion-params.json observation-request-params.json 123456789
 
-This script depends on the environment variables you set in cf-template-params.env
+This script depends on the env variables you set in cf-template-params.env
 
 This script expects the following arguments, in order:
 
