@@ -18,8 +18,10 @@ fake_env = {
     "LighthouseObservationLoincCode": "DUMMY_DONT_CARE",
 }
 
+
 # TODO: Parametrize this test?
-# TODO: Break this out into test_update_file() and take that part out of test_set_parameter_overrides()? Or just keep it like it is because that's simpler?
+# TODO: Break this out into test_update_file() and take that part out of
+# test_set_parameter_overrides()? Or just keep it as is because that's simpler?
 @mock.patch.dict(os.environ, fake_env)
 def test_set_parameter_overrides():
     # Get actual
@@ -31,7 +33,7 @@ def test_set_parameter_overrides():
     # TODO: Instead of this should we do the following?
     # - filesystem cp the root dir samconfig-default.toml into your test dir,
     # - then read it into here
-    # - then do your operations on the copied version of the samconfig-default.toml
+    # - then do your operations on the copied version of samconfig-default.toml
     # - then finish this test
     # - then delete the copied version of samconfig-default.toml
     samconfig_default_content = """version = 0.1
@@ -70,5 +72,7 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
     Path(samconfig_file_path).write_text(samconfig_default_content)
 
 
-# TODO: Add test for present and absent newline character after the `parameter_overrides` line
-# TODO: Add test for when there's a line in the samconfig.toml file that is _after_ the parameter_overrides line
+# TODO: Add test for present and absent newline character after the
+# `parameter_overrides` line
+# TODO: Add test for when there's a line in the samconfig.toml file that is
+# _after_ the parameter_overrides line

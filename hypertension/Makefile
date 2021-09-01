@@ -31,6 +31,8 @@ build.local:
 	$(POETRY) run pylint *.py ; \
 	$(POETRY) run pylint lib/*.py ; \
 	$(POETRY) run pylint test/*.py ; \
+	$(POETRY) run pylint test/data/*.py ; \
+	$(POETRY) run pylint test/doubles/*.py ; \
 	$(POETRY) run flake8 --exclude=.venv ; \
 	$(POETRY) run black . --exclude=/\.venv/ ;
 

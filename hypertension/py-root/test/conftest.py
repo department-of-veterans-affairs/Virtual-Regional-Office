@@ -1,10 +1,14 @@
-import pytest
+# pylint: disable=redefined-outer-name
+
+
 import os
+import pytest
+
+from dotenv import load_dotenv
+from _pytest.monkeypatch import MonkeyPatch
 
 import lib.lighthouse as lighthouse
 
-
-from dotenv import load_dotenv
 
 from lib.utils import load_config, load_secret
 
@@ -20,17 +24,16 @@ os.environ[
 ] = "Fake. Not used. Doesnt Matter. Just need something. Anything."
 
 
-# monkeypatch is a function-scoped fuxture. Because of this, you can't use it inside a
-# session-scoped fixtures. To get around this, we create a new instance of the monkeypatch fixture
-# that is session-scoped, for use in our other fixtures that need to be session scoped.
-# This is subject to breaking if pytest changes, because it uses the internal _pytest API.
+# monkeypatch is a function-scoped fuxture. Because of this, you can't use it
+# inside session-scoped fixtures. To get around this, we create a new
+# instance of the monkeypatch fixture that is session-scoped, for use in our
+# other fixtures that need to be session scoped. This is subject to breaking if
+# pytest changes, because it uses the internal _pytest API.
 # See https://github.com/pytest-dev/pytest/issues/1872
 
 
 @pytest.fixture(scope="session")
 def monkeypatch_session():
-    from _pytest.monkeypatch import MonkeyPatch
-
     m = MonkeyPatch()
     yield m
     m.undo()

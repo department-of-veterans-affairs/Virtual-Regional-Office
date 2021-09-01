@@ -1,10 +1,10 @@
-import datetime
-import jwt
-import requests
-
 from uuid import uuid1
-
 from typing import Union
+
+import datetime
+import requests
+import jwt
+
 
 Json = Union[dict, list]
 
