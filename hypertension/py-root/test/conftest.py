@@ -6,15 +6,11 @@ import lib.lighthouse as lighthouse
 
 from dotenv import load_dotenv
 
-from lib.utils import (
-    load_config,
-    load_secret
-)
+from lib.utils import load_config, load_secret
 
 from fetch_bp_data import setup_cli_parser
 
 from test.doubles.lighthouse import http_post_for_access_token_double
-
 
 
 load_dotenv("../cf-template-params.env")
@@ -30,9 +26,11 @@ os.environ[
 # This is subject to breaking if pytest changes, because it uses the internal _pytest API.
 # See https://github.com/pytest-dev/pytest/issues/1872
 
-@pytest.fixture(scope='session')
+
+@pytest.fixture(scope="session")
 def monkeypatch_session():
     from _pytest.monkeypatch import MonkeyPatch
+
     m = MonkeyPatch()
     yield m
     m.undo()
@@ -41,24 +39,31 @@ def monkeypatch_session():
 @pytest.fixture(scope="session")
 def lh_access_token(config, monkeypatch_session):
     icn = config["lighthouse"]["icn"]
-    monkeypatch_session.setattr(lighthouse, 'http_post_for_access_token', http_post_for_access_token_double)
-    access_token = lighthouse.authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
+    monkeypatch_session.setattr(
+        lighthouse,
+        "http_post_for_access_token",
+        http_post_for_access_token_double,
+    )
+    access_token = lighthouse.authenticate_to_lighthouse(
+        config["lighthouse"]["auth"], icn
+    )
     return access_token
 
 
 @pytest.fixture(scope="session")
 def config(cli_options):
-    config = load_config(cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"])
+    config = load_config(
+        cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"]
+    )
     return config
 
 
 @pytest.fixture(scope="session")
 def cli_options():
-    cli_options = setup_cli_parser().parse_args([
-        os.environ["TestVeteranIcn"]
-    ])
+    cli_options = setup_cli_parser().parse_args([os.environ["TestVeteranIcn"]])
 
     return cli_options
+
 
 @pytest.fixture(scope="session")
 def public_rsa_key():

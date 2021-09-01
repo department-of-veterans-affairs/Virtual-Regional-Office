@@ -1,19 +1,19 @@
 import json
 import os
 from pathlib import Path
-from typing import (
-    Union,
-    Optional
-)
+from typing import Union, Optional
 
 from lib.aws_secrets_manager import get_lighthouse_rsa_key
 
+
 def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
 
-    if (key_loc):
+    if key_loc:
         secret = load_secret(key_loc)
     else:
-        secret = get_lighthouse_rsa_key(os.environ["LighthousePrivateRsaKeySecretArn"])
+        secret = get_lighthouse_rsa_key(
+            os.environ["LighthousePrivateRsaKeySecretArn"]
+        )
 
     return {
         "lighthouse": {
@@ -21,17 +21,23 @@ def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
                 "token_url": os.environ["LighthouseTokenUrl"],
                 "jwt_aud_url": os.environ["LighthouseJwtAudUrl"],
                 "grant_type": os.environ["LighthouseOAuthGrantType"],
-                "client_assertion_type": os.environ["LighthouseOAuthAssertionType"],
+                "client_assertion_type": os.environ[
+                    "LighthouseOAuthAssertionType"
+                ],
                 "scope": os.environ["LighthouseJwtScope"],
                 "secret": secret,
-                "client_id": os.environ["LighthouseOAuthClientId"]
+                "client_id": os.environ["LighthouseOAuthClientId"],
             },
             "vet_health_api_observation": {
-                "fhir_observation_endpoint": os.environ["LighthouseObservationUrl"],
+                "fhir_observation_endpoint": os.environ[
+                    "LighthouseObservationUrl"
+                ],
                 "fhir_category": os.environ["LighthouseObservationCategory"],
-                "fhir_loinc_code": os.environ["LighthouseObservationLoincCode"],
+                "fhir_loinc_code": os.environ[
+                    "LighthouseObservationLoincCode"
+                ],
             },
-            "icn": icn
+            "icn": icn,
         }
     }
 

@@ -6,13 +6,9 @@ lh_auth_api_response = {
     "scope": os.environ["LighthouseJwtScope"],
     "expires_in": 300,
     "state": None,
-    "patient": os.environ["TestVeteranIcn"]
+    "patient": os.environ["TestVeteranIcn"],
 }
 
-lh_observation_success_response = {
-    "lh_observation_success": "response body"
-}
+lh_observation_success_response = {"lh_observation_success": "response body"}
 
-lh_observation_failure_response = {
-    "lh_observation_failure": "response body"
-}
+lh_observation_failure_response = {"lh_observation_failure": "response body"}
