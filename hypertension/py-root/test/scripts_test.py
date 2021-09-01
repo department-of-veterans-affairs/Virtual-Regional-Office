@@ -2,7 +2,7 @@ import os
 import re
 from pathlib import Path
 from unittest import mock
-from set_parameter_overrides import set_parameter_overrides 
+from set_parameter_overrides import set_parameter_overrides
 
 # TODO: Figure out where to put this. Make a const?
 fake_env = {
@@ -15,7 +15,7 @@ fake_env = {
     "KmsCmkId": "DUMMY_DONT_CARE",
     "LighthouseObservationUrl": "DUMMY_DONT_CARE",
     "LighthouseObservationCategory": "DUMMY_DONT_CARE",
-    "LighthouseObservationLoincCode": "DUMMY_DONT_CARE"
+    "LighthouseObservationLoincCode": "DUMMY_DONT_CARE",
 }
 
 # TODO: Parametrize this test?
@@ -23,7 +23,7 @@ fake_env = {
 @mock.patch.dict(os.environ, fake_env)
 def test_set_parameter_overrides():
     # Get actual
-    samconfig_file_path = './samconfig-default.toml'
+    samconfig_file_path = "./samconfig-default.toml"
     set_parameter_overrides(samconfig_file_path)
     actual = Path(samconfig_file_path).read_text()
 
@@ -41,20 +41,24 @@ def test_set_parameter_overrides():
 parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
 """
 
-    params = ' '.join([
-        f'LighthouseTokenUrl=\\"{fake_env["LighthouseTokenUrl"]}\\"',
-        f'LighthouseJwtAudUrl=\\"{fake_env["LighthouseJwtAudUrl"]}\\"',
-        f'LighthouseJwtScope=\\"{fake_env["LighthouseJwtScope"]}\\"',
-        f'LighthouseOAuthClientId=\\"{fake_env["LighthouseOAuthClientId"]}\\"',
-        f'LighthouseOAuthGrantType=\\"{fake_env["LighthouseOAuthGrantType"]}\\"',
-        f'LighthouseOAuthAssertionType=\\"{fake_env["LighthouseOAuthAssertionType"]}\\"',
-        f'KmsCmkId=\\"{fake_env["KmsCmkId"]}\\"',
-        f'LighthouseObservationUrl=\\"{fake_env["LighthouseObservationUrl"]}\\"',
-        f'LighthouseObservationCategory=\\"{fake_env["LighthouseObservationCategory"]}\\"',
-        f'LighthouseObservationLoincCode=\\"{fake_env["LighthouseObservationLoincCode"]}\\"'
-    ])
+    params = " ".join(
+        [
+            f'LighthouseTokenUrl=\\"{fake_env["LighthouseTokenUrl"]}\\"',
+            f'LighthouseJwtAudUrl=\\"{fake_env["LighthouseJwtAudUrl"]}\\"',
+            f'LighthouseJwtScope=\\"{fake_env["LighthouseJwtScope"]}\\"',
+            f'LighthouseOAuthClientId=\\"{fake_env["LighthouseOAuthClientId"]}\\"',
+            f'LighthouseOAuthGrantType=\\"{fake_env["LighthouseOAuthGrantType"]}\\"',
+            f'LighthouseOAuthAssertionType=\\"{fake_env["LighthouseOAuthAssertionType"]}\\"',
+            f'KmsCmkId=\\"{fake_env["KmsCmkId"]}\\"',
+            f'LighthouseObservationUrl=\\"{fake_env["LighthouseObservationUrl"]}\\"',
+            f'LighthouseObservationCategory=\\"{fake_env["LighthouseObservationCategory"]}\\"',
+            f'LighthouseObservationLoincCode=\\"{fake_env["LighthouseObservationLoincCode"]}\\"',
+        ]
+    )
 
+    # fmt: off
     parameter_overrides = 'parameter_overrides = \"' + params + '\"'
+    # fmt: on
 
     regex = 'parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"'
     p = re.compile(regex)
@@ -64,6 +68,7 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
 
     # Cleanup
     Path(samconfig_file_path).write_text(samconfig_default_content)
+
 
 # TODO: Add test for present and absent newline character after the `parameter_overrides` line
 # TODO: Add test for when there's a line in the samconfig.toml file that is _after_ the parameter_overrides line

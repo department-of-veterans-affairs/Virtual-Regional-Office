@@ -8,6 +8,7 @@ from typing import Union
 
 Json = Union[dict, list]
 
+
 def build_token_params(data: dict, icn: str) -> dict:
     # Build the JWT and the params for posting to the token provider endpoint.
     payload = build_jwt_payload(data["jwt_aud_url"], data["client_id"])
@@ -18,7 +19,7 @@ def build_token_params(data: dict, icn: str) -> dict:
         "client_assertion_type": data["client_assertion_type"],
         "scope": data["scope"],
         "client_assertion": assertion,
-        "launch": icn
+        "launch": icn,
     }
 
 
@@ -43,14 +44,16 @@ def build_api_params(params: dict, icn: str) -> dict:
     return {
         "category": params["fhir_category"],
         "code": params["fhir_loinc_code"],
-        "patient": icn
+        "patient": icn,
     }
 
 
 def authenticate_to_lighthouse(lh_auth_config: dict, icn: str) -> str:
     token_params = build_token_params(lh_auth_config, icn)
 
-    access_token = http_post_for_access_token(lh_auth_config["token_url"], token_params)
+    access_token = http_post_for_access_token(
+        lh_auth_config["token_url"], token_params
+    )
 
     return access_token
 
@@ -62,11 +65,17 @@ def http_post_for_access_token(url: str, params: dict) -> str:
     return assertion_response.json()["access_token"]
 
 
-def fetch_observation_data (lh_observation_config: dict, icn: str, access_token: str) -> str:
+def fetch_observation_data(
+    lh_observation_config: dict, icn: str, access_token: str
+) -> str:
     fhir_observation_params = build_api_params(lh_observation_config, icn)
     headers = {"Authorization": f"Bearer {access_token}"}
 
-    observation_response = http_get_api_request(lh_observation_config["fhir_observation_endpoint"], fhir_observation_params, headers)
+    observation_response = http_get_api_request(
+        lh_observation_config["fhir_observation_endpoint"],
+        fhir_observation_params,
+        headers,
+    )
 
     return observation_response
 

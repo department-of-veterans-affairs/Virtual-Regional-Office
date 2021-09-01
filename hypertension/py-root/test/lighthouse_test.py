@@ -1,18 +1,16 @@
-import jwt
-
-import lib.lighthouse as lighthouse
-
-from lib.lighthouse import (
-    fetch_observation_data,
-    build_token_params
-)
-
 from test.doubles.lighthouse import http_get_api_request_double
 
 from test.data.lighthouse import (
     lh_observation_success_response,
-    lh_observation_failure_response
+    lh_observation_failure_response,
 )
+
+import jwt
+
+import lib.lighthouse as lighthouse
+
+from lib.lighthouse import fetch_observation_data, build_token_params
+
 
 # TODO: Mock the API call
 # TODO: Test something better than the length of the access token
@@ -20,23 +18,36 @@ def test_authenticate_to_lighthouse(lh_access_token):
     length_of_a_lh_access_token = 929
     assert len(lh_access_token) == length_of_a_lh_access_token
 
-def test_fetch_observation_data_success(monkeypatch_session, config, lh_access_token):
-    monkeypatch_session.setattr(lighthouse, 'http_get_api_request', http_get_api_request_double)
+
+def test_fetch_observation_data_success(
+    monkeypatch_session, config, lh_access_token
+):
+    monkeypatch_session.setattr(
+        lighthouse, "http_get_api_request", http_get_api_request_double
+    )
 
     observation_response = fetch_observation_data(
-        config["lighthouse"]["vet_health_api_observation"], config["lighthouse"]["icn"], lh_access_token
+        config["lighthouse"]["vet_health_api_observation"],
+        config["lighthouse"]["icn"],
+        lh_access_token,
     )
 
     assert lh_observation_success_response == observation_response
 
+
 def test_fetch_observation_data_failure(monkeypatch_session, config):
-    monkeypatch_session.setattr(lighthouse, 'http_get_api_request', http_get_api_request_double)
+    monkeypatch_session.setattr(
+        lighthouse, "http_get_api_request", http_get_api_request_double
+    )
 
     observation_response = fetch_observation_data(
-        config["lighthouse"]["vet_health_api_observation"], config["lighthouse"]["icn"], "This is an invalid access token"
+        config["lighthouse"]["vet_health_api_observation"],
+        config["lighthouse"]["icn"],
+        "This is an invalid access token",
     )
 
     assert lh_observation_failure_response == observation_response
+
 
 def test_build_token_params(config, public_rsa_key):
     lh_auth_config = config["lighthouse"]["auth"]
@@ -45,9 +56,14 @@ def test_build_token_params(config, public_rsa_key):
     secret = lh_auth_config["secret"]
     icn = config["lighthouse"]["icn"]
 
-    actual = build_token_params(lh_auth_config , icn)
+    actual = build_token_params(lh_auth_config, icn)
 
-    just_for_a_timestamp_and_uuid = jwt.decode(actual["client_assertion"], public_rsa_key, audience=audience, algorithms="RS256")
+    just_for_a_timestamp_and_uuid = jwt.decode(
+        actual["client_assertion"],
+        public_rsa_key,
+        audience=audience,
+        algorithms="RS256",
+    )
 
     expected_payload = {
         "aud": audience,
@@ -55,17 +71,19 @@ def test_build_token_params(config, public_rsa_key):
         "sub": client_id,
         "jti": just_for_a_timestamp_and_uuid["jti"],
         "iat": just_for_a_timestamp_and_uuid["iat"],
-        "exp": just_for_a_timestamp_and_uuid["iat"] + 3600
+        "exp": just_for_a_timestamp_and_uuid["iat"] + 3600,
     }
 
-    expected_assertion = jwt.encode(expected_payload, secret, algorithm="RS256")
+    expected_assertion = jwt.encode(
+        expected_payload, secret, algorithm="RS256"
+    )
 
     expected_token_params = {
         "grant_type": lh_auth_config["grant_type"],
         "client_assertion_type": lh_auth_config["client_assertion_type"],
         "scope": lh_auth_config["scope"],
         "client_assertion": expected_assertion,
-        "launch": icn
+        "launch": icn,
     }
 
     assert expected_token_params == actual

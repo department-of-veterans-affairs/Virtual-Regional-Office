@@ -6,12 +6,9 @@ from typing import Union
 from dotenv import load_dotenv
 
 from lib.utils import load_config
-from lib.lighthouse import (
-    authenticate_to_lighthouse,
-    fetch_observation_data
-)
+from lib.lighthouse import authenticate_to_lighthouse, fetch_observation_data
 
-load_dotenv('../cf-template-params.env')
+load_dotenv("../cf-template-params.env")
 
 Json = Union[dict, list]
 
@@ -31,11 +28,15 @@ This script expects the following arguments, in order:
 
 def cli_main() -> None:
     cli_options = get_cli_args()
-    config = load_config(cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"])
+    config = load_config(
+        cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"]
+    )
 
     icn = config["lighthouse"]["icn"]
 
-    access_token = authenticate_to_lighthouse(config["lighthouse"]["auth"], icn)
+    access_token = authenticate_to_lighthouse(
+        config["lighthouse"]["auth"], icn
+    )
 
     observation_response = fetch_observation_data(
         config["lighthouse"]["vet_health_api_observation"], icn, access_token
@@ -51,9 +52,7 @@ def get_cli_args() -> argparse.Namespace:
 def setup_cli_parser() -> argparse.ArgumentParser:
     # Configures argument parsing. See above for expected arguments.
     parser = argparse.ArgumentParser()
-    args = [
-        "icn"
-    ]
+    args = ["icn"]
 
     for arg in args:
         parser.add_argument(arg, type=str)
