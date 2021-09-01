@@ -1,5 +1,0 @@
-version = 0.1
-[default]
-[default.deploy]
-[default.deploy.parameters]
-parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
