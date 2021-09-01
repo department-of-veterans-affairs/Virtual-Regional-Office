@@ -1,3 +1,5 @@
+# pylint: disable=unused-argument
+
 import json
 
 from test.data.lighthouse import (
