@@ -1,3 +1,5 @@
+# flake8: noqa: E501
+
 import os
 
 lh_auth_api_response = {
