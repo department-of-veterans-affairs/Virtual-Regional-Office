@@ -1,22 +1,19 @@
-# pylint: disable=redefined-outer-name,wrong-import-order
+# pylint: disable=redefined-outer-name,wrong-import-order,wrong-import-position
 
 import os
 import pytest
 
-from dotenv import load_dotenv
 from _pytest.monkeypatch import MonkeyPatch
-
-import lib.lighthouse as lighthouse
-
-
-from lib.utils import load_config, load_secret
-
-from fetch_bp_data import setup_cli_parser
-
-from test.doubles.lighthouse import http_post_for_access_token_double
-
+from dotenv import load_dotenv
 
 load_dotenv("../cf-template-params.env")
+
+import lib.lighthouse as lighthouse  # noqa: E402
+from lib.utils import load_config, load_secret  # noqa: E402
+from test.doubles.lighthouse import (  # noqa: E402
+    http_post_for_access_token_double,
+)
+
 
 os.environ[
     "LighthousePrivateRsaKeySecretArn"
@@ -53,18 +50,12 @@ def lh_access_token(config, monkeypatch_session):
 
 
 @pytest.fixture(scope="session")
-def config(cli_options):
+def config():
     config = load_config(
-        cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"]
+        os.environ["TestVeteranIcn"],
+        os.environ["LighthousePrivateRsaKeyFilePath"],
     )
     return config
-
-
-@pytest.fixture(scope="session")
-def cli_options():
-    cli_options = setup_cli_parser().parse_args([os.environ["TestVeteranIcn"]])
-
-    return cli_options
 
 
 @pytest.fixture(scope="session")
