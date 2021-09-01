@@ -93,7 +93,7 @@ Note: The key policy will be changed in step 5 below. Therefore, the only strict
 ### Deployment
 
 ```sh
-make deploy.sam
+make deploy.initial.stack
 ```
 
 # AWS Tutorials
@@ -107,6 +107,16 @@ Learn a little Lambda if you think you need it. Just creating one via the AWS co
 
 Learn how to use AWS SAM CLI. (The CloudFormation and Lambda stack parts are applicable; the Step Functions state machine and a DynamoDB table are not.)
 - https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-state-machine-using-sam.html
+
+# AWS MFA Authentication
+VA AWS environments have multi-factor authentication set up for every IAM user. Therefore, in order to run AWS CLI commands for these environments, we have to retrieve temporary session credentials based on our MFA serial/token codes, and then set those temporary credentials as AWS environment variables.
+
+Our automation scripts should take care of setting up MFA session credentials for their purposes, but we also have a helper script for exporting session credentials to your shell environment. You can run this script by running:
+
+```bash
+cd scripts
+source export_aws_credentials.sh
+```
 
 # Git Workflow
 We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
