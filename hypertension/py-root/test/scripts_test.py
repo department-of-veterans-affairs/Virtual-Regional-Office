@@ -40,23 +40,28 @@ def test_set_parameter_overrides():
 [default]
 [default.deploy]
 [default.deploy.parameters]
-parameter_overrides = "DUMMY_VALUE___OVERWRITE_THIS_BEFORE_YOU_DEPLOY"
+parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
 """
 
-    params = " ".join(
-        [
-            f'LighthouseTokenUrl=\\"{fake_env["LighthouseTokenUrl"]}\\"',
-            f'LighthouseJwtAudUrl=\\"{fake_env["LighthouseJwtAudUrl"]}\\"',
-            f'LighthouseJwtScope=\\"{fake_env["LighthouseJwtScope"]}\\"',
-            f'LighthouseOAuthClientId=\\"{fake_env["LighthouseOAuthClientId"]}\\"',
-            f'LighthouseOAuthGrantType=\\"{fake_env["LighthouseOAuthGrantType"]}\\"',
-            f'LighthouseOAuthAssertionType=\\"{fake_env["LighthouseOAuthAssertionType"]}\\"',
-            f'KmsCmkId=\\"{fake_env["KmsCmkId"]}\\"',
-            f'LighthouseObservationUrl=\\"{fake_env["LighthouseObservationUrl"]}\\"',
-            f'LighthouseObservationCategory=\\"{fake_env["LighthouseObservationCategory"]}\\"',
-            f'LighthouseObservationLoincCode=\\"{fake_env["LighthouseObservationLoincCode"]}\\"',
-        ]
-    )
+    keys = [
+        "LighthouseTokenUrl",
+        "LighthouseJwtAudUrl",
+        "LighthouseJwtScope",
+        "LighthouseOAuthClientId",
+        "LighthouseOAuthGrantType",
+        "LighthouseOAuthAssertionType",
+        "KmsCmkId",
+        "LighthouseObservationUrl",
+        "LighthouseObservationCategory",
+        "LighthouseObservationLoincCode",
+    ]
+
+    strings = []
+
+    for key in keys:
+        strings.append(f'{key}=\\"{os.environ[key]}\\"')
+
+    params = " ".join(strings)
 
     # fmt: off
     parameter_overrides = 'parameter_overrides = \"' + params + '\"'

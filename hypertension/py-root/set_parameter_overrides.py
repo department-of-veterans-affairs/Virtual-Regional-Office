@@ -16,21 +16,25 @@ def update_file(path, search_regex, new_string):
 
 
 def set_parameter_overrides(samconfig_file_path):
-    # TODO: Put this into its own function?
-    params = " ".join(
-        [
-            f'LighthouseTokenUrl=\\"{os.environ["LighthouseTokenUrl"]}\\"',
-            f'LighthouseJwtAudUrl=\\"{os.environ["LighthouseJwtAudUrl"]}\\"',
-            f'LighthouseJwtScope=\\"{os.environ["LighthouseJwtScope"]}\\"',
-            f'LighthouseOAuthClientId=\\"{os.environ["LighthouseOAuthClientId"]}\\"',
-            f'LighthouseOAuthGrantType=\\"{os.environ["LighthouseOAuthGrantType"]}\\"',
-            f'LighthouseOAuthAssertionType=\\"{os.environ["LighthouseOAuthAssertionType"]}\\"',
-            f'KmsCmkId=\\"{os.environ["KmsCmkId"]}\\"',
-            f'LighthouseObservationUrl=\\"{os.environ["LighthouseObservationUrl"]}\\"',
-            f'LighthouseObservationCategory=\\"{os.environ["LighthouseObservationCategory"]}\\"',
-            f'LighthouseObservationLoincCode=\\"{os.environ["LighthouseObservationLoincCode"]}\\"',
-        ]
-    )
+    keys = [
+        "LighthouseTokenUrl",
+        "LighthouseJwtAudUrl",
+        "LighthouseJwtScope",
+        "LighthouseOAuthClientId",
+        "LighthouseOAuthGrantType",
+        "LighthouseOAuthAssertionType",
+        "KmsCmkId",
+        "LighthouseObservationUrl",
+        "LighthouseObservationCategory",
+        "LighthouseObservationLoincCode",
+    ]
+
+    strings = []
+
+    for key in keys:
+        strings.append(f'{key}=\\"{os.environ[key]}\\"')
+
+    params = " ".join(strings)
 
     # fmt: off
     parameter_overrides = 'parameter_overrides = \"' + params + '\"'
