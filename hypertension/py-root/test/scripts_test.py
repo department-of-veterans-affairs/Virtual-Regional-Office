@@ -6,10 +6,11 @@ from test.data.env import fake_env
 from set_parameter_overrides import set_parameter_overrides
 
 
-# TODO: Add test for present and absent newline character after the
+# TODO: Add more tests of set_parameter_overrides()
+# - Add test for present and absent newline character after the
 # `parameter_overrides` line
-# TODO: Add test for when there's a line in the samconfig.toml file that is
-# _after_ the parameter_overrides line
+# - Add test for when there's a line in the samconfig.toml file that is
+# *after* the parameter_overrides line
 @mock.patch.dict(os.environ, fake_env)
 def test_set_parameter_overrides():
     # Get actual

@@ -1,9 +1,11 @@
+# pylint: disable=unused-argument
+
 from lib.main import main  # pragma: no cover (main is tested elsewhere)
 
 from lib.utils import load_config
 
 
-def lambda_handler(event):  # pragma: no cover
+def lambda_handler(event, context):  # pragma: no cover
     config = load_config(event["icn"])
     return main(config)
 
