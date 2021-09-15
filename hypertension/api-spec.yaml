@@ -23,6 +23,8 @@ components:
       type: object
       required:
       - claimId
+      - contentions
+      - SCDs
       properties:
         claimId:
           type: integer
