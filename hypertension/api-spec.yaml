@@ -1,0 +1,40 @@
+openapi: 3.0.1
+info:
+  title: Virtual Regional Office
+  description: 'This is the API spec for the Veterans Benefits Administration (VBA) Virtual Regional Office (VRO)'
+  version: 0.0.1
+paths:
+  /hypertension-fast-track:
+    post:
+      summary: Fast-track a hypertension claim
+      operationId: fastTrackHtnClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hypertension'
+      responses:
+        400:
+          description: Invalid request
+components:
+  schemas:
+    Hypertension:
+      type: object
+      required:
+      - claimId
+      properties:
+        claimId:
+          type: integer
+        EDIPI:
+          type: integer
+        PID:
+          type: integer
+        contentions:
+          type: array
+          items:
+            type: string
+        SCDs:
+          type: array
+          items:
+            type: integer
