@@ -92,3 +92,21 @@ Thus, we have the following list of constraints:
 ## Note
 
 The regex in `set_parameter_overrides.py` only works if your `samconfig.toml` has a line like `parameter_overrides = "SOME_STRING_VALUE___EVEN_A_DUMMY"`
+
+# CI Setup
+
+We use Circle CI.
+
+Circle CI default behavior is to run (i.e. to run your Circle CI workflow(s)) every time a commit is made on any branch.
+
+We don't want every commit on every branch to trigger a Circle CI workflow because doing so is not needed and costs money.
+
+In the Circle CI project for this git repo, we have the Circle CI project setting "Only build pull requests" enabled. This setting also always builds all commits on our default branch (which is `develop`) and all commits that get a git tag created on them.
+
+Limitation: It doesn't build every commit on the `master` branch.
+
+Workaround, part 1: Whenever we want to create a release (i.e. whenever we want to merge `develop` into `master`), we can create a PR to do so. This will of course trigger a Circle CI workflow, which we want.
+
+Workaround, part 2: If we ever have hotfixes, we cannot use standard "gitflow" workflow of making hotfix commits directly to `master`. We must branch off of `master`; commit the hotfix commits to that new branch; and then create a PR to merge the hotfix branch into `master`.
+
+Alternative workaround we can consider later: Some way of using git tags on `master`, perhaps to supplement or replace the above two workarounds.
