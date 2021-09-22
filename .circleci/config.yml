@@ -12,10 +12,10 @@ workflows:
     # Inside the workflow, you define the jobs you want to run. 
     # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows 
     jobs:
-      - build-and-test:
-          filters:
-            branches:
-              only: houli/circle-ci-setup
+      - build-and-test
+          # filters:
+          #   branches:
+          #     only: houli/circle-ci-setup
 
 jobs:
   build-and-test:  # This is the name of the job, feel free to change it to better match what you're trying to do!
