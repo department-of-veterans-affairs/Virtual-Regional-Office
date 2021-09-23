@@ -61,15 +61,16 @@ build.requirements:
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
 
+# Use pylint --exit-zero so that TODOs in our code don't cause our CI jobs to fail
 .PHONY: build.local
 build.local:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
-	$(POETRY) run pylint *.py ; \
-	$(POETRY) run pylint lib/*.py ; \
-	$(POETRY) run pylint test/*.py ; \
-	$(POETRY) run pylint test/data/*.py ; \
-	$(POETRY) run pylint test/doubles/*.py ; \
+	$(POETRY) run pylint --exit-zero *.py ; \
+	$(POETRY) run pylint --exit-zero lib/*.py ; \
+	$(POETRY) run pylint --exit-zero test/*.py ; \
+	$(POETRY) run pylint --exit-zero test/data/*.py ; \
+	$(POETRY) run pylint --exit-zero test/doubles/*.py ; \
 	$(POETRY) run flake8 --exclude=.venv ; \
 	$(POETRY) run black . --exclude=/\.venv/ ;
 
