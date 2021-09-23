@@ -35,7 +35,14 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
       - run: cd hypertension; make build.local
+      - save_cache:
+          key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
+          paths:
+            - hypertension/py-root/.venv
       # - python/install-packages:
       #     pkg-manager: pip
       #     # app-dir: ~/project/package-directory/  # If you're requirements.txt isn't in the root directory.
