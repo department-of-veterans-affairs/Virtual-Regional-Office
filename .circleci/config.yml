@@ -38,7 +38,7 @@ jobs:
             - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
       - run:
           name: "Unit Tests"
-          command: "cd hypertension; make pytest.ci"
+          command: "cd hypertension; make build.and.test"
           timeout: 1
       - save_cache:
           key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
