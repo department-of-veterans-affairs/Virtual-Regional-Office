@@ -80,8 +80,13 @@ update.function.template.layers:
 	$(POETRY) run python add_deployed_layers_to_template.py --overwrite; \
 	cd ..; \
 
+.PHONY: build.and.pytest
+build.and.pytest: build.local
+	cd ./${PYTHON_PROJECT_DIR} ; \
+	$(POETRY) run ptw -c -- --capture=no ;
+
 .PHONY: pytest
-pytest: build.local
+pytest:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run ptw -c -- --capture=no ;
 
