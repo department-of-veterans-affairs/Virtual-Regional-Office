@@ -90,6 +90,11 @@ pytest:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run ptw -c -- --capture=no ;
 
+.PHONY: pytest.ci
+pytest.ci: build.local
+	cd ./${PYTHON_PROJECT_DIR} ; \
+	$(POETRY) run pytest --capture=no ;
+
 # The lambda layers need to be deployed to AWS with their arns
 # set in the environment file for this command to be successful
 .PHONY: invoke.sam.local
