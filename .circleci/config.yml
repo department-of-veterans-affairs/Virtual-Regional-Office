@@ -36,7 +36,7 @@ jobs:
       - restore_cache:
           keys:
             - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
-      - run: cd hypertension; make build.local
+      - run: cd hypertension; make build.and.pytest
       - save_cache:
           key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
           paths:
