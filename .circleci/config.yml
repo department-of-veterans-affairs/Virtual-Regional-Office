@@ -39,7 +39,7 @@ jobs:
       - run:
           name: "Unit Tests"
           command: "cd hypertension; make build.and.pytest"
-          no_output_imeout: 10s
+          no_output_imeout: 1s
       - save_cache:
           key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
           paths:
