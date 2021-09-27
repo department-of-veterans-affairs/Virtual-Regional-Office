@@ -8,7 +8,7 @@ import subprocess
 from _pytest.monkeypatch import MonkeyPatch
 from dotenv import load_dotenv
 
-load_dotenv("../cf-template-params.env")
+load_dotenv("../.env.test.env")
 
 import lib.lighthouse as lighthouse  # noqa: E402
 from lib.utils import load_config, load_secret  # noqa: E402
