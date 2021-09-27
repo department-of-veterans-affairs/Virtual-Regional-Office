@@ -36,7 +36,8 @@ jobs:
       - restore_cache:
           keys:
             - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
-      - run: cd hypertension; make pytest.ci
+      - run: "cd hypertension; make pytest.ci"
+        - timeout: 3
       - save_cache:
           key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
           paths:
