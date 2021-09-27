@@ -55,10 +55,12 @@ def load_config(
 
 
 def load_secret(key_file: Union[Path, str]) -> str:
-    if Path(key_file).exists():
-        return Path(key_file).read_text()
+    p = Path(Path.cwd() / ".." / key_file).resolve()
 
-    raise SystemError(f"Keyfile {key_file} not found")
+    if Path(p).exists():
+        return Path(p).read_text()
+
+    raise SystemError(f"Keyfile {p} not found")
 
 
 def load_text(path: Union[Path, str]) -> str:
