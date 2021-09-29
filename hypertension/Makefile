@@ -66,11 +66,11 @@ build.requirements:
 build.local:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
-	$(POETRY) run pylint --exit-zero *.py ; \
-	$(POETRY) run pylint --exit-zero lib/*.py ; \
-	$(POETRY) run pylint --exit-zero test/*.py ; \
-	$(POETRY) run pylint --exit-zero test/data/*.py ; \
-	$(POETRY) run pylint --exit-zero test/doubles/*.py ; \
+	$(POETRY) run pylint *.py ; \
+	$(POETRY) run pylint lib/*.py ; \
+	$(POETRY) run pylint test/*.py ; \
+	$(POETRY) run pylint test/data/*.py ; \
+	$(POETRY) run pylint test/doubles/*.py ; \
 	$(POETRY) run flake8 --exclude=.venv ; \
 	$(POETRY) run black . --exclude=/\.venv/ ;
 
