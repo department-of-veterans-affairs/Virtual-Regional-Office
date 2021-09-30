@@ -12,5 +12,5 @@ fake_env = {
     "LighthousePrivateClientIdArn": "DUMMY_DONT_CARE",
     "Stage": "dev",
     "PdfGeneratorLayerArn": "DUMMY_DONT_CARE",
-    "PythonDependenciesLayerArn": "DUMMY_DONT_CARE"
+    "PythonDependenciesLayerArn": "DUMMY_DONT_CARE",
 }
