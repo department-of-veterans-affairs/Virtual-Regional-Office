@@ -30,13 +30,17 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
         "LighthouseTokenUrl",
         "LighthouseJwtAudUrl",
         "LighthouseJwtScope",
-        "LighthouseOAuthClientId",
         "LighthouseOAuthGrantType",
         "LighthouseOAuthAssertionType",
+        "VroLhPrivateRsaKey",
         "KmsCmkId",
         "LighthouseObservationUrl",
         "LighthouseObservationCategory",
         "LighthouseObservationLoincCode",
+        "LighthousePrivateClientIdArn",
+        "STAGE",
+        "PdfGeneratorLayerArn",
+        "PythonDependenciesLayerArn",
     ]
 
     strings = []

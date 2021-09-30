@@ -1,90 +1,118 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
-Description: "Hypertension Fast-Tracker"
+Description: Hypertension Fast-Tracker
 
 Parameters:
-    # Lighthouse Authentication
-    LighthouseTokenUrl:
-        Type: String
-    LighthouseJwtAudUrl:
-        Type: String
-    LighthouseJwtScope:
-        Type: String
-    LighthouseOAuthClientId:
-        Type: String
-    LighthouseOAuthGrantType:
-        Type: String
-    LighthouseOAuthAssertionType:
-        Type: String
-    KmsCmkId:
-        Type: String
+  # Layer ARNs
+  PythonDependenciesLayerArn:
+    Type: String
+  PdfGeneratorLayerArn:
+    Type: String
 
-    # Lighthouse Veterans Health API, FHIR Obervation Endpoint
-    LighthouseObservationUrl:
-        Type: String
-    LighthouseObservationCategory:
-        Type: String
-    LighthouseObservationLoincCode:
-        Type: String
+  # Lighthouse Authentication
+  LighthouseTokenUrl:
+    Type: String
+  LighthouseJwtAudUrl:
+    Type: String
+  LighthouseJwtScope:
+    Type: String
+  LighthouseOAuthClientId:
+    Type: String
+  LighthouseOAuthGrantType:
+    Type: String
+  LighthouseOAuthAssertionType:
+    Type: String
+  KmsCmkId:
+    Type: String
+
+  # Lighthouse Veterans Health API, FHIR Obervation Endpoint
+  LighthouseObservationUrl:
+    Type: String
+  LighthouseObservationCategory:
+    Type: String
+  LighthouseObservationLoincCode:
+    Type: String
+  LighthousePrivateClientIdArn:
+    Type: String
+
+  # Environment switching
+  STAGE:
+    Type: String
+    AllowedValues:
+    - dev
+    - prod
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        STAGE: !Ref STAGE
 
 Resources:
-    VroMainFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            Description: "test description"
-            CodeUri: py-root/
-            Handler: app.lambda_handler
-            Runtime: python3.8
-            Environment:
-                Variables:
-                    LighthouseTokenUrl: !Ref LighthouseTokenUrl
-                    LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
-                    LighthouseJwtScope: !Ref LighthouseJwtScope
-                    LighthouseOAuthClientId: !Ref LighthouseOAuthClientId
-                    LighthouseOAuthGrantType: !Ref LighthouseOAuthGrantType
-                    LighthouseOAuthAssertionType: !Ref LighthouseOAuthAssertionType
-                    # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
-                    LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
+  VroMainFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: test description
+      CodeUri: py-root/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Environment:
+        Variables:
+          FONTCONFIG_PATH: /opt/fonts
+          WKHTMLTOPDF_PATH: /opt/bin/wkhtmltopdf
+          LighthouseTokenUrl: !Ref LighthouseTokenUrl
+          LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
+          LighthouseJwtScope: !Ref LighthouseJwtScope
+          LighthouseOAuthClientId: !Ref LighthouseOAuthClientId
+          LighthouseOAuthGrantType: !Ref LighthouseOAuthGrantType
+          LighthouseOAuthAssertionType: !Ref LighthouseOAuthAssertionType
+          # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
+          LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
+          LighthousePrivateClientIdArn: !Ref LighthousePrivateClientIdArn
+          KmsCmkId: !Ref KmsCmkId
+          LighthouseObservationUrl: !Ref LighthouseObservationUrl
+          LighthouseObservationCategory: !Ref LighthouseObservationCategory
+          LighthouseObservationLoincCode: !Ref LighthouseObservationLoincCode
+      Timeout: 10
+      Role: !GetAtt VroLambdaExecutionRole.Arn
 
-                    LighthouseObservationUrl: !Ref LighthouseObservationUrl
-                    LighthouseObservationCategory: !Ref LighthouseObservationCategory
-                    LighthouseObservationLoincCode: !Ref LighthouseObservationLoincCode
-            Timeout: 10
-            Role: !GetAtt VroLambdaExecutionRole.Arn
+      Layers:
+      - !Ref PdfGeneratorLayerArn
+      - !Ref PythonDependenciesLayerArn
+  VroLhPrivateRsaKey:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: 'VBA Virtual Regional Office: Your RSA private key to access Lighthouse
+        APIs via the Client Credentials OAuth grant type'
+      SecretString: Dummy RSA key. Upload your real key.
+      KmsKeyId: !Ref KmsCmkId
 
-    VroLhPrivateRsaKey:
-        Type: AWS::SecretsManager::Secret
-        Properties:
-            Description: "VBA Virtual Regional Office: Your RSA private key to access Lighthouse APIs via the Client Credentials OAuth grant type"
-            SecretString: "Dummy RSA key. Upload your real key."
-            KmsKeyId: !Ref KmsCmkId
-
-    VroLambdaExecutionRole:
-        Type: AWS::IAM::Role
-        Properties:
-            RoleName: "vro-lambda-execution-role"
-            # "Allows Lambda to assume this role"
-            AssumeRolePolicyDocument:
-                Version: "2012-10-17"
-                Statement:
-                - Effect: "Allow"
-                  Action: "sts:AssumeRole"
-                  # TODO: Limit this down. Allowing all lambda to assume this role is too much. Limit it
-                  # to just the ARN of your lambda function.
-                  Principal:
-                    Service: "lambda.amazonaws.com"
-            # TODO: Cleanup this comment: It's unfortunate that they use the word "Role" in the name, because it's actually a policy.
-            ManagedPolicyArns:
-              - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-            Policies:
-              - PolicyName: "VroLambdaSecretsManagerPolicy"
-                PolicyDocument:
-                    Version: "2012-10-17"
-                    Statement:
-                      - Effect: "Allow"
-                        Action: "secretsmanager:GetSecretValue"
-                        Resource: !Ref VroLhPrivateRsaKey
-                      - Effect: "Allow"
-                        Action: "kms:Decrypt"
-                        Resource: "*"
+  VroLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: vro-lambda-execution-role
+        # "Allows Lambda to assume this role"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action: sts:AssumeRole
+            # TODO: Limit this down. Allowing all lambda to assume this role is too much. Limit it
+            # to just the ARN of your lambda function.
+          Principal:
+            Service: lambda.amazonaws.com
+        # TODO: Cleanup this comment: It's unfortunate that they use the word "Role" in the name, because it's actually a policy.
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+      - PolicyName: VroLambdaSecretsManagerPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action: secretsmanager:GetSecretValue
+            Resource: !Ref VroLhPrivateRsaKey
+          - Effect: Allow
+            Action: kms:Decrypt
+            Resource: '*'

@@ -3,16 +3,30 @@ import os
 from pathlib import Path
 from typing import Union, Optional
 
-from lib.aws_secrets_manager import get_lighthouse_rsa_key
+from lib.aws_secrets_manager import (
+    get_lighthouse_rsa_key,
+    get_secret_from_secrets_manager_by_name,
+)
 
 
-def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
+def load_config(
+    icn: str,
+    key_loc: Optional[str] = None,
+    client_id_loc: Optional[str] = None,
+) -> dict:
 
     if key_loc:
         secret = load_secret(key_loc)
     else:
         secret = get_lighthouse_rsa_key(
             os.environ["LighthousePrivateRsaKeySecretArn"]
+        )
+
+    if client_id_loc:
+        client_id = load_secret(client_id_loc)
+    else:
+        client_id = get_secret_from_secrets_manager_by_name(
+            os.environ["LighthousePrivateClientIdArn"]
         )
 
     return {
@@ -26,7 +40,7 @@ def load_config(icn: str, key_loc: Optional[str] = None) -> dict:
                 ],
                 "scope": os.environ["LighthouseJwtScope"],
                 "secret": secret,
-                "client_id": os.environ["LighthouseOAuthClientId"],
+                "client_id": client_id,
             },
             "vet_health_api_observation": {
                 "fhir_observation_endpoint": os.environ[

@@ -7,6 +7,7 @@
 - Python
 - [pyenv](https://github.com/pyenv/pyenv): Manage Python versions, can be used with poetry to create isolated environments
 - [Poetry](https://python-poetry.org/): Manage all your Python package dependencies
+- [wkhtmltopdf](https://wkhtmltopdf.org/): The PDF generation command line tool and one of our system dependencies
 
 # Technologies
 
@@ -21,25 +22,32 @@ Create and fill out our cloud formation template variables
 cp cf-template-params-example.env cf-template-params.env
 ```
 
-Note: For deployment to AWS, you'll to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
+Note: For deployment to AWS, you'll need to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
 
 ## Develop and Test the Python Functions Locally
 
-This workflow is for locally developing the individual Python functions and locally running the their automated tests, via Python, pytest, and pytest-watch on your machine.
+This workflow is for locally developing the individual Python functions and locally running their automated tests, via Python, pytest, and pytest-watch on your machine.
 
 Install the following [tools](#Tools):
 - Python
 - pyenv
 - Poetry
+- wkhtmltopdf
 
 To build Python locally:
 ```sh
-make build.python
+make build.local
 ```
 
 To build Python locally and run pytest unit tests locally:
 ```sh
 make pytest
+```
+
+To build the lambda package locally and run the function in a container:
+
+```sh
+make invoke.sam.local
 ```
 
 ## Deploy Everything to AWS
@@ -80,14 +88,29 @@ Note: The key policy will be changed in step 5 below. Therefore, the only strict
 
 3. After the CMK is created, plug the key's ID into your `cf-template-params.env`.
 
-4. Deploy the SAM stack to AWS via `make deploy.sam.guided`.
+4. Retrieve and export temporary AWS MFA session credentials. See [AWS MFA Authentication](#aws-mfa-authentication) for help with this.
 
-5. Edit the CMK's policy via the AWS console. Set the key policy to the contents of file `kms-key-policy-statements.json` in this repo, including the ARN of the Lambda execution role created in step 4.
+5. Deploy the SAM stack to AWS via `make deploy.stack`.
 
-### Deployment
+6. Edit the CMK's policy via the AWS console. Set the key policy to the contents of file `kms-key-policy-statements.json` in this repo, including the ARN of the Lambda execution role created in step 4.
+
+### Subsequent Deployment
+
+You'll always need to retrieve and export AWS MFA session credentials before deployment.
+See [AWS MFA Authentication](#aws-mfa-authentication) for more.
+
+If the deployment environment already has instances of the lambda and layers deployed:
+
+- If you make changes to the lambda function but have no additions or updates to dependencies, you can deploy with:
+
+    ```sh
+    make deploy.sam
+    ```
+
+- If additions or updates are made to the dependencies layer (or, rarely, the wkhtmltopodf layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
 
 ```sh
-make deploy.sam
+make deploy.stack
 ```
 
 ### Upload Your Lighthouse Private RSA Key to Secrets Manager
@@ -112,6 +135,12 @@ aws secretsmanager describe-secret --secret-id THE_SECRET_ARN_FROM_THE_LAST_STEP
 aws secretsmanager put-secret-value --secret-id THE_SECRET_NAME_FROM_THE_LAST_STEP --secret-string YOUR_BASE_64_ENCODED_SECRET
 ```
 
+You should also upload the Lighthouse Client ID, because the private key can only be used in conjunction with its matching client ID, and storing the client ID in AWS Secrets Manager is preferable to passing it around via other means.
+
+The name for the client ID in AWS Secrets Manager is expected to be in the parameter `LighthousePrivateClientIdArn`. This is expected to be a key/value pair (JSON) where the key is `VroLhAssertionClientId`.
+
+The Lighthouse Private RSA Key and the Lighthouse Client ID must both be associated with the same key in Key Management Service.
+
 # AWS Tutorials
 
 ## 1. Learn Lambda
@@ -123,6 +152,16 @@ Learn a little Lambda if you think you need it. Just creating one via the AWS co
 
 Learn how to use AWS SAM CLI. (The CloudFormation and Lambda stack parts are applicable; the Step Functions state machine and a DynamoDB table are not.)
 - https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-state-machine-using-sam.html
+
+# AWS MFA Authentication
+VA AWS environments have multi-factor authentication set up for every IAM user. Therefore, in order to run AWS CLI commands for these environments, we have to retrieve temporary session credentials based on our MFA serial/token codes, and then set those temporary credentials as AWS environment variables.
+
+We have a helper script for exporting session credentials to your shell environment. You can run this script by running:
+
+```bash
+cd stack_deployment; poetry install
+source export_aws_mfa_credentials.sh
+```
 
 # Git Workflow
 We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
