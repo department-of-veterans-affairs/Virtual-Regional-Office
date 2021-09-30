@@ -21,5 +21,5 @@ def test_main(monkeypatch_session, config):
     )
 
     expected = {"statusCode": 200, "body": lh_observation_success_response}
-
-    assert main(config) == expected
+    event = {"html": "<html><body>Hello World!</body></html>"}
+    assert main(config, event) == expected

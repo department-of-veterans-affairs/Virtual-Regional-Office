@@ -20,13 +20,17 @@ def set_parameter_overrides(samconfig_file_path):
         "LighthouseTokenUrl",
         "LighthouseJwtAudUrl",
         "LighthouseJwtScope",
-        "LighthouseOAuthClientId",
         "LighthouseOAuthGrantType",
         "LighthouseOAuthAssertionType",
+        "VroLhPrivateRsaKey",
         "KmsCmkId",
         "LighthouseObservationUrl",
         "LighthouseObservationCategory",
         "LighthouseObservationLoincCode",
+        "LighthousePrivateClientIdArn",
+        "STAGE",
+        "PdfGeneratorLayerArn",
+        "PythonDependenciesLayerArn",
     ]
 
     strings = []

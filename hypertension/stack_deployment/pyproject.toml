@@ -1,19 +1,15 @@
 [tool.poetry]
-name = "vro-main"
+name = "deploy-wkhtmltopdf"
 version = "0.0.1"
-description = "Virtual Regional Office Lambda Main"
-authors = ["Aaron Houlihan <aaron@amida.com>", "Julia Allen <julia.l.allen@gsa.gov>"]
+description = "Deploy wkhtmltopdf AmazonLinux2 binary layer"
+authors = ["Julia Allen <julia.l.allen@gsa.gov"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 boto3 = "^1.17.87"
-pdfkit = "^0.6"
-PyJWT = "^2.1.0"
-requests = "^2.25.1"
-cryptography = "^3.4.7"
+requests = "^2.26.0"
 
 [tool.poetry.dev-dependencies]
-"pdfminer.six" = "^20201018"
 pytest = "^6.2.4"
 pytest-watch = "^4.2.0"
 python-dotenv = "^0.17.1"
@@ -21,7 +17,6 @@ pytest-coverage = "*"
 flake8 = "^3.9.2"
 pylint = "^2.8.2"
 black = "^21.5b2"
-
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -47,4 +42,5 @@ disable = [
     "no-value-for-parameter",
     "format",
     "pointless-string-statement",
+    "unnecessary-lambda",
 ]
