@@ -74,7 +74,7 @@ Resources:
           LighthouseObservationUrl: !Ref LighthouseObservationUrl
           LighthouseObservationCategory: !Ref LighthouseObservationCategory
           LighthouseObservationLoincCode: !Ref LighthouseObservationLoincCode
-      Timeout: 10
+      Timeout: 15
       Role: !GetAtt VroLambdaExecutionRole.Arn
 
       Layers:
@@ -86,6 +86,13 @@ Resources:
       Description: 'VBA Virtual Regional Office: Your RSA private key to access Lighthouse
         APIs via the Client Credentials OAuth grant type'
       SecretString: Dummy RSA key. Upload your real key.
+      KmsKeyId: !Ref KmsCmkId
+  VroLhAssertionClientId:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: 'VBA Virtual Regional Office: Your private client ID to access
+      Lighthouse APIs'
+      SecretString: Dummy Id. Upload your real Id
       KmsKeyId: !Ref KmsCmkId
 
   VroLambdaExecutionRole:
@@ -112,7 +119,9 @@ Resources:
           Statement:
           - Effect: Allow
             Action: secretsmanager:GetSecretValue
-            Resource: !Ref VroLhPrivateRsaKey
+            Resource:
+            - !Ref VroLhPrivateRsaKey
+            - !Ref LighthousePrivateClientIdArn
           - Effect: Allow
             Action: kms:Decrypt
             Resource: '*'
