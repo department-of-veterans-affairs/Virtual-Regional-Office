@@ -21,6 +21,5 @@ def get_secret_from_secrets_manager_by_name(
 ):  # pragma: no cover
     smClient = boto3.client("secretsmanager")
     secret_info = smClient.get_secret_value(SecretId=awsSecretArn)
-    print(secret_info)
     secret = secret_info["SecretString"]
     return secret
