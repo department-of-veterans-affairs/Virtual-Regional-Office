@@ -34,7 +34,6 @@ build.stack.deployment.requirements: build.requirements
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt; \
 	$(POETRY) install; \
-	mkdir $(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	cd ..; \
 
 .PHONY: download.wkhtmltopdf
