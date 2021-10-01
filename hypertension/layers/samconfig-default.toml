@@ -1,0 +1,6 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "vro--layers"
+s3_prefix = "vro--layers"
