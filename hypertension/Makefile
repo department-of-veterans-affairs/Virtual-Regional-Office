@@ -18,6 +18,7 @@ clean: ##=> Deletes current build environment and latest build
 clean.layers:
 	rm -rf ./$(AWS_LAMBDA_LAYERS_DIR)/.aws-sam/; \
 	rm -rf ./$(AWS_LAMBDA_LAYERS_DIR)/vro--wkhtmltopdf/; \
+	rm -rf ./$(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	rm ./$(STACK_DEPLOYMENT_SCRIPTS_DIR)/wkhtmltox*;
 
 # Notice that when building for SAM and deploying via SAM, to get your packages right, SAM only
@@ -33,6 +34,7 @@ build.stack.deployment.requirements: build.requirements
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt; \
 	$(POETRY) install; \
+	mkdir $(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	cd ..; \
 
 .PHONY: download.wkhtmltopdf
@@ -40,6 +42,10 @@ download.wkhtmltopdf:
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) run python ./download_wkhtmltopdf.py; \
 	cd ..; \
+
+.PHONY: create.directory
+create.directory:
+	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
 
 .PHONY: build.sam.layers
 build.sam.layers:
@@ -51,7 +57,9 @@ build.sam.layers:
 
 .PHONY: build.requirements
 build.requirements:
+	make create.directory; \
 	cd ./${PYTHON_PROJECT_DIR} ; \
+	ls ../$(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
 
