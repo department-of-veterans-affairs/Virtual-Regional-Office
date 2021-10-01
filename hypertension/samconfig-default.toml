@@ -3,4 +3,5 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "vro--vro-main"
+s3_prefix = "vro--vro-main"
 parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
