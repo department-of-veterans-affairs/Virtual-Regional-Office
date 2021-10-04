@@ -33,8 +33,6 @@ Parameters:
     Type: String
   LighthouseObservationLoincCode:
     Type: String
-  LighthousePrivateClientIdArn:
-    Type: String
 
   # Environment switching
   STAGE:
@@ -69,7 +67,7 @@ Resources:
           LighthouseOAuthAssertionType: !Ref LighthouseOAuthAssertionType
           # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
           LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
-          LighthousePrivateClientIdArn: !Ref LighthousePrivateClientIdArn
+          LighthousePrivateClientIdArn: !Ref VroLhAssertionClientId
           KmsCmkId: !Ref KmsCmkId
           LighthouseObservationUrl: !Ref LighthouseObservationUrl
           LighthouseObservationCategory: !Ref LighthouseObservationCategory
@@ -121,7 +119,7 @@ Resources:
             Action: secretsmanager:GetSecretValue
             Resource:
             - !Ref VroLhPrivateRsaKey
-            - !Ref LighthousePrivateClientIdArn
+            - !Ref VroLhAssertionClientId
           - Effect: Allow
             Action: kms:Decrypt
             Resource: '*'

@@ -58,7 +58,6 @@ build.sam.layers:
 build.requirements:
 	make create.directory; \
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	ls ../$(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
 

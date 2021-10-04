@@ -23,6 +23,8 @@ def test_set_parameter_overrides():
 [default]
 [default.deploy]
 [default.deploy.parameters]
+stack_name = "vro--vro-main"
+s3_prefix = "vro--vro-main"
 parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
 """
 
@@ -32,12 +34,10 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
         "LighthouseJwtScope",
         "LighthouseOAuthGrantType",
         "LighthouseOAuthAssertionType",
-        "VroLhPrivateRsaKey",
         "KmsCmkId",
         "LighthouseObservationUrl",
         "LighthouseObservationCategory",
         "LighthouseObservationLoincCode",
-        "LighthousePrivateClientIdArn",
         "STAGE",
         "PdfGeneratorLayerArn",
         "PythonDependenciesLayerArn",
