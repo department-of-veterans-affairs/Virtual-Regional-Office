@@ -45,9 +45,13 @@ make pytest
 ```
 
 To build the lambda package locally and run the function in a container:
-
 ```sh
 make invoke.sam.local
+```
+
+:exclamation:***Note*** *You will need to deploy the lambda layers to AWS before you can invoke the stack locally with the above command. AWS SAM lacks support for local invocation of a function that utilizes lambda layers from another stack without being able to reference the layer ARNs, which will only be defined once they're deployed in the relevant AWS environment. If they are already deployed to the environment you're referencing locally, you can update configuration with those layer ARNs by running:*
+```sh
+make update.function.template.layers
 ```
 
 ## Deploy Everything to AWS
