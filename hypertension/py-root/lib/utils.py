@@ -12,7 +12,7 @@ from lib.aws_secrets_manager import (
 def load_config(
     icn: str,
     key_loc: Optional[str] = None,
-    client_id_loc: Optional[str] = None,
+    client_id: Optional[str] = None,
 ) -> dict:
 
     if key_loc:
@@ -22,9 +22,7 @@ def load_config(
             os.environ["LighthousePrivateRsaKeySecretArn"]
         )
 
-    if client_id_loc:
-        client_id = load_secret(client_id_loc)
-    else:
+    if not client_id:
         client_id = get_secret_from_secrets_manager_by_name(
             os.environ["LighthousePrivateClientIdArn"]
         )
