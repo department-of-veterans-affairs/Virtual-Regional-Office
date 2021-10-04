@@ -17,8 +17,6 @@ Parameters:
     Type: String
   LighthouseJwtScope:
     Type: String
-  LighthouseOAuthClientId:
-    Type: String
   LighthouseOAuthGrantType:
     Type: String
   LighthouseOAuthAssertionType:
@@ -62,7 +60,6 @@ Resources:
           LighthouseTokenUrl: !Ref LighthouseTokenUrl
           LighthouseJwtAudUrl: !Ref LighthouseJwtAudUrl
           LighthouseJwtScope: !Ref LighthouseJwtScope
-          LighthouseOAuthClientId: !Ref LighthouseOAuthClientId
           LighthouseOAuthGrantType: !Ref LighthouseOAuthGrantType
           LighthouseOAuthAssertionType: !Ref LighthouseOAuthAssertionType
           # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
