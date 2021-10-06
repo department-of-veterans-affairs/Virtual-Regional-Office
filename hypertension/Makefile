@@ -66,6 +66,8 @@ build.requirements:
 build.local:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) --version ; \
+	$(POETRY) self update ; \
+	$(POETRY) --version ; \
 	$(POETRY) install ; \
 	$(POETRY) run pylint *.py ; \
 	$(POETRY) run pylint lib/*.py ; \
@@ -94,7 +96,6 @@ pytest:
 .PHONY: pytest.ci
 pytest.ci: build.local
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) --version ; \
 	$(POETRY) run pytest --capture=no ;
 
 # The lambda layers need to be deployed to AWS with their arns
