@@ -7,12 +7,12 @@ load_dotenv("../cf-template-params.env")
 
 
 def update_file(path, search_regex, new_string):
-    orig = Path(path).read_text()
+    orig = Path(path).read_text(encoding="utf-8")
 
     p = re.compile(search_regex)
     new_file_contents = p.sub(new_string, orig)
 
-    Path(path).write_text(new_file_contents)
+    Path(path).write_text(new_file_contents, encoding="utf-8")
 
 
 def set_parameter_overrides(samconfig_file_path):

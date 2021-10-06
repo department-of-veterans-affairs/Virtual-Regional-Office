@@ -5,7 +5,7 @@ from test.doubles.lighthouse import (
 
 from test.data.lighthouse import lh_observation_success_response
 
-import lib.lighthouse as lighthouse
+from lib import lighthouse
 
 from lib.main import main
 

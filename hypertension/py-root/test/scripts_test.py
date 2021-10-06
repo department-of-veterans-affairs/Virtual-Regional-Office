@@ -16,7 +16,7 @@ def test_set_parameter_overrides():
     # Get actual
     samconfig_file_path = "./test/data/samconfig-default.toml"
     set_parameter_overrides(samconfig_file_path)
-    actual = Path(samconfig_file_path).read_text()
+    actual = Path(samconfig_file_path).read_text(encoding="utf-8")
 
     # Construct expected
     samconfig_default_content = """version = 0.1
@@ -61,4 +61,6 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
     assert actual == expected
 
     # Cleanup
-    Path(samconfig_file_path).write_text(samconfig_default_content)
+    Path(samconfig_file_path).write_text(
+        samconfig_default_content, encoding="utf-8"
+    )
