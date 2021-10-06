@@ -61,13 +61,9 @@ build.requirements:
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
 
-# Use pylint --exit-zero so that TODOs in our code don't cause our CI jobs to fail
 .PHONY: build.local
 build.local:
 	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) --version ; \
-	$(POETRY) self update ; \
-	$(POETRY) --version ; \
 	$(POETRY) install ; \
 	$(POETRY) run pylint *.py ; \
 	$(POETRY) run pylint lib/*.py ; \
@@ -76,6 +72,32 @@ build.local:
 	$(POETRY) run pylint test/doubles/*.py ; \
 	$(POETRY) run flake8 --exclude=.venv ; \
 	$(POETRY) run black . --exclude=/\.venv/ ;
+
+# TODO: The version of poetry that is a part of the Circle CI python image produces error
+# "[TypeError] unhashable type: 'VersionUnion'". I think this happens during our `$(POETRY) install`
+# command.
+# Notice a person on the fllowing thread said the got around this VersionUnion problem by upgrading
+# poetry:
+# https://github.com/python-poetry/poetry/issues/2340
+# Also, sure enough, the Circle CI python image has a bit old version of poetry
+# So, we are copying this person's workaround and by doing `$(POETRY) self update` to have the
+# Circle CI python image upgrade its poetry version. It works!
+# After the circle CI people update the Circle CI python image with a newer version of poetry
+# (and this problem is gone), completely get rid of our build.ci command, and make pytest.ci depend
+# on build.local instead.
+# For an example of the Circle CI people maintaining their python image to fix a different issue,
+# see:
+# https://github.com/circleci/circleci-images/issues/335
+# https://github.com/CircleCI-Public/circleci-dockerfiles/blob/master/python/images/3.7.2-stretch/Dockerfile#L81
+# https://github.com/circleci/circleci-images/pull/336
+.PHONY: build.ci
+build.ci:
+	cd ./${PYTHON_PROJECT_DIR} ; \
+	$(POETRY) --version ; \
+	$(POETRY) self update ; \
+	$(POETRY) --version ; \
+	cd .. ; \
+  make build.local
 
 .PHONY: update.function.template.layers
 update.function.template.layers:
@@ -94,7 +116,7 @@ pytest:
 	$(POETRY) run ptw -c -- --capture=no ;
 
 .PHONY: pytest.ci
-pytest.ci: build.local
+pytest.ci: build.ci
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pytest --capture=no ;
 
