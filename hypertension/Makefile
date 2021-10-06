@@ -61,8 +61,8 @@ build.requirements:
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
 
-.PHONY: pylint
-pylint:
+.PHONY: lint
+lint:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pylint *.py ; \
 	$(POETRY) run pylint lib/*.py ; \
@@ -71,11 +71,14 @@ pylint:
 	$(POETRY) run pylint test/doubles/*.py ; \
 	$(POETRY) run flake8 --exclude=.venv ; \
 	$(POETRY) run black . --exclude=/\.venv/ ;
+	cd .. ; \
 
 .PHONY: build.local
-build.local: pylint
+build.local:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
+	cd .. ; \
+	make lint; \
 
 # TODO: The version of poetry that is a part of the Circle CI python image produces error
 # "[TypeError] unhashable type: 'VersionUnion'". I think this happens during our `$(POETRY) install`
