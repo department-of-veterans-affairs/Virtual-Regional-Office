@@ -122,10 +122,6 @@ aws secretsmanager put-secret-value --secret-id THE_SECRET_NAME_FROM_THE_LAST_ST
 
 You should also upload the Lighthouse Client ID, because the private key can only be used in conjunction with its matching client ID, and storing the client ID in AWS Secrets Manager is preferable to passing it around via other means.
 
-The name for the client ID in AWS Secrets Manager is expected to be in the parameter `LighthousePrivateClientIdArn`. This is expected to be a string with the value of the client ID.
-
-The Lighthouse Private RSA Key and the Lighthouse Client ID must both be associated with the same key in Key Management Service.
-
 ### Subsequent Deployment
 
 You'll always need to retrieve and export AWS MFA session credentials before deployment.
