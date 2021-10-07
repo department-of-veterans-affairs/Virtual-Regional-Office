@@ -24,7 +24,7 @@ cp cf-template-params-example.env cf-template-params.env
 
 Note: For deployment to AWS, you'll need to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
 
-## Develop and Test the Python Functions Locally
+## Develop and Test Locally
 
 This workflow is for locally developing the individual Python functions and locally running their automated tests, via Python, pytest, and pytest-watch on your machine.
 
@@ -54,7 +54,7 @@ make invoke.sam.local
 make update.function.template.layers
 ```
 
-## Deploy Everything to AWS
+## Deploy
 
 Install the following [tools](#Tools):
 - AWS CLI
@@ -66,20 +66,22 @@ Recommended: Learn [AWS tutorial number 2](#AWS-Tutorials).
 
 ### Initial Deployment
 
-#### Prep `samconfig.toml` to Receive `parameter_overrides` Values
+#### 1. Prep `samconfig.toml` to Receive `parameter_overrides` Values
 
-`cp samconfig-default.toml samconfig.toml`
+```sh
+cp samconfig-default.toml samconfig.toml
+```
 
-#### Manually Create the AWS KMS Customer Managed Key (CMK).
+#### 2. Manually Create the AWS KMS Customer Managed Key (CMK)
 
 This is ideal for two reasons:
 
 - Our SAM stack has circular dependencies that cannot be cleanly resolved. See [design-notes.md](docs/design-notes.md).
 - We don't want to accidentally create a KMS key having a policy that lacks proper administrators with proper permissions. If a key were to get created without the proper policy, it's possible we would not be able to use or delete the key. We would have to contact AWS to delete it. This manual process is the safest way to create the key policy.
 
-1. Log into the AWS Console for AWS KMS.
+2.1. Log into the AWS Console for AWS KMS.
 
-2. Create a symmetric CMK with these options:
+2.2. Create a symmetric CMK with these options:
 - Key type >> `Symmetric`
 - Advanced options >> Key material origin >> `KMS`
 - Alias >> `VroKmsCmk`
@@ -88,39 +90,54 @@ This is ideal for two reasons:
 - Key administrators >> `Choose the VRO application developer as well as any other users who need privileges to administer the key.`
 - Key users >> `Choose the VRO application developer.`
 
-Note: The key policy will be changed in step 5 below. Therefore, the only strict requirement for the selection of key administrators and key users is that the user who will perform step 5 below must be among the group of key administrators selected above.
+Note: The key policy will be changed in step 6 below. Therefore, the only strict requirement for the selection of key administrators and key users is that the user who will perform step 6 below must be among the group of key administrators selected above.
 
-3. After the CMK is created, plug the key's ID into your `cf-template-params.env`.
+#### 3. Use the CMK
 
-4. Retrieve and export temporary AWS MFA session credentials. See [AWS MFA Authentication](#aws-mfa-authentication) for help with this.
+After the CMK is created, plug the key's ID into your `cf-template-params.env`.
 
-5. Deploy the SAM stack to AWS via `make deploy.stack`.
+#### 4. Authenticate to AWS
 
-6. Edit the CMK's policy via the AWS console. Set the key policy to the contents of file `kms-key-policy-statements.json` in this repo, including the ARN of the Lambda execution role created in step 4.
+See [AWS MFA Authentication](#aws-mfa-authentication).
 
-### Upload Your Lighthouse Private RSA Key to Secrets Manager
+#### 5. Deploy Both the Main SAM/CF Stack and the Layers SAM/CF Stack to AWS
 
-Base64 encode your PEM.
+```sh
+make deploy.stack
+```
+
+#### 6. Set Your CMK's Policy
+
+Edit the CMK's policy via the AWS console. Set the key policy to the contents of file `kms-key-policy-statements.json` in this repo, including the ARN of the Lambda execution role created in step 5.
+
+#### 7. Set Your Secret Values in AWS SecretsManager
+
+Base64 encode your Lightouse private RSA key PEM. This will be your secret value.
 (_See [design-notes.md](docs/design-notes.md#Our-Solution) for rationale._)
 ```sh
 base64 /PATH/TO/YOUR_RSA_PEM_KEY_FILE
 ```
 
-Get the ARN of your Secrets Manager secret:
+Via either the AWS console or CLI (see commands below), upload
+- The Base64 encoded Lighthouse private RSA key PEM to the `VroLhPrivateRsaKey` secret
+- The Lighthouse OAuth client ID to the `VroLhAssertionClientId` secret
+
+##### Generic Secret Upload Commands
+
+Get the ARN of your Secrets Manager secrets
 ```sh
-aws cloudformation describe-stack-resources --stack-name houli-vro
+aws cloudformation describe-stack-resources --stack-name STACK_NAME
 ```
 
-Get the name of the secret:
+Get the name of each secret
 ```sh
 aws secretsmanager describe-secret --secret-id THE_SECRET_ARN_FROM_THE_LAST_STEP
 ```
 
+Upload the secret values
 ```sh
-aws secretsmanager put-secret-value --secret-id THE_SECRET_NAME_FROM_THE_LAST_STEP --secret-string YOUR_BASE_64_ENCODED_SECRET
+aws secretsmanager put-secret-value --secret-id THE_SECRET_NAME_FROM_THE_LAST_STEP --secret-string SECRET_VALUE
 ```
-
-You should also upload the Lighthouse Client ID, because the private key can only be used in conjunction with its matching client ID, and storing the client ID in AWS Secrets Manager is preferable to passing it around via other means.
 
 ### Subsequent Deployment
 
@@ -155,7 +172,7 @@ Learn how to use AWS SAM CLI. (The CloudFormation and Lambda stack parts are app
 
 # AWS MFA Authentication
 
-VA AWS environments have multi-factor authentication set up for every IAM user. Therefore, in order to run AWS CLI commands for these environments, we have to retrieve temporary session credentials based on our MFA serial/token codes, and then set those temporary credentials as AWS environment variables.
+VA AWS environments have multi-factor authentication setup for every IAM user. Therefore, in order to run AWS CLI commands for these environments, we have to retrieve session credentials based on our MFA serial/token codes, and then set those credentials as AWS environment variables.
 
 We have a helper script for exporting session credentials to your shell environment. You can run this script by running:
 
