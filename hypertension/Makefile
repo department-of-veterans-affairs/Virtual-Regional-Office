@@ -31,13 +31,13 @@ clean.layers:
 # Notice that when building for SAM and deploying via SAM, to get your packages right, SAM only
 # depends on a proper requirements.txt; not the poetry virtual environment dir, for example.
 .PHONY: build.sam
-build.sam:
+build.sam: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
 	$(SAM) build
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run python set_parameter_overrides.py ;
 
 .PHONY: build.stack.deployment.requirements
-build.stack.deployment.requirements: build.requirements
+build.stack.deployment.requirements: build.requirements ## `sam build` the Layers SAM/CloudFormation stack
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt; \
 	$(POETRY) install; \
@@ -65,7 +65,7 @@ build.requirements:
 	cd ..; \
 
 .PHONY: lint
-lint:
+lint: ## Runs pylint, flake8, and black
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pylint *.py ; \
 	$(POETRY) run pylint lib/*.py ; \
@@ -77,7 +77,7 @@ lint:
 	cd .. ; \
 
 .PHONY: install-and-lint
-install-and-lint:
+install-and-lint: ## Runs poetry install and Makefile lint job
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
 	cd .. ; \
@@ -126,7 +126,7 @@ pytest:
 	$(POETRY) run ptw -c -- --capture=no ;
 
 .PHONY: pytest.ci
-pytest.ci: build.ci
+pytest.ci: build.ci ## Runs the unit tests with no watch on the pytest. (Intended for use by CI tools.)
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pytest --capture=no ;
 
