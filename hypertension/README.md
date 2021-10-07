@@ -113,9 +113,9 @@ If the deployment environment already has instances of the lambda and layers dep
 
 - If additions or updates are made to the dependencies layer (or, rarely, the wkhtmltopodf layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
 
-```sh
-make deploy.stack
-```
+    ```sh
+    make deploy.stack
+    ```
 
 ### Upload Your Lighthouse Private RSA Key to Secrets Manager
 
@@ -158,6 +158,7 @@ Learn how to use AWS SAM CLI. (The CloudFormation and Lambda stack parts are app
 - https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-state-machine-using-sam.html
 
 # AWS MFA Authentication
+
 VA AWS environments have multi-factor authentication set up for every IAM user. Therefore, in order to run AWS CLI commands for these environments, we have to retrieve temporary session credentials based on our MFA serial/token codes, and then set those temporary credentials as AWS environment variables.
 
 We have a helper script for exporting session credentials to your shell environment. You can run this script by running:
@@ -168,6 +169,7 @@ source export_aws_mfa_credentials.sh
 ```
 
 # Git Workflow
+
 We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
 
 Pull requests are submitted on Github and require review in order to be merged. Our process is that reviewers approve and the submitter of the PR then merges to `develop`.
