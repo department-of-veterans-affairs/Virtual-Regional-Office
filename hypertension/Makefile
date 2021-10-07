@@ -37,7 +37,8 @@ build.sam: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parame
 	$(POETRY) run python set_parameter_overrides.py ;
 
 .PHONY: build.stack.deployment.requirements
-build.stack.deployment.requirements: build.requirements ## `sam build` the Layers SAM/CloudFormation stack
+build.stack.deployment.requirements: ## `sam build` the Layers SAM/CloudFormation stack
+	make build.requirements ; \
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt; \
 	$(POETRY) install; \
@@ -115,7 +116,8 @@ update.function.template.layers:
 	cd ..; \
 
 .PHONY: build.and.pytest
-build.and.pytest: install-and-lint
+build.and.pytest:
+	make install-and-lint ; \
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run ptw -c -- --capture=no ;
 
@@ -139,7 +141,8 @@ invoke.sam.local:
 	$(SAM) local invoke --parameter-overrides '$(shell cat cf-template-params.env)' -e $(PYTHON_PROJECT_DIR)/pdf-event.json
 
 .PHONY: deploy.sam.guided
-deploy.sam.guided: build.sam ## Guided deploy that is typically run for the first time only
+deploy.sam.guided: ## Guided deploy that is typically run for the first time only
+	make build.sam ; \
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 # should only be run if the function/layers aren't already deployed to the same environment
@@ -152,7 +155,8 @@ deploy.sam.layers.guided:
 	cd ..; \
 
 .PHONY: deploy.sam
-deploy.sam: build.sam ## Deploy app using previously saved SAM CLI configuration
+deploy.sam: ## Deploy app using previously saved SAM CLI configuration
+	make build.sam ; \
 	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM
 
 # SHOULD BE RUN FOR DEPLOYMENT OF THE LAMBDA STACK (INCLUDING LAYERS)
@@ -166,7 +170,8 @@ deploy.sam: build.sam ## Deploy app using previously saved SAM CLI configuration
 #
 # Deploys layers first and then the lambda function
 .PHONY: deploy.stack
-deploy.stack: build.stack.deployment.requirements
+deploy.stack:
+	make build.stack.deployment.requirements; \
 	make download.wkhtmltopdf; \
 	make build.sam.layers; \
 	make deploy.sam.layers.guided; \
