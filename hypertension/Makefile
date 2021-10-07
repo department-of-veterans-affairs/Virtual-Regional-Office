@@ -84,17 +84,17 @@ build.local:
 	make lint; \
 
 # TODO: The version of poetry that is a part of the Circle CI python image produces error
-# "[TypeError] unhashable type: 'VersionUnion'". I think this happens during our `$(POETRY) install`
-# command.
-# Notice a person on the fllowing thread said the got around this VersionUnion problem by upgrading
+# "[TypeError] unhashable type: 'VersionUnion'" (in our repo, due to some code in PR #21)
+# I think this error happens during our `$(POETRY) install` command.
+# Notice a person on the following thread said the got around this VersionUnion problem by upgrading
 # poetry:
 # https://github.com/python-poetry/poetry/issues/2340
-# Also, sure enough, the Circle CI python image has a bit old version of poetry
+# Also, sure enough, the Circle CI python image has a bit old version of poetry.
 # So, we are copying this person's workaround and by doing `$(POETRY) self update` to have the
 # Circle CI python image upgrade its poetry version. It works!
-# After the circle CI people update the Circle CI python image with a newer version of poetry
-# (and this problem is gone), completely get rid of our build.ci command, and make pytest.ci depend
-# on build.local instead.
+# After the Circle CI people update the Circle CI python image with a newer version of poetry
+# (and this problem is gone), completely get rid of our build.ci command, and change pytest.ci to
+# depend only on build.local instead.
 # For an example of the Circle CI people maintaining their python image to fix a different issue,
 # see:
 # https://github.com/circleci/circleci-images/issues/335
