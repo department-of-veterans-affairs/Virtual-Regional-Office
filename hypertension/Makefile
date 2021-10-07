@@ -9,8 +9,15 @@ AWS_LAMBDA_LAYERS_DIR:=layers
 PYTHON_DEPENDENCIES_LAYER_DIR:=$(AWS_LAMBDA_LAYERS_DIR)/vro--python-dependencies-layer
 STACK_DEPLOYMENT_SCRIPTS_DIR:=stack_deployment
 
+# Based on solution here: https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html and https://news.ycombinator.com/item?id=11195539
+help:  ## Prints out documentation for available commands
+	@awk -F ':|##' \
+		'/^[^\t].+?:.*?##/ {\
+			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
+		}' $(MAKEFILE_LIST)
+
 .PHONY: clean
-clean: ##=> Deletes current build environment and latest build
+clean: ## Deletes SAM build output
 	$(info [*] Destroying environment....)
 	rm -rf ./.aws-sam/
 
@@ -135,7 +142,7 @@ invoke.sam.local:
 	$(SAM) local invoke --parameter-overrides '$(shell cat cf-template-params.env)' -e $(PYTHON_PROJECT_DIR)/pdf-event.json
 
 .PHONY: deploy.sam.guided
-deploy.sam.guided: build.sam ##=> Guided deploy that is typically run for the first time only
+deploy.sam.guided: build.sam ## Guided deploy that is typically run for the first time only
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 # should only be run if the function/layers aren't already deployed to the same environment
@@ -148,7 +155,7 @@ deploy.sam.layers.guided:
 	cd ..; \
 
 .PHONY: deploy.sam
-deploy.sam: build.sam ##=> Deploy app using previously saved SAM CLI configuration
+deploy.sam: build.sam ## Deploy app using previously saved SAM CLI configuration
 	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM
 
 # SHOULD BE RUN FOR DEPLOYMENT OF THE LAMBDA STACK (INCLUDING LAYERS)
