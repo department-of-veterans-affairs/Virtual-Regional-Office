@@ -76,8 +76,8 @@ lint:
 	$(POETRY) run black . --exclude=/\.venv/ ;
 	cd .. ; \
 
-.PHONY: build.local
-build.local:
+.PHONY: install-and-lint
+install-and-lint:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
 	cd .. ; \
@@ -94,7 +94,7 @@ build.local:
 # Circle CI python image upgrade its poetry version. It works!
 # After the Circle CI people update the Circle CI python image with a newer version of poetry
 # (and this problem is gone), completely get rid of our build.ci command, and change pytest.ci to
-# depend only on build.local instead.
+# depend only on install-and-lint instead.
 # For an example of the Circle CI people maintaining their python image to fix a different issue,
 # see:
 # https://github.com/circleci/circleci-images/issues/335
@@ -107,7 +107,7 @@ build.ci:
 	$(POETRY) self update ; \
 	$(POETRY) --version ; \
 	cd .. ; \
-	make build.local
+	make install-and-lint ; \
 
 .PHONY: update.function.template.layers
 update.function.template.layers:
@@ -116,7 +116,7 @@ update.function.template.layers:
 	cd ..; \
 
 .PHONY: build.and.pytest
-build.and.pytest: build.local
+build.and.pytest: install-and-lint
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run ptw -c -- --capture=no ;
 
