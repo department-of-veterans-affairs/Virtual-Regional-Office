@@ -4,7 +4,6 @@ fake_env = {
     "LighthouseJwtScope": "DUMMY_DONT_CARE",
     "LighthouseOAuthGrantType": "DUMMY_DONT_CARE",
     "LighthouseOAuthAssertionType": "DUMMY_DONT_CARE",
-    "VroLhPrivateRsaKey": "DUMMY_DONT_CARE",
     "KmsCmkId": "DUMMY_DONT_CARE",
     "LighthouseObservationUrl": "DUMMY_DONT_CARE",
     "LighthouseObservationCategory": "DUMMY_DONT_CARE",
