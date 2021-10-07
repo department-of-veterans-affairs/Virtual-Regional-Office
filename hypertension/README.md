@@ -98,25 +98,6 @@ Note: The key policy will be changed in step 5 below. Therefore, the only strict
 
 6. Edit the CMK's policy via the AWS console. Set the key policy to the contents of file `kms-key-policy-statements.json` in this repo, including the ARN of the Lambda execution role created in step 4.
 
-### Subsequent Deployment
-
-You'll always need to retrieve and export AWS MFA session credentials before deployment.
-See [AWS MFA Authentication](#aws-mfa-authentication) for more.
-
-If the deployment environment already has instances of the lambda and layers deployed:
-
-- If you make changes to the lambda function but have no additions or updates to dependencies, you can deploy with:
-
-    ```sh
-    make deploy.sam
-    ```
-
-- If additions or updates are made to the dependencies layer (or, rarely, the wkhtmltopodf layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
-
-    ```sh
-    make deploy.stack
-    ```
-
 ### Upload Your Lighthouse Private RSA Key to Secrets Manager
 
 Base64 encode your PEM.
@@ -144,6 +125,25 @@ You should also upload the Lighthouse Client ID, because the private key can onl
 The name for the client ID in AWS Secrets Manager is expected to be in the parameter `LighthousePrivateClientIdArn`. This is expected to be a string with the value of the client ID.
 
 The Lighthouse Private RSA Key and the Lighthouse Client ID must both be associated with the same key in Key Management Service.
+
+### Subsequent Deployment
+
+You'll always need to retrieve and export AWS MFA session credentials before deployment.
+See [AWS MFA Authentication](#aws-mfa-authentication) for more.
+
+If the deployment environment already has instances of the lambda and layers deployed:
+
+- If you make changes to the lambda function but have no additions or updates to dependencies, you can deploy with:
+
+    ```sh
+    make deploy.sam
+    ```
+
+- If additions or updates are made to the dependencies layer (or, rarely, the wkhtmltopodf layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
+
+    ```sh
+    make deploy.stack
+    ```
 
 # AWS Tutorials
 
