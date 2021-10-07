@@ -49,10 +49,6 @@ download.wkhtmltopdf:
 	$(POETRY) run python ./download_wkhtmltopdf.py; \
 	cd ..; \
 
-.PHONY: create.directory
-create.directory:
-	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
-
 .PHONY: build.sam.layers
 build.sam.layers:
 	cd ./$(PYTHON_DEPENDENCIES_LAYER_DIR); \
@@ -63,7 +59,7 @@ build.sam.layers:
 
 .PHONY: build.requirements
 build.requirements:
-	make create.directory; \
+	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
