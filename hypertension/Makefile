@@ -93,21 +93,20 @@ install-and-lint: ## Runs poetry install and Makefile lint job
 # So, we are copying this person's workaround and by doing `$(POETRY) self update` to have the
 # Circle CI python image upgrade its poetry version. It works!
 # After the Circle CI people update the Circle CI python image with a newer version of poetry
-# (and this problem is gone), completely get rid of our build.ci command, and change pytest.ci to
+# (and this problem is gone), completely get rid of our update-poetry command, and change pytest.ci to
 # depend only on install-and-lint instead.
 # For an example of the Circle CI people maintaining their python image to fix a different issue,
 # see:
 # https://github.com/circleci/circleci-images/issues/335
 # https://github.com/CircleCI-Public/circleci-dockerfiles/blob/master/python/images/3.7.2-stretch/Dockerfile#L81
 # https://github.com/circleci/circleci-images/pull/336
-.PHONY: build.ci
-build.ci:
+.PHONY: update-poetry
+update-poetry:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) --version ; \
 	$(POETRY) self update ; \
 	$(POETRY) --version ; \
 	cd .. ; \
-	make install-and-lint ; \
 
 .PHONY: update.function.template.layers
 update.function.template.layers:
@@ -126,7 +125,9 @@ pytest:
 	$(POETRY) run ptw -c -- --capture=no ;
 
 .PHONY: pytest.ci
-pytest.ci: build.ci ## Runs the unit tests with no watch on the pytest. (Intended for use by CI tools.)
+pytest.ci: ## Updates poetry (see comment on update-poetry command) and runs the unit tests with no watch on the pytest. (Intended for use by CI tools.)
+	make update-poetry ; \
+  make install-and-lint ; \
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pytest --capture=no ;
 
