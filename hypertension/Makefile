@@ -105,7 +105,7 @@ build.ci:
 	$(POETRY) --version ; \
 	cd .. ; \
 	make build.local
-	apt-get install wkhtmltopdf
+	sudo apt-get install wkhtmltopdf
 
 .PHONY: update.function.template.layers
 update.function.template.layers:
