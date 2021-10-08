@@ -9,7 +9,6 @@ fake_env = {
     "LighthouseObservationCategory": "DUMMY_DONT_CARE",
     "LighthouseObservationLoincCode": "DUMMY_DONT_CARE",
     "LighthousePrivateClientIdArn": "DUMMY_DONT_CARE",
-    "Stage": "dev",
     "PdfGeneratorLayerArn": "DUMMY_DONT_CARE",
     "PythonDependenciesLayerArn": "DUMMY_DONT_CARE",
 }

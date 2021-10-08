@@ -38,7 +38,6 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
         "LighthouseObservationUrl",
         "LighthouseObservationCategory",
         "LighthouseObservationLoincCode",
-        "STAGE",
         "PdfGeneratorLayerArn",
         "PythonDependenciesLayerArn",
     ]
