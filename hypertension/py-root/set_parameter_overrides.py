@@ -26,7 +26,6 @@ def set_parameter_overrides(samconfig_file_path):
         "LighthouseObservationUrl",
         "LighthouseObservationCategory",
         "LighthouseObservationLoincCode",
-        "STAGE",
         "PdfGeneratorLayerArn",
         "PythonDependenciesLayerArn",
     ]
