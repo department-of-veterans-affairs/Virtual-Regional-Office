@@ -32,19 +32,6 @@ Parameters:
   LighthouseObservationLoincCode:
     Type: String
 
-  # Environment switching
-  STAGE:
-    Type: String
-    AllowedValues:
-    - dev
-    - prod
-
-Globals:
-  Function:
-    Environment:
-      Variables:
-        STAGE: !Ref STAGE
-
 Resources:
   VroMainFunction:
     Type: AWS::Serverless::Function
@@ -93,7 +80,7 @@ Resources:
   VroLambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: vro-lambda-execution-role
+      RoleName: vro-lambda-execution-role-with-layers
         # "Allows Lambda to assume this role"
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
