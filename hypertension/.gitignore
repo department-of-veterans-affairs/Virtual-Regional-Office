@@ -7,3 +7,4 @@ __pycache__
 build/*
 cf-template-params.env
 layers/vro--python-dependencies-layer/requirements.txt
+layers/vro--wkhtmltopdf
