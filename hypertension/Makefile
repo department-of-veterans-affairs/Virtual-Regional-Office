@@ -105,6 +105,9 @@ build.ci:
 	$(POETRY) --version ; \
 	cd .. ; \
 	make build.local
+	sudo add-apt-repository ppa:pov/wkhtmltopdf
+	sudo add-apt-repository ppa:ecometrica/servers
+	sudo apt-get update
 	sudo apt-get install wkhtmltopdf
 
 .PHONY: update.function.template.layers
