@@ -105,6 +105,7 @@ build.ci:
 	$(POETRY) --version ; \
 	cd .. ; \
 	make build.local
+	lsb_release -a
 	sudo add-apt-repository ppa:pov/wkhtmltopdf
 	sudo add-apt-repository ppa:ecometrica/servers
 	sudo apt-get update
