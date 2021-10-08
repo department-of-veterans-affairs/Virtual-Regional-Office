@@ -104,7 +104,8 @@ build.ci:
 	$(POETRY) self update ; \
 	$(POETRY) --version ; \
 	cd .. ; \
-  make build.local
+	make build.local
+	apt-get install wkhtmltopdf
 
 .PHONY: update.function.template.layers
 update.function.template.layers:
