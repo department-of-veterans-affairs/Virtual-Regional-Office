@@ -11,17 +11,10 @@ workflows:
 jobs:
   pytest:
     docker:
-      - image: cimg/python:3.8.6
+      - image: julialeague/vro-hypertension-wkhtmltopdf:0.0.5
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
       - run:
           name: "Unit Tests"
           command: "cd hypertension; make pytest.ci"
           no_output_timeout: 10s
-      - save_cache:
-          key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
-          paths:
-            - hypertension/py-root/.venv

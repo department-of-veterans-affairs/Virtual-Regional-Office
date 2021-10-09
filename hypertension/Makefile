@@ -101,16 +101,8 @@ build.local:
 build.ci:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) --version ; \
-	$(POETRY) self update ; \
-	$(POETRY) --version ; \
 	cd .. ; \
 	make build.local
-	sudo apt install fontconfig
-	sudo apt install libjpeg-turbo8
-	sudo apt install xfonts-75dpi
-	sudo apt install xfonts-base
-	wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
-	sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
 
 # lsb_release -a
 # sudo add-apt-repository ppa:pov/wkhtmltopdf
