@@ -18,6 +18,12 @@ jobs:
           keys:
             - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
       - run:
+          name: "sudo apt-add-repository canonical"
+          command: 'sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"'
+      - run:
+          name: "sudo apt-get install wkhtmltopdf"
+          command: "sudo apt-get install wkhtmltopdf"
+      - run:
           name: "Unit Tests"
           command: "cd hypertension; make pytest.ci"
           no_output_timeout: 10s
