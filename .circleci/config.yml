@@ -20,11 +20,13 @@ jobs:
       - run:
           name: "Installing wkhtmltopdf"
           command: |-
-              sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
-              sudo apt-get install wkhtmltopdf
+              sudo add-apt-repository "deb https://archive.canonical.com/ $(lsb_release -sc) partner"
+              sudo apt install wkhtmltopdf
       - run:
           name: "Running unit tests"
-          command: "cd hypertension; make pytest.ci"
+          command: |-
+              cd hypertension
+              make pytest.ci
           no_output_timeout: 10s
       - save_cache:
           key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
