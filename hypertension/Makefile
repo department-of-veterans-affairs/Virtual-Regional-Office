@@ -36,9 +36,8 @@ build.sam: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parame
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run python set_parameter_overrides.py ;
 
-.PHONY: build.stack.deployment.requirements
-build.stack.deployment.requirements: ## `sam build` the Layers SAM/CloudFormation stack
-	make build.requirements ; \
+.PHONY: poetry-install-deploy-tool
+poetry-install-deploy-tool: ## Runs poetry install for the deployment tools' dependencies
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
 	$(POETRY) install; \
 	cd ..; \
@@ -76,8 +75,8 @@ lint: ## Runs pylint, flake8, and black
 	$(POETRY) run black . --exclude=/\.venv/ ;
 	cd .. ; \
 
-.PHONY: poetry-install
-poetry-install: ## Runs poetry install and Makefile lint job
+.PHONY: poetry-install-py-root
+poetry-install-py-root: ## Runs poetry install in py-root directory
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
 	cd .. ; \
@@ -93,7 +92,7 @@ poetry-install: ## Runs poetry install and Makefile lint job
 # Circle CI python image upgrade its poetry version. It works!
 # After the Circle CI people update the Circle CI python image with a newer version of poetry
 # (and this problem is gone), completely get rid of our update-poetry command, and change test-ci to
-# depend only on poetry-install and lint instead.
+# depend only on poetry-install-py-root and lint instead.
 # For an example of the Circle CI people maintaining their python image to fix a different issue,
 # see:
 # https://github.com/circleci/circleci-images/issues/335
@@ -115,7 +114,7 @@ update.function.template.layers:
 
 .PHONY: test
 test:
-	make poetry-install ; \
+	make poetry-install-py-root ; \
 	make lint ; \
 	make test-only ; \
 
@@ -127,7 +126,7 @@ test-only:
 .PHONY: test-ci
 test-ci: ## Updates poetry (see comment on update-poetry command) and runs the unit tests with no watch on the pytest. (Intended for use by CI tools.)
 	make update-poetry ; \
-  make poetry-install ; \
+  make poetry-install-py-root ; \
 	make lint ; \
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pytest --capture=no ;
@@ -170,7 +169,8 @@ deploy.sam: ## Deploy app using previously saved SAM CLI configuration
 # Deploys layers first and then the lambda function
 .PHONY: deploy.stack
 deploy.stack:
-	make build.stack.deployment.requirements; \
+	make build.requirements; \
+	make poetry-install-deploy-tool; \
 	make download.wkhtmltopdf; \
 	make build.sam.layers; \
 	make deploy.sam.layers.guided; \
