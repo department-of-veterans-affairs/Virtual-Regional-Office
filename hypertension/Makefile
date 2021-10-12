@@ -40,7 +40,6 @@ build.sam: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parame
 build.stack.deployment.requirements: ## `sam build` the Layers SAM/CloudFormation stack
 	make build.requirements ; \
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
-	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt; \
 	$(POETRY) install; \
 	cd ..; \
 
