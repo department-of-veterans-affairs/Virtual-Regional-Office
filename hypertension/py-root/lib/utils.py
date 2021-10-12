@@ -56,13 +56,13 @@ def load_config(
 
 def load_secret(key_file: Union[Path, str]) -> str:
     if Path(key_file).exists():
-        return Path(key_file).read_text()
+        return Path(key_file).read_text(encoding="utf-8")
 
     raise SystemError(f"Keyfile {key_file} not found")
 
 
 def load_text(path: Union[Path, str]) -> str:
-    return Path(path).read_text()
+    return Path(path).read_text(encoding="utf-8")
 
 
 def load_json(path: Union[Path, str]) -> dict:

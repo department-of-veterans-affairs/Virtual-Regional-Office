@@ -8,9 +8,9 @@ import subprocess
 from _pytest.monkeypatch import MonkeyPatch
 from dotenv import load_dotenv
 
-load_dotenv("../cf-template-params.env")
+load_dotenv("../env-test.env")
 
-import lib.lighthouse as lighthouse  # noqa: E402
+from lib import lighthouse  # noqa: E402
 from lib.utils import load_config, load_secret  # noqa: E402
 from test.doubles.lighthouse import (  # noqa: E402
     http_post_for_access_token_double,
@@ -65,9 +65,11 @@ def public_rsa_key():
 
 
 # Set the wkhtmltopdf path environment variable by finding the local binary
+# pylint: disable=subprocess-run-check
 which_wkhtmltopdf = subprocess.run(
     "which wkhtmltopdf", shell=True, capture_output=True
 )
+# pylint: enable=subprocess-run-check
 
 wkhtmltopdf_path = Path(which_wkhtmltopdf.stdout.decode().strip()).resolve()
 assert wkhtmltopdf_path.exists()

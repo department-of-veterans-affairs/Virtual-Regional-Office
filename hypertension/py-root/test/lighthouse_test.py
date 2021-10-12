@@ -8,7 +8,7 @@ from test.data.lighthouse import (
 
 import jwt
 
-import lib.lighthouse as lighthouse
+from lib import lighthouse
 
 from lib.lighthouse import fetch_observation_data, build_token_params
 

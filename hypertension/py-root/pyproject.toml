@@ -47,4 +47,5 @@ disable = [
     "no-value-for-parameter",
     "format",
     "pointless-string-statement",
+    "fixme",
 ]

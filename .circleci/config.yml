@@ -1,0 +1,34 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.2
+
+workflows:
+  pytest:
+    jobs:
+      - pytest
+
+jobs:
+  pytest:
+    docker:
+      - image: cimg/python:3.8.6
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - vro-{{ checksum "hypertension/py-root/poetry.lock"}}
+      - run:
+          name: "Installing wkhtmltopdf"
+          command: |-
+              sudo add-apt-repository "deb https://archive.canonical.com/ $(lsb_release -sc) partner"
+              sudo apt install wkhtmltopdf
+      - run:
+          name: "Running unit tests"
+          command: |-
+              cd hypertension
+              make pytest.ci
+          no_output_timeout: 10s
+      - save_cache:
+          key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}
+          paths:
+            - hypertension/py-root/.venv
