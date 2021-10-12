@@ -77,12 +77,11 @@ lint: ## Runs pylint, flake8, and black
 	$(POETRY) run black . --exclude=/\.venv/ ;
 	cd .. ; \
 
-.PHONY: install-and-lint
-install-and-lint: ## Runs poetry install and Makefile lint job
+.PHONY: poetry-install
+poetry-install: ## Runs poetry install and Makefile lint job
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) install ; \
 	cd .. ; \
-	make lint; \
 
 # TODO: The version of poetry that is a part of the Circle CI python image produces error
 # "[TypeError] unhashable type: 'VersionUnion'" (in our repo, due to some code in PR #21)
@@ -94,8 +93,8 @@ install-and-lint: ## Runs poetry install and Makefile lint job
 # So, we are copying this person's workaround and by doing `$(POETRY) self update` to have the
 # Circle CI python image upgrade its poetry version. It works!
 # After the Circle CI people update the Circle CI python image with a newer version of poetry
-# (and this problem is gone), completely get rid of our update-poetry command, and change pytest.ci to
-# depend only on install-and-lint instead.
+# (and this problem is gone), completely get rid of our update-poetry command, and change test-ci to
+# depend only on poetry-install and lint instead.
 # For an example of the Circle CI people maintaining their python image to fix a different issue,
 # see:
 # https://github.com/circleci/circleci-images/issues/335
@@ -115,21 +114,22 @@ update.function.template.layers:
 	$(POETRY) run python add_deployed_layers_to_template.py --overwrite; \
 	cd ..; \
 
-.PHONY: build.and.pytest
-build.and.pytest:
-	make install-and-lint ; \
+.PHONY: test
+test:
+	make poetry-install ; \
+	make lint ; \
+	make test-only ; \
+
+.PHONY: test-only
+test-only:
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run ptw -c -- --capture=no ;
 
-.PHONY: pytest
-pytest:
-	cd ./${PYTHON_PROJECT_DIR} ; \
-	$(POETRY) run ptw -c -- --capture=no ;
-
-.PHONY: pytest.ci
-pytest.ci: ## Updates poetry (see comment on update-poetry command) and runs the unit tests with no watch on the pytest. (Intended for use by CI tools.)
+.PHONY: test-ci
+test-ci: ## Updates poetry (see comment on update-poetry command) and runs the unit tests with no watch on the pytest. (Intended for use by CI tools.)
 	make update-poetry ; \
-  make install-and-lint ; \
+  make poetry-install ; \
+	make lint ; \
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run pytest --capture=no ;
 
