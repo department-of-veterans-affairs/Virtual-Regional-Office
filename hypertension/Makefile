@@ -16,13 +16,13 @@ help:  ## Prints out documentation for available commands
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST)
 
-.PHONY: clean
-clean: ## Deletes SAM build output
+.PHONY: clean-main
+clean-main: ## Deletes SAM build output
 	$(info [*] Destroying environment....)
 	rm -rf ./.aws-sam/
 
-.PHONY: clean.layers
-clean.layers:
+.PHONY: clean-layers
+clean-layers:
 	rm -rf ./$(AWS_LAMBDA_LAYERS_DIR)/.aws-sam/; \
 	rm -rf ./$(AWS_LAMBDA_LAYERS_DIR)/vro--wkhtmltopdf/; \
 	rm -rf ./$(PYTHON_DEPENDENCIES_LAYER_DIR); \
@@ -30,8 +30,8 @@ clean.layers:
 
 # Notice that when building for SAM and deploying via SAM, to get your packages right, SAM only
 # depends on a proper requirements.txt; not the poetry virtual environment dir, for example.
-.PHONY: build.sam
-build.sam: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
+.PHONY: build-main
+build-main: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
 	$(SAM) build
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) run python set_parameter_overrides.py ;
@@ -42,14 +42,14 @@ poetry-install-deploy-tool: ## Runs poetry install for the deployment tools' dep
 	$(POETRY) install; \
 	cd ..; \
 
-.PHONY: download.wkhtmltopdf
-download.wkhtmltopdf:
+.PHONY: download-wkhtmltopdf
+download-wkhtmltopdf:
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) run python ./download_wkhtmltopdf.py; \
 	cd ..; \
 
-.PHONY: build.sam.layers
-build.sam.layers:
+.PHONY: build-layers
+build-layers:
 	cd $(AWS_LAMBDA_LAYERS_DIR); \
 	$(SAM) build; \
 	cd ..; \
@@ -104,8 +104,8 @@ update-poetry:
 	$(POETRY) --version ; \
 	cd .. ; \
 
-.PHONY: update.function.template.layers
-update.function.template.layers:
+.PHONY: add-layers-to-main-template
+add-layers-to-main-template:
 	cd ./$(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) run python add_deployed_layers_to_template.py --overwrite; \
 	cd ..; \
@@ -136,23 +136,23 @@ invoke.sam.local:
 	$(SAM) build
 	$(SAM) local invoke --parameter-overrides '$(shell cat cf-template-params.env)' -e $(PYTHON_PROJECT_DIR)/pdf-event.json
 
-.PHONY: deploy.sam.guided
-deploy.sam.guided: ## Guided deploy that is typically run for the first time only
-	make build.sam ; \
+.PHONY: deploy-main-guided
+deploy-main-guided: ## Guided deploy that is typically run for the first time only
+	make build-main ; \
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 # should only be run if the function/layers aren't already deployed to the same environment
 # deploy layers first and then the lambda function - this
 # should be done after setting up the KMS key for the first time
-.PHONY: deploy.sam.layers.guided
-deploy.sam.layers.guided:
+.PHONY: deploy-layers-guided
+deploy-layers-guided:
 	cd ${AWS_LAMBDA_LAYERS_DIR}; \
 	$(SAM) deploy --guided; \
 	cd ..; \
 
-.PHONY: deploy.sam
-deploy.sam: ## Deploy app using previously saved SAM CLI configuration
-	make build.sam ; \
+.PHONY: deploy-main
+deploy-main: ## Deploy app using previously saved SAM CLI configuration
+	make build-main ; \
 	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM
 
 # SHOULD BE RUN FOR DEPLOYMENT OF THE LAMBDA STACK (INCLUDING LAYERS)
@@ -165,13 +165,13 @@ deploy.sam: ## Deploy app using previously saved SAM CLI configuration
 # BEFORE RUNNING: ensure the manual steps have been completed for initial deployment [see README]
 #
 # Deploys layers first and then the lambda function
-.PHONY: deploy.stack
-deploy.stack:
+.PHONY: deploy-all-guided
+deploy-all-guided:
 	make create-requirements.txt; \
 	make poetry-install-deploy-tool; \
-	make download.wkhtmltopdf; \
-	make build.sam.layers; \
-	make deploy.sam.layers.guided; \
-	make update.function.template.layers; \
-	make deploy.sam.guided; \
-	make clean.layers; \
+	make download-wkhtmltopdf; \
+	make build-layers; \
+	make deploy-layers-guided; \
+	make add-layers-to-main-template; \
+	make deploy-main-guided; \
+	make clean-layers; \
