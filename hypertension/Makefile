@@ -50,9 +50,7 @@ download.wkhtmltopdf:
 
 .PHONY: build.sam.layers
 build.sam.layers:
-	cd ./$(PYTHON_DEPENDENCIES_LAYER_DIR); \
-	pip install -r requirements.txt; \
-	cd ..; \
+	cd $(AWS_LAMBDA_LAYERS_DIR); \
 	$(SAM) build; \
 	cd ..; \
 
