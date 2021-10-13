@@ -54,8 +54,8 @@ build.sam.layers:
 	$(SAM) build; \
 	cd ..; \
 
-.PHONY: build.requirements
-build.requirements:
+.PHONY: create-requirements.txt
+create-requirements.txt:
 	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	cd ./${PYTHON_PROJECT_DIR} ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
@@ -167,7 +167,7 @@ deploy.sam: ## Deploy app using previously saved SAM CLI configuration
 # Deploys layers first and then the lambda function
 .PHONY: deploy.stack
 deploy.stack:
-	make build.requirements; \
+	make create-requirements.txt; \
 	make poetry-install-deploy-tool; \
 	make download.wkhtmltopdf; \
 	make build.sam.layers; \
