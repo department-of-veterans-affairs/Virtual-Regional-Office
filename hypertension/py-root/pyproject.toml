@@ -5,7 +5,7 @@ description = "Virtual Regional Office Lambda Main"
 authors = ["Aaron Houlihan <aaron@amida.com>", "Julia Allen <julia.l.allen@gsa.gov>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 boto3 = "^1.17.87"
 pdfkit = "^0.6"
 PyJWT = "^2.1.0"

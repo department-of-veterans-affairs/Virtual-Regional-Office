@@ -5,7 +5,7 @@ description = "Deploy wkhtmltopdf AmazonLinux2 binary layer"
 authors = ["Julia Allen <julia.l.allen@gsa.gov"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 boto3 = "^1.17.87"
 requests = "^2.26.0"
 

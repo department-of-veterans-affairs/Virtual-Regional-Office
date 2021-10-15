@@ -6,7 +6,7 @@ Resources:
     Type: AWS::Serverless::LayerVersion
     Properties:
       CompatibleRuntimes:
-        - python3.8
+        - python3.9
       ContentUri: vro--wkhtmltopdf/
       Description: PDF Generator library - wkhtmltopdf
       LayerName: vro--pdf-generator-layer
@@ -15,9 +15,9 @@ Resources:
     Type: AWS::Serverless::LayerVersion
     Properties:
       CompatibleRuntimes:
-        - python3.8
+        - python3.9
       ContentUri: vro--python-dependencies-layer
       Description: Python Dependencies for VroMainFunction
       LayerName: vro--python-dependencies-layer
     Metadata:
-      BuildMethod: python3.8
+      BuildMethod: python3.9

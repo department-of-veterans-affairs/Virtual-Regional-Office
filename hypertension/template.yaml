@@ -52,7 +52,7 @@ Resources:
       Description: test description
       CodeUri: py-root/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      Runtime: python3.9
       Environment:
         Variables:
           FONTCONFIG_PATH: /opt/fonts
