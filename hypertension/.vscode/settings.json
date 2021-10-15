@@ -4,5 +4,5 @@
         "!Ref",
         "!GetAtt"
     ],
-    "python.pythonPath": "/Users/nhillard/.pyenv/versions/3.9.4/bin/python3.9"
+    "python.pythonPath": "/Users/nhillard/.pyenv/versions/3.9.7/bin/python3.9"
 }
