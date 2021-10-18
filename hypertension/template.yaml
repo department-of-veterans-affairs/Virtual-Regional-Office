@@ -80,7 +80,7 @@ Resources:
   VroLambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: vro-lambda-execution-role-with-layers
+      RoleName: vro-lambda-execution-role
         # "Allows Lambda to assume this role"
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
