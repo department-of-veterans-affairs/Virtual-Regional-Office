@@ -33,7 +33,7 @@ clean-layers:
 .PHONY: build-main
 build-main: ## `sam build`s the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
 	$(SAM) build
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) run python set_parameter_overrides.py ;
 
 .PHONY: poetry-install-deploy-tool
@@ -57,13 +57,13 @@ build-layers:
 .PHONY: create-requirements.txt
 create-requirements.txt:
 	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
 	cd ..; \
 
 .PHONY: lint
 lint: ## Runs pylint, flake8, and black
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) run pylint *.py ; \
 	$(POETRY) run pylint lib/*.py ; \
 	$(POETRY) run pylint test/*.py ; \
@@ -75,7 +75,7 @@ lint: ## Runs pylint, flake8, and black
 
 .PHONY: poetry-install-py-root
 poetry-install-py-root: ## Runs poetry install in py-root directory
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) install ; \
 	cd .. ; \
 
@@ -98,7 +98,7 @@ poetry-install-py-root: ## Runs poetry install in py-root directory
 # https://github.com/circleci/circleci-images/pull/336
 .PHONY: update-poetry
 update-poetry:
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) --version ; \
 	$(POETRY) self update ; \
 	$(POETRY) --version ; \
@@ -118,7 +118,7 @@ test:
 
 .PHONY: test-only
 test-only:
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) run ptw -c -- --capture=no ;
 
 .PHONY: test-ci
@@ -126,7 +126,7 @@ test-ci: ## Updates poetry (see comment on update-poetry command) and runs the u
 	make update-poetry ; \
   make poetry-install-py-root ; \
 	make lint ; \
-	cd ./${PYTHON_PROJECT_DIR} ; \
+	cd ./$(PYTHON_PROJECT_DIR) ; \
 	$(POETRY) run pytest --capture=no ;
 
 # The lambda layers need to be deployed to AWS with their arns
@@ -146,7 +146,7 @@ deploy-main-guided: ## Guided deploy that is typically run for the first time on
 # should be done after setting up the KMS key for the first time
 .PHONY: deploy-layers-guided
 deploy-layers-guided:
-	cd ${AWS_LAMBDA_LAYERS_DIR}; \
+	cd $(AWS_LAMBDA_LAYERS_DIR); \
 	$(SAM) deploy --guided; \
 	cd ..; \
 
