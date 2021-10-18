@@ -17,7 +17,12 @@ The Hypertension Fast-Track System is built in these technologies:
 
 # Development
 
-Create and fill out our cloud formation template variables
+To view description of Makefile commands:
+```sh
+make help
+```
+
+Create and fill out our cloud formation template variables:
 ```sh
 cp env-example.env .env
 ```
@@ -26,41 +31,41 @@ Note: For deployment to AWS, you'll need to get the `KmsCmkId` from the [Initial
 
 ## Develop and Test Locally
 
-This workflow is for locally developing the individual Python functions and locally running their automated tests, via Python, pytest, and pytest-watch on your machine.
+This workflow is for locally developing the individual Python functions 
+- Running their automated tests, via Python, pytest, and pytest-watch
+- Testing also with `sam local invoke`
 
 Install the following [tools](#Tools):
-- Python
 - pyenv
+- Python
 - Poetry
 - wkhtmltopdf
 
-To build Python locally:
+Poetry install py-root/, lint, and pytest with watch enabled:
 ```sh
-make build.local
-```
-
-To build Python locally and run pytest unit tests locally:
-```sh
-make pytest
+make test
 ```
 
 To build the lambda package locally and run the function in a container:
+
+:exclamation:***Note*** *You will need to deploy the lambda layers to AWS before you can invoke the stack locally with the below commands. AWS SAM lacks support for local invocation of a function that utilizes lambda layers from another stack without being able to reference the layer ARNs, which will only be defined once they're deployed in the relevant AWS environment.
+
+Add Lambda Layer ARNs to template.yaml of main SAM/CF stack:
 ```sh
-make invoke.sam.local
+make add-layers-to-main-template
 ```
 
-:exclamation:***Note*** *You will need to deploy the lambda layers to AWS before you can invoke the stack locally with the above command. AWS SAM lacks support for local invocation of a function that utilizes lambda layers from another stack without being able to reference the layer ARNs, which will only be defined once they're deployed in the relevant AWS environment. If they are already deployed to the environment you're referencing locally, you can update configuration with those layer ARNs by running:*
 ```sh
-make update.function.template.layers
+make invoke-sam-local
 ```
 
 ## Deploy
 
 Install the following [tools](#Tools):
+- pyenv
+- Python
 - AWS CLI
 - AWS SAM CLI
-- Python
-- pyenv
 
 Recommended: Learn [AWS tutorial number 2](#AWS-Tutorials).
 
@@ -76,7 +81,7 @@ cp samconfig-default.toml samconfig.toml
 
 This is ideal for two reasons:
 
-- Our SAM stack has circular dependencies that cannot be cleanly resolved. See [design-notes.md](docs/design-notes.md).
+- The main SAM stack has circular dependencies that cannot be cleanly resolved. See [design-notes.md](docs/design-notes.md).
 - We don't want to accidentally create a KMS key having a policy that lacks proper administrators with proper permissions. If a key were to get created without the proper policy, it's possible we would not be able to use or delete the key. We would have to contact AWS to delete it. This manual process is the safest way to create the key policy.
 
 2.1. Log into the AWS Console for AWS KMS.
@@ -103,7 +108,7 @@ See [AWS MFA Authentication](#aws-mfa-authentication).
 #### 5. Deploy Both the Main SAM/CF Stack and the Layers SAM/CF Stack to AWS
 
 ```sh
-make deploy.stack
+make deploy-all-guided
 ```
 
 #### 6. Set Your CMK's Policy
@@ -124,14 +129,14 @@ Via either the AWS console or CLI (see commands below), upload
 
 ##### Generic Secret Upload Commands
 
-Get the ARN of your Secrets Manager secrets
+Get the ARNs of your Secrets Manager secrets
 ```sh
 aws cloudformation describe-stack-resources --stack-name STACK_NAME
 ```
 
 Get the name of each secret
 ```sh
-aws secretsmanager describe-secret --secret-id THE_SECRET_ARN_FROM_THE_LAST_STEP
+aws secretsmanager describe-secret --secret-id EACH_SECRET_ARN_FROM_THE_LAST_STEP
 ```
 
 Upload the secret values
@@ -149,13 +154,13 @@ If the deployment environment already has instances of the lambda and layers dep
 - If you make changes to the lambda function but have no additions or updates to dependencies, you can deploy with:
 
     ```sh
-    make deploy.sam
+    make deploy-main
     ```
 
-- If additions or updates are made to the dependencies layer (or, rarely, the wkhtmltopodf layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
+- If additions or updates are made to the dependencies layer (or, rarely, the `wkhtmltopodf` layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
 
     ```sh
-    make deploy.stack
+    make deploy-all-guided
     ```
 
 # AWS Tutorials
@@ -177,7 +182,7 @@ VA AWS environments have multi-factor authentication setup for every IAM user. T
 We have a helper script for exporting session credentials to your shell environment. You can run this script by running:
 
 ```bash
-cd stack_deployment; poetry install
+cd stack_deployment; poetry install;
 source export_aws_mfa_credentials.sh
 ```
 
@@ -185,7 +190,7 @@ source export_aws_mfa_credentials.sh
 
 We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
 
-Pull requests are submitted on Github and require review in order to be merged. Our process is that reviewers approve and the submitter of the PR then merges to `develop`.
+Pull requests are submitted on GitHub and require review in order to be merged. Our process is that reviewers approve and the submitter of the PR then merges to `develop`.
 
 # CI Setup
 

@@ -101,13 +101,13 @@ update-poetry: ## Update Poetry version (as workaround for VersionUnion bug. See
 	cd .. ; \
 
 .PHONY: add-layers-to-main-template
-add-layers-to-main-template:
+add-layers-to-main-template: ## Add Lambda Layer ARNs to template.yaml of main SAM/CF stack
 	cd ./$(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) run python add_deployed_layers_to_template.py --overwrite; \
 	cd ..; \
 
 .PHONY: test
-test: ## Poetry install py-root/, link, and pytest with watch enabled
+test: ## Poetry install py-root/, lint, and pytest with watch enabled
 	make poetry-install-py-root ; \
 	make lint ; \
 	make test-only ; \
