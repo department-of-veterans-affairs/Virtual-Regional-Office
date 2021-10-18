@@ -19,7 +19,7 @@ The Hypertension Fast-Track System is built in these technologies:
 
 Create and fill out our cloud formation template variables
 ```sh
-cp cf-template-params-example.env cf-template-params.env
+cp env-example.env .env
 ```
 
 Note: For deployment to AWS, you'll need to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
@@ -94,7 +94,7 @@ Note: The key policy will be changed in step 6 below. Therefore, the only strict
 
 #### 3. Use the CMK
 
-After the CMK is created, plug the key's ID into your `cf-template-params.env`.
+After the CMK is created, plug the key's ID into your `.env`.
 
 #### 4. Authenticate to AWS
 

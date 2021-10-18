@@ -83,9 +83,9 @@ Thus, we have the following list of constraints:
 ## Our Solution
 
 - We removed the RSA key from the set of environment variables. It must be set into AWS Secrets Manager via the AWS Console. Limitation numbers 7 and 8 above forces this unfortunate conclusion.
-- Environment variables are to be specified in one authoritative place: `cf-template-params.env`
+- Environment variables are to be specified in one authoritative place: `.env`
   - This makes Pytest and running individual scripts work.
-- Python script `set_parameter_overrides.py` copies the values from `cf-template-params.env` into `samconfig.toml` in a format friendly to that file. Run that script before you deploy to AWS.
+- Python script `set_parameter_overrides.py` copies the values from `.env` into `samconfig.toml` in a format friendly to that file. Run that script before you deploy to AWS.
   - This makes AWS deployment work.
 - Set your Lighthouse authentication RSA key in AWS Secrets Manager via the AWS CLI. (See [the README](../README.md#Upload-Your-Lighthouse-Private-RSA-Key-to-Secrets-Manager)) The AWS CLI needs the key in single-line format (PEM is multi-line). base64 encode it to make it single line and upload it. The VRO code will base64 decode it.
 

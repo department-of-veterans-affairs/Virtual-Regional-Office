@@ -130,7 +130,7 @@ test-ci: ## Update poetry (see comment on update-poetry command) and run the uni
 .PHONY: invoke-sam-local
 invoke-sam-local: ## `sam local invoke`, for testing.
 	$(SAM) build
-	$(SAM) local invoke --parameter-overrides '$(shell cat cf-template-params.env)' -e $(PYTHON_PROJECT_DIR)/pdf-event.json
+	$(SAM) local invoke --parameter-overrides '$(shell cat .env)' -e $(PYTHON_PROJECT_DIR)/pdf-event.json
 
 .PHONY: deploy-main-guided
 deploy-main-guided: ## Build and `sam deploy --guided` the main SAM/CF stack.

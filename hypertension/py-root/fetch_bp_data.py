@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from lib.utils import load_config
 from lib.lighthouse import authenticate_to_lighthouse, fetch_observation_data
 
-load_dotenv("../cf-template-params.env")
+load_dotenv("../.env")
 
 Json = Union[dict, list]
 
@@ -17,7 +17,7 @@ Usage example:
     python fetch_bp_data.py 000aaa ./private.pem \
         assertion-params.json observation-request-params.json 123456789
 
-This script depends on the env variables you set in cf-template-params.env
+This script depends on the env variables you set in .env
 
 This script expects the following arguments, in order:
 

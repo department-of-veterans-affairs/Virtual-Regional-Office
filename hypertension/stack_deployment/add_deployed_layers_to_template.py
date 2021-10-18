@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 import boto3
 
-ENV_FILE_LOCATION = "../cf-template-params.env"
+ENV_FILE_LOCATION = "../.env"
 RELEVANT_LAMBDA_LAYERS = {
     "vro--pdf-generator-layer": "PdfGeneratorLayerArn",
     "vro--python-dependencies-layer": "PythonDependenciesLayerArn",
