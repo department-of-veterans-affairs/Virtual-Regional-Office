@@ -127,8 +127,8 @@ test-ci: ## Updates poetry (see comment on update-poetry command) and runs the u
 
 # The lambda layers need to be deployed to AWS with their arns
 # set in the environment file for this command to be successful
-.PHONY: invoke.sam.local
-invoke.sam.local:
+.PHONY: invoke-sam-local
+invoke-sam-local:
 	$(SAM) build
 	$(SAM) local invoke --parameter-overrides '$(shell cat cf-template-params.env)' -e $(PYTHON_PROJECT_DIR)/pdf-event.json
 
