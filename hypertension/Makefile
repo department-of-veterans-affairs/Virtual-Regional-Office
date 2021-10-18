@@ -85,17 +85,13 @@ poetry-install-py-root: ## Runs poetry install in py-root directory
 # Notice a person on the following thread said the got around this VersionUnion problem by upgrading
 # poetry:
 # https://github.com/python-poetry/poetry/issues/2340
-# Also, sure enough, the Circle CI python image has a bit old version of poetry.
+# Also, sure enough, the Circle CI python image cimg/python:3.8.6 has an old version of poetry.
 # So, we are copying this person's workaround and by doing `$(POETRY) self update` to have the
 # Circle CI python image upgrade its poetry version. It works!
-# After the Circle CI people update the Circle CI python image with a newer version of poetry
-# (and this problem is gone), completely get rid of our update-poetry command, and change test-ci to
-# depend only on poetry-install-py-root and lint instead.
-# For an example of the Circle CI people maintaining their python image to fix a different issue,
-# see:
-# https://github.com/circleci/circleci-images/issues/335
-# https://github.com/CircleCI-Public/circleci-dockerfiles/blob/master/python/images/3.7.2-stretch/Dockerfile#L81
-# https://github.com/circleci/circleci-images/pull/336
+# After our repo upgrades from Python 3.8.6 to 3.9.7, the problem
+# will be gone (because cimg/python:3.9.7 has a version of Poetry that doesn't have this bug),
+# completely get rid of our update-poetry command, and change test-ci to depend only on
+# poetry-install-py-root and lint instead.
 .PHONY: update-poetry
 update-poetry:
 	cd ./$(PYTHON_PROJECT_DIR) ; \
