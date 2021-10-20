@@ -33,12 +33,12 @@ clean-layers: ## Delete SAM build output and misc files of layers SAM/CF stack
 .PHONY: build-main
 build-main: ## `sam build` the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
 	$(SAM) build
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) run python set_parameter_overrides.py ;
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) run python set_parameter_overrides.py;
 
 .PHONY: poetry-install-deploy-tool
 poetry-install-deploy-tool: ## Run poetry install for the deployment tools' dependencies
-	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR) ; \
+	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) install; \
 	cd ..; \
 
@@ -57,27 +57,27 @@ build-layers: ## `sam build` the layers SAM/CF stack
 .PHONY: create-requirements.txt
 create-requirements.txt: ## Create requirements.txt file in python dependencies layer, from py-root/ Poetry dependencies
 	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials ; \
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials; \
 	cd ..; \
 
 .PHONY: lint
 lint: ## Run pylint, flake8, and black
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) run pylint *.py ; \
-	$(POETRY) run pylint lib/*.py ; \
-	$(POETRY) run pylint test/*.py ; \
-	$(POETRY) run pylint test/data/*.py ; \
-	$(POETRY) run pylint test/doubles/*.py ; \
-	$(POETRY) run flake8 --exclude=.venv ; \
-	$(POETRY) run black . --exclude=/\.venv/ ;
-	cd .. ; \
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) run pylint *.py; \
+	$(POETRY) run pylint lib/*.py; \
+	$(POETRY) run pylint test/*.py; \
+	$(POETRY) run pylint test/data/*.py; \
+	$(POETRY) run pylint test/doubles/*.py; \
+	$(POETRY) run flake8 --exclude=.venv; \
+	$(POETRY) run black . --exclude=/\.venv/;
+	cd ..; \
 
 .PHONY: poetry-install-py-root
 poetry-install-py-root: ## Run poetry install in py-root/ directory
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) install ; \
-	cd .. ; \
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) install; \
+	cd ..; \
 
 # TODO: The version of poetry that is a part of the Circle CI python image produces error
 # "[TypeError] unhashable type: 'VersionUnion'" (in our repo, due to some code in PR #21)
@@ -94,11 +94,11 @@ poetry-install-py-root: ## Run poetry install in py-root/ directory
 # poetry-install-py-root and lint instead.
 .PHONY: update-poetry
 update-poetry: ## Update Poetry version (as workaround for VersionUnion bug. See comment in Makefile.)
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) --version ; \
-	$(POETRY) self update ; \
-	$(POETRY) --version ; \
-	cd .. ; \
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) --version; \
+	$(POETRY) self update; \
+	$(POETRY) --version; \
+	cd ..; \
 
 .PHONY: add-layers-to-main-template
 add-layers-to-main-template: ## Add Lambda Layer ARNs to template.yaml of main SAM/CF stack
@@ -108,22 +108,22 @@ add-layers-to-main-template: ## Add Lambda Layer ARNs to template.yaml of main S
 
 .PHONY: test
 test: ## Poetry install py-root/, lint, and pytest with watch enabled
-	make poetry-install-py-root ; \
-	make lint ; \
-	make test-only ; \
+	make poetry-install-py-root; \
+	make lint; \
+	make test-only; \
 
 .PHONY: test-only
 test-only: ## Pytest with watch enabled. No other steps.
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) run ptw -c -- --capture=no ;
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) run ptw -c -- --capture=no;
 
 .PHONY: test-ci
 test-ci: ## Update poetry (see comment on update-poetry command) and run the unit tests with no watch on the pytest. (Intended for use by CI tools.)
-	make update-poetry ; \
-  make poetry-install-py-root ; \
-	make lint ; \
-	cd ./$(PYTHON_PROJECT_DIR) ; \
-	$(POETRY) run pytest --capture=no ;
+	make update-poetry; \
+  make poetry-install-py-root; \
+	make lint; \
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) run pytest --capture=no;
 
 # The lambda layers need to be deployed to AWS with their arns
 # set in the environment file for this command to be successful
@@ -134,7 +134,7 @@ invoke-sam-local: ## `sam local invoke`, for testing.
 
 .PHONY: deploy-main-guided
 deploy-main-guided: ## Build and `sam deploy --guided` the main SAM/CF stack.
-	make build-main ; \
+	make build-main; \
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 # should only be run if the function/layers aren't already deployed to the same environment
@@ -148,7 +148,7 @@ deploy-layers-guided: ## `sam deploy --guided` the layers SAM/CF stack.
 
 .PHONY: deploy-main
 deploy-main: ## Build and `sam deploy` (not guided) the main SAM/CF stack
-	make build-main ; \
+	make build-main; \
 	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM
 
 # SHOULD BE RUN FOR DEPLOYMENT OF THE LAMBDA STACK (INCLUDING LAYERS)
