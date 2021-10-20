@@ -171,4 +171,3 @@ deploy-all-guided: ## Build everything and `sam deploy --guided` both SAM/CF sta
 	make deploy-layers-guided; \
 	make add-layers-to-main-template; \
 	make deploy-main-guided; \
-	make clean-layers; \
