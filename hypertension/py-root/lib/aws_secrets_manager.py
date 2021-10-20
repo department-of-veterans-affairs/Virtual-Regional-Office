@@ -15,7 +15,7 @@ def get_lighthouse_rsa_key(aws_secret_arn):  # pragma: no cover
     return result_bytes.decode()
 
 
-def get_secret_from_secrets_manager_by_arn(
+def get_secret_from_secrets_manager_by_name(
     aws_secret_arn: str,
 ):  # pragma: no cover
     sm_client = boto3.client("secretsmanager")
