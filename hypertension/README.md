@@ -29,6 +29,8 @@ cp env-example.env .env
 
 Note: For deployment to AWS, you'll need to get the `KmsCmkId` from the [Initial Deployment](#initial-deployment) section below.
 
+Set your environment variables per the [Environment Variables](#environment-variables) section.
+
 ## Develop and Test Locally
 
 This workflow is for locally developing the individual Python functions 
@@ -162,6 +164,92 @@ If the deployment environment already has instances of the lambda and layers dep
     ```sh
     make deploy-all-guided
     ```
+
+# Environment Variables
+
+Variables are listed below in this format:
+
+VARIABLE_NAME (Required (if it actually is)) [the default value]
+A description of what the variable is or does.
+
+A description of what to set the variable to, whether that be an example, or what to set it to in development or production, or how to figure out how to set it, etc.
+Perhaps another example value, etc.
+
+### `LighthouseTokenUrl`
+
+URL to fetch a JWT to authenticate to [Lighthouse](https://developer.va.gov).
+
+### `LighthouseJwtAudUrl`
+
+URL to set as the AUD value of Lighthouse JWTs.
+
+### `LighthouseJwtScope`
+
+Lighthouse authentication scope, which is a part of your JWT assertions, which you use to request a lighthouse JWT.
+
+The [Lighthouse scopes documentation](https://developer.va.gov/explore/authorization?api=fhir#scopes) can point you in the right direction.
+
+- For Lighthouse Veterans Health API queries for blood pressure and medication data, you can use `"launch/patient patient/Patient.read patient/Observation.read patient/Medication.read"`.
+
+### `LighthouseOAuthClientId`
+
+The client ID issued to you. It's based on the public RSA key you provided to the lighthouse auth team. This must match the RSA key specified by `LighthousePrivateRsaKeyFilePath` and `LighthousePublicRsaKeyFilePath`.
+
+### `LighthouseOAuthGrantType`
+
+- We always use Lighthouse's system-to-system implementation of OAuth. Thus, always set this to `client_credentials`.
+
+### `LighthouseOAuthAssertionType`
+
+- `"urn:ietf:params:oauth:client-assertion-type:jwt-bearer"`. This value is specified by the OAuth spec, and it was provided by the Lighthouse auth team.
+
+### `LighthousePrivateRsaKeyFilePath`
+
+Path on your local machine to the private half of your RSA key pair that was used to generated your lighthouse OAuth "Client Credentials" grant type credentials. Goes with your corresponding `LighthousePublicRsaKeyFilePath` (of course) and your corresponding `LighthouseOAuthClientId`.
+
+### `LighthousePublicRsaKeyFilePath`
+
+Path on your local machine to the public half of your RSA key pair that was used to generated your lighthouse OAuth "Client Credentials" grant type credentials. Goes with your corresponding `LighthousePrivateRsaKeyFilePath` (of course) and your corresponding `LighthouseOAuthClientId`.
+
+### `KmsCmkId`
+
+Key ID of your AWS Key Management Service symmetric key, which you setup to be used to encrypt the SAM/CF stack's AWS Secrets Manager secrets.
+
+### `LighthouseObservationUrl`
+
+URL of the Lighthouse Veterans Health API (which is a FHIR API) Observation resource.
+
+- For development and testing: `https://sandbox-api.va.gov/services/fhir/v0/r4/Observation`
+
+### `LighthouseObservationCategory`
+
+- `"vital-signs"`. This is the category of FHIR observations that blood pressure readings fall under.
+
+### `LighthouseObservationLoincCode`
+
+- `"85354-9"`. This is the LOINC code under which the Lighthouse Veterans Health API (which is a FHIR API) lists all blood pressure data.
+
+### `TestVeteranIcn`
+
+When deployed in AWS, the ICN is provided an HTTP body param to the Lambda function.
+
+This is the ICN of a Veteran to use in automated unit tests.
+
+We choose to use an ICN of a fake Veteran in the Lighthouse sandbox--though the unit tests mock calls to the Lighthouse sandbox and thus don't actually connect to it.
+
+- Set to `"32000225"`
+
+### `PdfGeneratorLayerArn` This Is Populated Automatically During Stack Deployment.
+
+ARN of the AWS Lambda Layer that contains the PDF generation tools.
+
+This is auto-set during initial deployment.
+
+### `PythonDependenciesLayerArn` Same As Above. See README Local Invoke Section For More Info
+
+ARN of the AWS Lambda Layer that contains the Python dependencies.
+
+This is auto-set during initial deployment.
 
 # AWS Tutorials
 
