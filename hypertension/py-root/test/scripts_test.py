@@ -58,9 +58,9 @@ parameter_overrides = "DUMMY_VALUE___OVERWRITE_BEFORE_YOU_DEPLOY"
     p = re.compile(regex)
     expected = p.sub(parameter_overrides, samconfig_default_content)
 
-    assert actual == expected
-
-    # Cleanup
+    # Cleanup before assert, so cleanup happens even if test fails.
     Path(samconfig_file_path).write_text(
         samconfig_default_content, encoding="utf-8"
     )
+
+    assert actual == expected
