@@ -17,6 +17,9 @@ Parameters:
     Type: String
   LighthouseJwtScope:
     Type: String
+  LighthouseOAuthClientId:
+    Type: String
+    NoEcho: true
   LighthouseOAuthGrantType:
     Type: String
   LighthouseOAuthAssertionType:
@@ -51,7 +54,7 @@ Resources:
           LighthouseOAuthAssertionType: !Ref LighthouseOAuthAssertionType
           # TODO: Cleanup this comment: For some reason !GetAtt VroLhPrivateRsaKey.Arn doesnt work. I would think this should work.
           LighthousePrivateRsaKeySecretArn: !Ref VroLhPrivateRsaKey
-          LighthousePrivateClientIdArn: !Ref VroLhAssertionClientId
+          VroLighthouseOAuthClientIdArn: !Ref VroLighthouseOAuthClientId
           KmsCmkId: !Ref KmsCmkId
           LighthouseObservationUrl: !Ref LighthouseObservationUrl
           LighthouseObservationCategory: !Ref LighthouseObservationCategory
@@ -69,12 +72,12 @@ Resources:
         APIs via the Client Credentials OAuth grant type'
       SecretString: Dummy RSA key. Upload your real key.
       KmsKeyId: !Ref KmsCmkId
-  VroLhAssertionClientId:
+  VroLighthouseOAuthClientId:
     Type: AWS::SecretsManager::Secret
     Properties:
       Description: 'VBA Virtual Regional Office: Your private client ID to access
       Lighthouse APIs'
-      SecretString: Dummy Id. Upload your real Id
+      SecretString: !Ref LighthouseOAuthClientId
       KmsKeyId: !Ref KmsCmkId
 
   VroLambdaExecutionRole:
@@ -103,7 +106,7 @@ Resources:
             Action: secretsmanager:GetSecretValue
             Resource:
             - !Ref VroLhPrivateRsaKey
-            - !Ref VroLhAssertionClientId
+            - !Ref VroLighthouseOAuthClientId
           - Effect: Allow
             Action: kms:Decrypt
             Resource: '*'

@@ -24,7 +24,7 @@ def load_config(
 
     if not client_id:
         client_id = get_secret_from_secrets_manager_by_name(
-            os.environ["LighthousePrivateClientIdArn"]
+            os.environ["VroLighthouseOAuthClientIdArn"]
         )
 
     return {
