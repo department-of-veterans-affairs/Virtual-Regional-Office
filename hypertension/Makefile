@@ -142,6 +142,7 @@ deploy-main-guided: ## Build and `sam deploy --guided` the main SAM/CF stack.
 # should be done after setting up the KMS key for the first time
 .PHONY: deploy-layers-guided
 deploy-layers-guided: ## `sam deploy --guided` the layers SAM/CF stack.
+	make build-layers; \
 	cd $(AWS_LAMBDA_LAYERS_DIR); \
 	$(SAM) deploy --guided; \
 	cd ..; \
