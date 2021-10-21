@@ -34,7 +34,6 @@ clean-layers: ## Delete SAM build output and misc files of layers SAM/CF stack
 build-main: ## `sam build` the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
 	make add-layers-to-main-template; \
 	$(SAM) build
-	cd ./$(PYTHON_PROJECT_DIR); \
 	make set-parameter-overrides;
 
 .PHONY: poetry-install-deploy-tool
@@ -46,7 +45,9 @@ poetry-install-deploy-tool: ## Run poetry install for the deployment tools' depe
 .PHONY: set-parameter-overrides
 set-parameter-overrides: # Uses your env vars to set the parameter_overrides value in the main SAM/CF stack's samconfig.toml
 	make poetry-install-py-root; \
+	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) run python set_parameter_overrides.py;
+	cd ..; \
 
 .PHONY: download-wkhtmltopdf
 download-wkhtmltopdf: ## Download the wkhtmltopdf binary, for later upload to Lambda Layer
