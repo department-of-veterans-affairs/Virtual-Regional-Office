@@ -32,6 +32,7 @@ clean-layers: ## Delete SAM build output and misc files of layers SAM/CF stack
 # depends on a proper requirements.txt; not the poetry virtual environment dir, for example.
 .PHONY: build-main
 build-main: ## `sam build` the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
+	make add-layers-to-main-template; \
 	$(SAM) build
 	cd ./$(PYTHON_PROJECT_DIR); \
 	make set-parameter-overrides;
@@ -173,5 +174,4 @@ deploy-main: ## Build and `sam deploy` (not guided) the main SAM/CF stack
 deploy-all-guided: ## Build everything and `sam deploy --guided` both SAM/CF stacks.
 	make poetry-install-deploy-tool; \
 	make deploy-layers-guided; \
-	make add-layers-to-main-template; \
 	make deploy-main-guided; \
