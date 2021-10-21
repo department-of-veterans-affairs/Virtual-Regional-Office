@@ -34,9 +34,13 @@ def add_deployed_layers_to_template_main(
         return
 
     credentials = load_credentials_from_env()
-    layer_arns = load_layer_arns(credentials, relevant_lambda_layers)
-    updated_env_info = {**env_info, **layer_arns}
+    layer_arns = fetch_layer_arns(credentials, relevant_lambda_layers)
 
+    write_new_layer_arns_to_env(env_file_location, env_info, layer_arns)
+
+
+def write_new_layer_arns_to_env(env_file_location: str, env_info: dict, layer_arns: dict):
+    updated_env_info = {**env_info, **layer_arns}
     env_string = make_env_string(updated_env_info)
     Path(env_file_location).write_text(env_string)
 
