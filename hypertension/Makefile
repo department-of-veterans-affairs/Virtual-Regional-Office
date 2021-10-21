@@ -172,7 +172,6 @@ deploy-main: ## Build and `sam deploy` (not guided) the main SAM/CF stack
 .PHONY: deploy-all-guided
 deploy-all-guided: ## Build everything and `sam deploy --guided` both SAM/CF stacks.
 	make poetry-install-deploy-tool; \
-	make build-layers; \
 	make deploy-layers-guided; \
 	make add-layers-to-main-template; \
 	make deploy-main-guided; \
