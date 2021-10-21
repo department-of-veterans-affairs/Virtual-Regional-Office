@@ -109,6 +109,8 @@ See [AWS MFA Authentication](#aws-mfa-authentication).
 
 #### 5. Deploy Both the Main SAM/CF Stack and the Layers SAM/CF Stack to AWS
 
+Note: You must run this command for your first deployment!
+
 ```sh
 make deploy-all-guided
 ```
