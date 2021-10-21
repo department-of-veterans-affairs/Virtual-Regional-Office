@@ -54,7 +54,9 @@ download-wkhtmltopdf: ## Download the wkhtmltopdf binary, for later upload to La
 	cd ..; \
 
 .PHONY: build-layers
-build-layers: ## `sam build` the layers SAM/CF stack
+build-layers: ## Build the layers SAM/CF stack (the content and `sam build`)
+	make create-requirements.txt; \
+	make download-wkhtmltopdf; \
 	cd $(AWS_LAMBDA_LAYERS_DIR); \
 	$(SAM) build; \
 	cd ..; \
@@ -169,9 +171,7 @@ deploy-main: ## Build and `sam deploy` (not guided) the main SAM/CF stack
 # Deploys layers first and then the lambda function
 .PHONY: deploy-all-guided
 deploy-all-guided: ## Build everything and `sam deploy --guided` both SAM/CF stacks.
-	make create-requirements.txt; \
 	make poetry-install-deploy-tool; \
-	make download-wkhtmltopdf; \
 	make build-layers; \
 	make deploy-layers-guided; \
 	make add-layers-to-main-template; \
