@@ -272,8 +272,7 @@ VA AWS environments have multi-factor authentication setup for every IAM user. T
 We have a helper script for exporting session credentials to your shell environment. You can run this script by running:
 
 ```bash
-cd stack_deployment; poetry install;
-source export_aws_mfa_credentials.sh
+cd stack_deployment; poetry install; source export_aws_mfa_credentials.sh; cd ..
 ```
 
 # Git Workflow
