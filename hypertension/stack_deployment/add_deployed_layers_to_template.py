@@ -101,7 +101,7 @@ def write_existing_layers_error(existing_layers: dict) -> None:
     raise UserWarning(error_message)
 
 
-def load_layer_arns(credentials, relevant_lambda_layers: dict) -> dict:
+def fetch_layer_arns(credentials, relevant_lambda_layers: dict) -> dict:
     lambda_client = boto3.client("lambda", **credentials)
     layers = lambda_client.list_layers().get("Layers")
 
