@@ -15,7 +15,7 @@ RELEVANT_LAMBDA_LAYERS = {
 # function's template with the newly-deployed layer ARNs.
 # This function assumes that you've already established an
 # AWS MFA session (See README for instructions on doing that).
-def add_deployed_layers_to_template_main(
+def set_layer_env_vars(
     args: Optional[list],
     env_file_location: str,
     relevant_lambda_layers: dict,
@@ -116,6 +116,6 @@ def fetch_layer_arns(credentials, relevant_lambda_layers: dict) -> dict:
 
 
 if __name__ == "__main__":
-    add_deployed_layers_to_template_main(
+    set_layer_env_vars(
         None, ENV_FILE_LOCATION, RELEVANT_LAMBDA_LAYERS
     )

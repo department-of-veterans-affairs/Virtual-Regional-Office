@@ -32,7 +32,7 @@ clean-layers: ## Delete SAM build output and misc files of layers SAM/CF stack
 # depends on a proper requirements.txt; not the poetry virtual environment dir, for example.
 .PHONY: build-main
 build-main: ## `sam build` the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
-	make add-layers-to-main-template; \
+	make set-layer-env-vars; \
 	$(SAM) build
 	make set-parameter-overrides;
 
@@ -109,10 +109,10 @@ update-poetry: ## Update Poetry version (as workaround for VersionUnion bug. See
 	$(POETRY) --version; \
 	cd ..; \
 
-.PHONY: add-layers-to-main-template
-add-layers-to-main-template: ## Add Lambda Layer ARNs to template.yaml of main SAM/CF stack
+.PHONY: set-layer-env-vars
+set-layer-env-vars: ## Add Lambda Layer ARNs to template.yaml of main SAM/CF stack
 	cd ./$(STACK_DEPLOYMENT_SCRIPTS_DIR); \
-	$(POETRY) run python add_deployed_layers_to_template.py --overwrite; \
+	$(POETRY) run python set_layer_env_vars.py --overwrite; \
 	cd ..; \
 
 .PHONY: test
