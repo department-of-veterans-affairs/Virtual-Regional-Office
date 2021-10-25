@@ -111,6 +111,8 @@ See [AWS MFA Authentication](#aws-mfa-authentication).
 
 Note: You must run this command for your first deployment!
 
+Note: This will create two SAM/CloudFormation stacks--the layers stack has the Lambda layers and the main stack has the Lambda function. This command will prompt you to name each. It will prompt you first to name the layers stack; later it will prompt you to name the main stack.
+
 ```sh
 make deploy-all-guided
 ```
