@@ -17,6 +17,16 @@ If the virtualenv was not located in `py-root/.venv`, then when you open VS Code
 
 > No Python interpreter is selected. You need to select a Python interpreter to enable featuresr such as IntelliSense, linting, and debugging.
 
+# Python Dependencies
+
+We use poetry to manage our dependencies.
+
+When running locally, we use commands like `poetry run python SCRIPT` and `poetry run pytest`. Poetry activates a virtual env and causes the Python to use the Poetry dependencies.
+
+Lambda doesn't use Poetry. Lambda uses requirements.txt. In fact, Lambda depends only on having a requirements.txt file present, and doesn't require having any of the packages installed (such as via `pip`).
+
+Thus, you'll notice that Makefile commands related to running code in Python locally (such as when running pytest) include `poetry install`. However, this is theoretically not needed for Make commands related to `sam build`-ing and `sam deploy`-ing the code. Instead, we use `poetry export` to convert our poetry dependencies into a requirements.txt file, that the `sam` commands use.
+
 # SAM (CloudFormation) Circular Dependencies
 
 > This section was originally written on 6/14/2021 by Aaron Houlihan (aaron@amida.com; Aaron.Houlihan@va.gov)
