@@ -6,7 +6,7 @@
 - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 - Python
 - [pyenv](https://github.com/pyenv/pyenv): Manage Python versions, can be used with poetry to create isolated environments
-- [Poetry](https://python-poetry.org/): Manage all your Python package dependencies
+- [Poetry](https://python-poetry.org/): We use this rather than rather than traditional Python tools such as `pip` and `venv` to manage dependencies and virtual environments. `poetry` commands download your dependencies and automatically create and activate your virtual env for you. This repo's Makefile commands contain the `poetry` commands that do everything you need to install, activate your virtual environment, and run your Python code.
 - [wkhtmltopdf](https://wkhtmltopdf.org/): The PDF generation command line tool and one of our system dependencies
 
 # Technologies
