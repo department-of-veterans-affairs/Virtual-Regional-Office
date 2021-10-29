@@ -17,27 +17,25 @@ help: ## Print out documentation for available commands
 		}' $(MAKEFILE_LIST)
 
 .PHONY: clean-main
-clean-main: ## Delete SAM build output of main SAM/CF stack
+clean-main: ## Delete SAM build output of main SAM/CF stack.
 	$(info [*] Destroying environment....)
 	rm -rf ./.aws-sam/
 
 .PHONY: clean-layers
-clean-layers: ## Delete SAM build output and misc files of layers SAM/CF stack
+clean-layers: ## Delete SAM build output and miscellaneous files of layers SAM/CF stack.
 	rm -rf ./$(AWS_LAMBDA_LAYERS_DIR)/.aws-sam/; \
 	rm -rf ./$(AWS_LAMBDA_LAYERS_DIR)/vro--wkhtmltopdf/; \
 	rm -rf ./$(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	rm ./$(STACK_DEPLOYMENT_SCRIPTS_DIR)/wkhtmltox*;
 
-# Notice that when building for SAM and deploying via SAM, to get your packages right, SAM only
-# depends on a proper requirements.txt; not the poetry virtual environment dir, for example.
 .PHONY: build-main
-build-main: ## `sam build` the main SAM/CloudFormation stack and sets SAM parameter overrides in samconfig.toml
+build-main: ## `sam build` the main SAM/CloudFormation stack and set SAM parameter overrides in samconfig.toml.
 	make set-layer-env-vars; \
 	$(SAM) build
 	make set-parameter-overrides;
 
 .PHONY: poetry-install-deploy-tool
-poetry-install-deploy-tool: ## Run poetry install for the deployment tools' dependencies
+poetry-install-deploy-tool: ## Run poetry install for the deployment tools' dependencies.
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) install; \
 	cd ..; \
@@ -50,7 +48,7 @@ set-parameter-overrides: # Uses your env vars to set the parameter_overrides val
 	cd ..; \
 
 .PHONY: download-wkhtmltopdf
-download-wkhtmltopdf: ## Download the wkhtmltopdf binary, for later upload to Lambda Layer
+download-wkhtmltopdf: ## Download the wkhtmltopdf binary, for later upload to Lambda Layer.
 	cd $(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) run python ./download_wkhtmltopdf.py; \
 	cd ..; \
@@ -64,14 +62,14 @@ build-layers: ## Build the layers SAM/CF stack (the content and `sam build`)
 	cd ..; \
 
 .PHONY: create-requirements.txt
-create-requirements.txt: ## Create requirements.txt file in python dependencies layer, from py-root/ Poetry dependencies
+create-requirements.txt: ## Create requirements.txt file in python dependencies layer, from `py-root/` Poetry dependencies.
 	mkdir -p $(PYTHON_DEPENDENCIES_LAYER_DIR); \
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) export --without-hashes -f requirements.txt -o ../$(PYTHON_DEPENDENCIES_LAYER_DIR)/requirements.txt --with-credentials; \
 	cd ..; \
 
 .PHONY: lint
-lint: ## Run pylint, flake8, and black
+lint: ## Run pylint, flake8, and black.
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) run pylint *.py; \
 	$(POETRY) run pylint lib/*.py; \
@@ -83,7 +81,7 @@ lint: ## Run pylint, flake8, and black
 	cd ..; \
 
 .PHONY: poetry-install-py-root
-poetry-install-py-root: ## Run poetry install in py-root/ directory
+poetry-install-py-root: ## Run poetry install in the `py-root/` directory.
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) install; \
 	cd ..; \
@@ -102,7 +100,7 @@ poetry-install-py-root: ## Run poetry install in py-root/ directory
 # completely get rid of our update-poetry command, and change test-ci to depend only on
 # poetry-install-py-root and lint instead.
 .PHONY: update-poetry
-update-poetry: ## Update Poetry version (as workaround for VersionUnion bug. See comment in Makefile.)
+update-poetry: ## Update Poetry version, as workaround for VersionUnion bug. See comment in Makefile.
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) --version; \
 	$(POETRY) self update; \
@@ -110,13 +108,13 @@ update-poetry: ## Update Poetry version (as workaround for VersionUnion bug. See
 	cd ..; \
 
 .PHONY: set-layer-env-vars
-set-layer-env-vars: ## Add Lambda Layer ARNs to template.yaml of main SAM/CF stack
+set-layer-env-vars: ## Set Lambda Layer ARNs env vars based on the ARNs of the layers deployed in the layers stack.
 	cd ./$(STACK_DEPLOYMENT_SCRIPTS_DIR); \
 	$(POETRY) run python set_layer_env_vars.py --overwrite; \
 	cd ..; \
 
 .PHONY: test
-test: ## Poetry install py-root/, lint, and pytest with watch enabled
+test: ## Poetry install `py-root/`, lint, and pytest with watch enabled.
 	make poetry-install-py-root; \
 	make lint; \
 	make test-only; \
@@ -134,8 +132,7 @@ test-ci: ## Update poetry (see comment on update-poetry command) and run the uni
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) run pytest --capture=no;
 
-# The lambda layers need to be deployed to AWS with their arns
-# set in the environment file for this command to be successful
+# The lambda layers need to be deployed to AWS (with their ARNs set, of course), for this to be successful
 .PHONY: invoke-sam-local
 invoke-sam-local: ## `sam local invoke`, for testing.
 	$(SAM) build
@@ -146,33 +143,20 @@ deploy-main-guided: ## Build and `sam deploy --guided` the main SAM/CF stack.
 	make build-main; \
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
-# should only be run if the function/layers aren't already deployed to the same environment
-# deploy layers first and then the lambda function - this
-# should be done after setting up the KMS key for the first time
 .PHONY: deploy-layers-guided
-deploy-layers-guided: ## `sam deploy --guided` the layers SAM/CF stack.
+deploy-layers-guided: ## Build and `sam deploy --guided` the layers SAM/CF stack.
 	make build-layers; \
 	cd $(AWS_LAMBDA_LAYERS_DIR); \
 	$(SAM) deploy --guided; \
 	cd ..; \
 
 .PHONY: deploy-main
-deploy-main: ## Build and `sam deploy` (not guided) the main SAM/CF stack
+deploy-main: ## Build and `sam deploy` (not guided) the main SAM/CF stack.
 	make build-main; \
 	$(SAM) deploy --no-confirm-changeset --capabilities CAPABILITY_NAMED_IAM
 
-# SHOULD BE RUN FOR DEPLOYMENT OF THE LAMBDA STACK (INCLUDING LAYERS)
-# TO A NEW ENVIRONMENT.
-#
-# Can also be run if updates to the layers have been made and are
-# ready to be used in the lambda function - this will deploy those updates
-# and update the layer versions within the function's template.yml
-#
-# BEFORE RUNNING: ensure the manual steps have been completed for initial deployment [see README]
-#
-# Deploys layers first and then the lambda function
 .PHONY: deploy-all-guided
-deploy-all-guided: ## Build everything and `sam deploy --guided` both SAM/CF stacks.
+deploy-all-guided: ## Build everything and `sam deploy --guided` both SAM/CF stacks. (Use this for your initial deployment of both stacks.)
 	make poetry-install-deploy-tool; \
 	make deploy-layers-guided; \
 	make deploy-main-guided; \
