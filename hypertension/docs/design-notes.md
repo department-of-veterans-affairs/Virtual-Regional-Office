@@ -27,6 +27,17 @@ Lambda doesn't use Poetry. Lambda uses requirements.txt. In fact, Lambda depends
 
 Thus, you'll notice that Makefile commands related to running code in Python locally (such as when running pytest) include `poetry install`. However, this is theoretically not needed for Make commands related to `sam build`-ing and `sam deploy`-ing the code. Instead, we use `poetry export` to convert our poetry dependencies into a requirements.txt file, that the `sam` commands use.
 
+# The (Lambda) "Layers" SAM/CloudFormation stack and the (Lambda) "Main" (funciton) SAM/CloudFormation stack
+
+We have two SAM/CF stacks:
+- The "Layers" stack contains only the Lambda layers
+- The "Main" stack contains everything else
+
+The Layers stack has two Lambda layers:
+- One that holds the `wkhtmltopdf` binary
+- One that contains all the Python dependencies that the Main stack's lambda function needs.
+  - We do this to keep the size of the Python code in the main stack less than 3MB, so that we can continue to use the AWS Console in-console Lambda function code editor. This is exceptionally helpful for certain debugging scenarios.
+
 # SAM (CloudFormation) Circular Dependencies
 
 > This section was originally written on 6/14/2021 by Aaron Houlihan (aaron@amida.com; Aaron.Houlihan@va.gov)

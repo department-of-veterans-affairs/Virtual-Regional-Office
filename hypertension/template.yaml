@@ -39,7 +39,7 @@ Resources:
   VroMainFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Description: test description
+      Description: 'Main Lambda function of the VBA Virtual Regional Office'
       CodeUri: py-root/
       Handler: app.lambda_handler
       Runtime: python3.8

@@ -57,6 +57,8 @@ Add Lambda Layer ARNs to template.yaml of main SAM/CF stack:
 make add-layers-to-main-template
 ```
 
+:exclamation:***Note*** This is broken as of at least commit c426e852ced83ec70c594bb48b196752ee13800c if not a bit earlier.
+
 ```sh
 make invoke-sam-local
 ```
@@ -152,22 +154,21 @@ aws secretsmanager put-secret-value --secret-id THE_SECRET_NAME_FROM_THE_LAST_ST
 
 ### Subsequent Deployment
 
-You'll always need to retrieve and export AWS MFA session credentials before deployment.
-See [AWS MFA Authentication](#aws-mfa-authentication) for more.
+#### 1. Authenticate to AWS
 
-If the deployment environment already has instances of the lambda and layers deployed:
+See [AWS MFA Authentication](#aws-mfa-authentication).
 
-- If you make changes to the lambda function but have no additions or updates to dependencies, you can deploy with:
+#### 2. Deploy
 
-    ```sh
-    make deploy-main
-    ```
+If you make changes to the lambda function but have no additions or updates to dependencies, you can deploy with:
+```sh
+make deploy-main
+```
 
-- If additions or updates are made to the dependencies layer (or, rarely, the `wkhtmltopodf` layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
-
-    ```sh
-    make deploy-all-guided
-    ```
+If additions or updates are made to the dependencies layer (or, rarely, the `wkhtmltopodf` layer), you can deploy everything, including the lambda function with the updated layer version arns listed in its configuration, by running:
+```sh
+make deploy-all-guided
+```
 
 # Environment Variables
 
