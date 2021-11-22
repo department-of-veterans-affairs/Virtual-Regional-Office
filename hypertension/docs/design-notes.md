@@ -1,6 +1,6 @@
 # Python Environment
 
-> This section was originally written on 6/9/2021 by Aaron Houlihan (aaron@amida.com; Aaron.Houlihan@va.gov)
+> This section was originally written on 6/9/2021 by Aaron Houlihan (aaron@amida.com; Aaron.Houlihan@va.gov).
 
 `py-root/poetry.toml` is set to cause the poetry virtualenv of the project to be located in `py-root/.venv` rather than the default poetry location of `~/Library/Caches/pypoetry/virtualenvs`.
 
