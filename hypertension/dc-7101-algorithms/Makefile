@@ -31,4 +31,4 @@ deploy-guided: ## Build and sam deploy --guided.
 .PHONY: deploy
 deploy: ## Build and sam deploy.
 	$(SAM) build
-	$(SAM) deploy
+	$(SAM) deploy --no-confirm-changeset
