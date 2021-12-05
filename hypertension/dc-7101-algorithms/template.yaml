@@ -23,6 +23,17 @@ Resources:
         Type: AWS::Serverless::Api
         Properties:
             StageName: Test
+            Auth:
+                ApiKeyRequired: true
+                UsagePlan:
+                    UsagePlanName: MiniVroUsagePlan
+                    CreateUsagePlan: PER_API
+                    Quota:
+                        Period: MONTH
+                        Limit: 10000
+                    Throttle:
+                        BurstLimit: 100
+                        RateLimit: 100
     VroHtnDataProcessorRole:
         Type: AWS::IAM::Role
         Properties:
