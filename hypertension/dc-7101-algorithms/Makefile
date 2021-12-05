@@ -23,17 +23,12 @@ test: ## Pytest with watch enabled. No other steps.
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) run ptw -c -- --capture=no;
 
-.PHONY: build
-build: ## Poetry install and sam build.
-	make poetry-install
-	$(SAM) build
-
 .PHONY: deploy-guided
 deploy-guided: ## Build and sam deploy --guided.
-	make build
+	$(SAM) build
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 .PHONY: deploy
 deploy: ## Build and sam deploy.
-	make build
+	$(SAM) build
 	$(SAM) deploy
