@@ -107,7 +107,7 @@ def history_of_diastolic_bp(request):
                 readings_greater_or_equal_to_one_hundred += 1
         diastolic_history_calculation["diastolic_bp_predominantly_100_or_more"] = True if readings_greater_or_equal_to_one_hundred / bp_readings_length >=.5 else False
     else:
-        diastolic_history_calculation["sufficient_to_autopopulate"] = False
+        diastolic_history_calculation["success"] = False
 
     return diastolic_history_calculation
 

@@ -240,6 +240,18 @@ def test_sufficient_to_autopopulate(request_data, predominance_calculation):
 @pytest.mark.parametrize(
     "request_data, diastolic_bp_predominantly_100_or_more",
     [
+        # 0 readings
+        (
+            {
+                "bp": [
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "success": False
+            }
+        ),
         # 1 reading test case that passes
         (
             {
