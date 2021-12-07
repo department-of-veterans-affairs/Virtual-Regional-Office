@@ -52,20 +52,25 @@ def calculate_correct_bp_reading(bp_readings, use_diastolic):
         bucket_count[key] += 1
 
     largest_count = 0
-    largets_count_bucket = None
+    largest_count_bucket = None
 
     for key in bucket_count:
         curr_count = bucket_count[key]
         if curr_count > largest_count:
             largest_count = curr_count
-            largets_count_bucket = key
-        if curr_count == largest_count:
-            if (key != "less_than_one_hundred" or key != "less_than_one_sixty" and int(key) > int(largets_count_bucket)):
-                largets_count_bucket = key
+            largest_count_bucket = key
+        if (
+            curr_count == largest_count
+            and largest_count_bucket != None
+            and key != "less_than_one_hundred"
+            and key != "less_than_one_sixty"
+            and int(key) > int(largest_count_bucket)
+        ):
+            largest_count_bucket = key
 
-    bucketed_bp_readings = list(filter(lambda d: d[f"{type}_key"] == largets_count_bucket, bp_readings))
+    bucketed_bp_readings = list(filter(lambda d: d[f"{type}_key"] == largest_count_bucket, bp_readings))
     bucketed_bp_readings.sort(key=operator.itemgetter("date"))
-    
+
     return bucketed_bp_readings[-1][type]
 
 def bp_readings_meet_date_specs(date_of_claim, bp_readings):
@@ -76,15 +81,13 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
     for reading in bp_readings:
         bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
         within_thirty_days = (date_of_claim_date - bp_reading_date).days <= 30
-        within_one_year_from_claim_date = bp_reading_date <= date_of_claim_date + relativedelta(years=1)
 
-        if within_one_year_from_claim_date:
-            if (within_thirty_days and not claim_within_one_month):
-                claim_within_one_month = True
-            elif (within_thirty_days and claim_within_one_month):
-                claim_within_six_months = True
-            elif ((date_of_claim_date - bp_reading_date).days <= 180 and not claim_within_six_months):
-                claim_within_six_months = True
+        if (within_thirty_days and not claim_within_one_month):
+            claim_within_one_month = True
+        elif (within_thirty_days and claim_within_one_month):
+            claim_within_six_months = True
+        elif ((date_of_claim_date - bp_reading_date).days <= 180 and not claim_within_six_months):
+            claim_within_six_months = True
 
     return claim_within_one_month and claim_within_six_months
 
@@ -106,7 +109,6 @@ def history_of_diastolic_bp(request):
     else:
         diastolic_history_calculation["sufficient_to_autopopulate"] = False
 
-    print(diastolic_history_calculation)
     return diastolic_history_calculation
 
 def sufficient_to_autopopulate (request):
@@ -115,17 +117,24 @@ def sufficient_to_autopopulate (request):
         "success": True,
     }
     date_of_claim = request["date_of_claim"]
-    bp_readings = request["bp"]
+    filter_bp_readings = []
+    date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
 
-    if bp_readings_meet_date_specs(date_of_claim, bp_readings) and len(bp_readings) > 1:
+    for reading in request["bp"]:
+        bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
+        # should this include the same day a year ago?
+        if bp_reading_date >= date_of_claim_date - relativedelta(years=1):
+            filter_bp_readings.append(reading)
+
+    if bp_readings_meet_date_specs(date_of_claim, filter_bp_readings) and len(filter_bp_readings) > 1:
         predominance_calculation["sufficient_to_autopopulate"] = True
 
-        if len(bp_readings) == 2:
-            most_recent_reading = sorted(bp_readings, key=lambda d: d["date"])[-1]
+        if len(filter_bp_readings) == 2:
+            most_recent_reading = sorted(filter_bp_readings, key=lambda d: d["date"])[-1]
             predominance_calculation["predominant_diastolic_reading"] = most_recent_reading["diastolic"]
             predominance_calculation["predominant_systolic_reading"] = most_recent_reading["systolic"]
-        elif len(bp_readings) > 2:
-            predominance_calculation["predominant_diastolic_reading"] = calculate_correct_bp_reading(bp_readings, True)
-            predominance_calculation["predominant_systolic_reading"] = calculate_correct_bp_reading(bp_readings, False)
+        elif len(filter_bp_readings) > 2:
+            predominance_calculation["predominant_diastolic_reading"] = calculate_correct_bp_reading(filter_bp_readings, True)
+            predominance_calculation["predominant_systolic_reading"] = calculate_correct_bp_reading(filter_bp_readings, False)
 
     return predominance_calculation
