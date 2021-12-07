@@ -120,6 +120,10 @@ def sufficient_to_autopopulate (request):
     filter_bp_readings = []
     date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
 
+    if len(request["bp"]) < 1:
+        predominance_calculation["success"] = False
+        return predominance_calculation
+
     for reading in request["bp"]:
         bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
         # should this include the same day a year ago?
