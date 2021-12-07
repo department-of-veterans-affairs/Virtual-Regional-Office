@@ -1,5 +1,4 @@
 import pytest
-from test.data.htn_data import general_request_data
 from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
 
 @pytest.mark.parametrize(
@@ -239,11 +238,148 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
 def test_sufficient_to_autopopulate(request_data, predominance_calculation):
     assert sufficient_to_autopopulate(request_data) == predominance_calculation
 
-
-def test_history_of_diastolic_bp():
-    history_sufficiency_data = {
-        "diastolic_bp_predominantly_100_or_more": True,
-        "success": True 
-    }
-
-    assert history_of_diastolic_bp(general_request_data) == history_sufficiency_data
+@pytest.mark.parametrize(
+    "request_data, diastolic_bp_predominantly_100_or_more",
+    [
+        # 1 reading test case that passes
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 100,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "diastolic_bp_predominantly_100_or_more": True,
+                "success": True 
+            }
+        ),
+        # 1 reading test case that fails
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 90,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "diastolic_bp_predominantly_100_or_more": False,
+                "success": True 
+            }
+        ),
+        # 2 reading test case that passes
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 100,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                    {
+                        "diastolic": 90,
+                        "systolic": 200,
+                        "date": "2021-09-01"
+                    }
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "diastolic_bp_predominantly_100_or_more": True,
+                "success": True 
+            }
+        ),
+        # 2 reading test case that fails
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 90,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                    {
+                        "diastolic": 90,
+                        "systolic": 200,
+                        "date": "2021-09-01"
+                    }
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "diastolic_bp_predominantly_100_or_more": False,
+                "success": True 
+            }
+        ),
+        # 3 reading test case that passes
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 101,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                    {
+                        "diastolic": 90,
+                        "systolic": 200,
+                        "date": "2021-09-01"
+                    },
+                    {
+                        "diastolic": 115,
+                        "systolic": 200,
+                        "date": "2021-09-02"
+                    }
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "diastolic_bp_predominantly_100_or_more": True,
+                "success": True 
+            }
+        ),
+        # 3 reading test case that fails
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 101,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                    {
+                        "diastolic": 90,
+                        "systolic": 200,
+                        "date": "2021-09-01"
+                    },
+                    {
+                        "diastolic": 95,
+                        "systolic": 200,
+                        "date": "2021-09-02"
+                    }
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "diastolic_bp_predominantly_100_or_more": False,
+                "success": True 
+            }
+        ),
+    ],
+)
+def test_history_of_diastolic_bp(request_data, diastolic_bp_predominantly_100_or_more):
+    assert history_of_diastolic_bp(request_data) == diastolic_bp_predominantly_100_or_more
