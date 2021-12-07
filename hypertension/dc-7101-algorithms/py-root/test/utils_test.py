@@ -229,7 +229,6 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                "sufficient_to_autopopulate": False,
                 "success": False,
             }
         ),
