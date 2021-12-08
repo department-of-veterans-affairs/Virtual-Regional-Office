@@ -9,9 +9,12 @@ def main(event: Dict):
         predominance_calculation_status = predominance_calculation["success"]
         diastolic_history_calculation_status = diastolic_history_calculation["success"]
 
+        # if sufficient_to_autopopulate returns 'success': False, but history_of_diastolic_bp doesn't
+        # Note that the inverse can't happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn't)
+        # because the only way history_of_diastolic_bp can fail is if there are no bp readings, which would cause
+        # sufficient_to_autopopulate to fail as well
         if (
-            (predominance_calculation_status and not diastolic_history_calculation_status) 
-            or (not predominance_calculation_status and diastolic_history_calculation_status)
+            (diastolic_history_calculation_status and not predominance_calculation_status) 
         ):
             statusCode = 209
         elif not predominance_calculation_status and not diastolic_history_calculation_status:
