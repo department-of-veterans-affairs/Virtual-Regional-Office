@@ -3,7 +3,6 @@ from dateutil.relativedelta import relativedelta
 import operator
 
 def calculate_correct_bp_reading(bp_readings, use_diastolic):
-    # Break this into two functions that share another helper?
     diastolic_bucket_count = {
         "130": 0,
         "120": 0,
