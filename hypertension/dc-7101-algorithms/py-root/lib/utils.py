@@ -55,22 +55,27 @@ def calculate_correct_bp_reading(bp_readings, use_diastolic):
 
     for key in bucket_count:
         curr_count = bucket_count[key]
+        key_and_largest_count_are_ints = (
+            largest_count_bucket != None
+            and key != "less_than_one_hundred"
+            and key != "less_than_one_sixty"
+            )
+
         if curr_count > largest_count:
             largest_count = curr_count
             largest_count_bucket = key
         if (
             curr_count == largest_count
-            and largest_count_bucket != None
-            and key != "less_than_one_hundred"
-            and key != "less_than_one_sixty"
+            and key_and_largest_count_are_ints
             and int(key) > int(largest_count_bucket)
         ):
             largest_count_bucket = key
 
     bucketed_bp_readings = list(filter(lambda d: d[f"{type}_key"] == largest_count_bucket, bp_readings))
     bucketed_bp_readings.sort(key=operator.itemgetter("date"))
+    most_recent_reading_of_selected_type = bucketed_bp_readings[-1][type]
 
-    return bucketed_bp_readings[-1][type]
+    return most_recent_reading_of_selected_type
 
 def bp_readings_meet_date_specs(date_of_claim, bp_readings):
     claim_within_six_months = False
