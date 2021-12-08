@@ -1,6 +1,5 @@
 import pytest
 from lib.main import main
-from test.data.htn_data import general_request_data
 
 @pytest.mark.parametrize(
     "request_data, response",
