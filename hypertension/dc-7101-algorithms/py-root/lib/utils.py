@@ -95,7 +95,6 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
 
     return claim_within_one_month and claim_within_six_months
 
-    # where to add this? When there’s an internal server error, the algorithm CANNOT “run”.
 
 def history_of_diastolic_bp(request):
     diastolic_history_calculation = {
@@ -129,7 +128,6 @@ def sufficient_to_autopopulate (request):
 
     for reading in request["bp"]:
         bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
-        # should this include the same day a year ago?
         if bp_reading_date >= date_of_claim_date - relativedelta(years=1):
             filter_bp_readings.append(reading)
     
