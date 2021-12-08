@@ -130,11 +130,10 @@ def sufficient_to_autopopulate (request):
             filter_bp_readings.append(reading)
     
     if len(filter_bp_readings) <= 1 or not bp_readings_meet_date_specs(date_of_claim, filter_bp_readings):
-        predominance_calculation["sufficient_to_autopopulate"] = False
+        predominance_calculation["success"] = False
         return predominance_calculation
 
     elif len(filter_bp_readings) > 1 and bp_readings_meet_date_specs(date_of_claim, filter_bp_readings):
-        predominance_calculation["sufficient_to_autopopulate"] = True
 
         if len(filter_bp_readings) == 2:
             most_recent_reading = sorted(filter_bp_readings, key=lambda d: d["date"])[-1]

@@ -31,7 +31,6 @@ from lib.main import main
                 },
                 "body": {
                     "predominance_calculation": {
-                        'sufficient_to_autopopulate': True,
                         "success": True,
                         'predominant_diastolic_reading': 115,
                         'predominant_systolic_reading': 180

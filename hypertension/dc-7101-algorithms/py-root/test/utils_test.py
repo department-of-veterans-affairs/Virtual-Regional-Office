@@ -23,7 +23,6 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': True,
                 "success": True,
                 'predominant_diastolic_reading': 115,
                 'predominant_systolic_reading': 180
@@ -53,7 +52,6 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': True,
                 "success": True,
                 'predominant_diastolic_reading': 115,
                 'predominant_systolic_reading': 180
@@ -100,7 +98,6 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': True,
                 "success": True,
                 'predominant_diastolic_reading': 111,
                 'predominant_systolic_reading': 180
@@ -150,7 +147,6 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': True,
                 "success": True,
                 'predominant_diastolic_reading': 111,
                 'predominant_systolic_reading': 180
@@ -175,8 +171,7 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': False,
-                "success": True,
+                "success": False,
             },
         ),
         # 2 readings, but no second reading within 180 days
@@ -198,8 +193,7 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': False,
-                "success": True,
+                "success": False,
             },
         ),
         # 1 reading
@@ -216,8 +210,7 @@ from lib.utils import sufficient_to_autopopulate, history_of_diastolic_bp
                 'date_of_claim': '2021-11-09',
             },
             {
-                'sufficient_to_autopopulate': False,
-                "success": True,
+                "success": False,
             },
         ),
         # 0 readings
