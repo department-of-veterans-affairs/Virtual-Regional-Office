@@ -42,6 +42,45 @@ from lib.main import main
                 }
             }
         ),
+        # sufficient_to_autopopulate returns 'success': False, but history_of_diastolic_bp doesn't
+        # Note that the inverse can't happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn't)
+        # because the only way history_of_diastolic_bp can fail is if there are no bp readings, which would cause
+        # sufficient_to_autopopulate to fail as well 
+        (
+            {
+                "bp": [
+                    {
+                        "diastolic": 115,
+                        "systolic": 180,
+                        "date": "2020-11-01"
+                    },
+                    {
+                        "diastolic": 110,
+                        "systolic": 200,
+                        "date": "2020-09-01"
+                    }
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "statusCode": 209,
+                "headers": {
+                    "Access-Control-Allow-Headers" : "Content-Type",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST"
+                },
+                "body": {
+                    "predominance_calculation": {
+                        "success": False,
+                    },
+                    "diastolic_history_calculation": {
+                        "diastolic_bp_predominantly_100_or_more": True,
+                        "success": True 
+                    }
+                }
+            }
+        ),
         # both algos fail
         (
             {
