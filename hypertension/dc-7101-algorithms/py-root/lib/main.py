@@ -17,7 +17,6 @@ def main(event: Dict):
         elif not predominance_calculation_status and not diastolic_history_calculation_status:
             statusCode = 400
 
-        # how ot return 500 server error?
         return {
             "statusCode": statusCode,
             "headers": {
