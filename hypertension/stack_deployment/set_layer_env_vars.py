@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 import boto3
 
-ENV_FILE_LOCATION = "../cf-template-params.env"
+ENV_FILE_LOCATION = "../.env"
 RELEVANT_LAMBDA_LAYERS = {
     "vro--pdf-generator-layer": "PdfGeneratorLayerArn",
     "vro--python-dependencies-layer": "PythonDependenciesLayerArn",
@@ -15,7 +15,7 @@ RELEVANT_LAMBDA_LAYERS = {
 # function's template with the newly-deployed layer ARNs.
 # This function assumes that you've already established an
 # AWS MFA session (See README for instructions on doing that).
-def add_deployed_layers_to_template_main(
+def set_layer_env_vars(
     args: Optional[list],
     env_file_location: str,
     relevant_lambda_layers: dict,
@@ -34,9 +34,13 @@ def add_deployed_layers_to_template_main(
         return
 
     credentials = load_credentials_from_env()
-    layer_arns = load_layer_arns(credentials, relevant_lambda_layers)
-    updated_env_info = {**env_info, **layer_arns}
+    layer_arns = fetch_layer_arns(credentials, relevant_lambda_layers)
 
+    write_new_layer_arns_to_env(env_file_location, env_info, layer_arns)
+
+
+def write_new_layer_arns_to_env(env_file_location: str, env_info: dict, layer_arns: dict):
+    updated_env_info = {**env_info, **layer_arns}
     env_string = make_env_string(updated_env_info)
     Path(env_file_location).write_text(env_string)
 
@@ -97,7 +101,7 @@ def write_existing_layers_error(existing_layers: dict) -> None:
     raise UserWarning(error_message)
 
 
-def load_layer_arns(credentials, relevant_lambda_layers: dict) -> dict:
+def fetch_layer_arns(credentials, relevant_lambda_layers: dict) -> dict:
     lambda_client = boto3.client("lambda", **credentials)
     layers = lambda_client.list_layers().get("Layers")
 
@@ -112,6 +116,6 @@ def load_layer_arns(credentials, relevant_lambda_layers: dict) -> dict:
 
 
 if __name__ == "__main__":
-    add_deployed_layers_to_template_main(
+    set_layer_env_vars(
         None, ENV_FILE_LOCATION, RELEVANT_LAMBDA_LAYERS
     )

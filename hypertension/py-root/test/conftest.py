@@ -53,7 +53,7 @@ def config():
     config = load_config(
         os.environ["TestVeteranIcn"],
         os.environ["LighthousePrivateRsaKeyFilePath"],
-        os.environ["TestClientId"],
+        os.environ["LighthouseOAuthClientId"],
     )
     config["html"] = "<html><body>Hello World!</body></html>"
     return config

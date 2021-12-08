@@ -26,7 +26,7 @@ jobs:
           name: "Running unit tests"
           command: |-
               cd hypertension
-              make pytest.ci
+              make test-ci
           no_output_timeout: 10s
       - save_cache:
           key: vro-{{ checksum "hypertension/py-root/poetry.lock"}}

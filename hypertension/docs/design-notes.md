@@ -17,6 +17,27 @@ If the virtualenv was not located in `py-root/.venv`, then when you open VS Code
 
 > No Python interpreter is selected. You need to select a Python interpreter to enable featuresr such as IntelliSense, linting, and debugging.
 
+# Python Dependencies
+
+We use poetry to manage our dependencies.
+
+When running locally, we use commands like `poetry run python SCRIPT` and `poetry run pytest`. Poetry activates a virtual env and causes the Python to use the Poetry dependencies.
+
+Lambda doesn't use Poetry. Lambda uses requirements.txt. In fact, Lambda depends only on having a requirements.txt file present, and doesn't require having any of the packages installed (such as via `pip`).
+
+Thus, you'll notice that Makefile commands related to running code in Python locally (such as when running pytest) include `poetry install`. However, this is theoretically not needed for Make commands related to `sam build`-ing and `sam deploy`-ing the code. Instead, we use `poetry export` to convert our poetry dependencies into a requirements.txt file, that the `sam` commands use.
+
+# The (Lambda) "Layers" SAM/CloudFormation stack and the (Lambda) "Main" (funciton) SAM/CloudFormation stack
+
+We have two SAM/CF stacks:
+- The "Layers" stack contains only the Lambda layers
+- The "Main" stack contains everything else
+
+The Layers stack has two Lambda layers:
+- One that holds the `wkhtmltopdf` binary
+- One that contains all the Python dependencies that the Main stack's lambda function needs.
+  - We do this to keep the size of the Python code in the main stack less than 3MB, so that we can continue to use the AWS Console in-console Lambda function code editor. This is exceptionally helpful for certain debugging scenarios.
+
 # SAM (CloudFormation) Circular Dependencies
 
 > This section was originally written on 6/14/2021 by Aaron Houlihan (aaron@amida.com; Aaron.Houlihan@va.gov)
@@ -83,9 +104,9 @@ Thus, we have the following list of constraints:
 ## Our Solution
 
 - We removed the RSA key from the set of environment variables. It must be set into AWS Secrets Manager via the AWS Console. Limitation numbers 7 and 8 above forces this unfortunate conclusion.
-- Environment variables are to be specified in one authoritative place: `cf-template-params.env`
+- Environment variables are to be specified in one authoritative place: `.env`
   - This makes Pytest and running individual scripts work.
-- Python script `set_parameter_overrides.py` copies the values from `cf-template-params.env` into `samconfig.toml` in a format friendly to that file. Run that script before you deploy to AWS.
+- Python script `set_parameter_overrides.py` copies the values from `.env` into `samconfig.toml` in a format friendly to that file. Run that script before you deploy to AWS.
   - This makes AWS deployment work.
 - Set your Lighthouse authentication RSA key in AWS Secrets Manager via the AWS CLI. (See [the README](../README.md#Upload-Your-Lighthouse-Private-RSA-Key-to-Secrets-Manager)) The AWS CLI needs the key in single-line format (PEM is multi-line). base64 encode it to make it single line and upload it. The VRO code will base64 decode it.
 

@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv("../cf-template-params.env")
+load_dotenv("../.env")
 
 
 def update_file(path, search_regex, new_string):
@@ -20,13 +20,13 @@ def set_parameter_overrides(samconfig_file_path):
         "LighthouseTokenUrl",
         "LighthouseJwtAudUrl",
         "LighthouseJwtScope",
+        "LighthouseOAuthClientId",
         "LighthouseOAuthGrantType",
         "LighthouseOAuthAssertionType",
         "KmsCmkId",
         "LighthouseObservationUrl",
         "LighthouseObservationCategory",
         "LighthouseObservationLoincCode",
-        "STAGE",
         "PdfGeneratorLayerArn",
         "PythonDependenciesLayerArn",
     ]

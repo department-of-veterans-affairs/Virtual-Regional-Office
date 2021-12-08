@@ -38,7 +38,7 @@ def make_output_line(aws_map: dict, credentials: dict, key: str) -> str:
 
 
 def load_credentials_from_user():
-    # path for when the session has already been set up in parent shell
+    # Path for when the session has already been set up in parent shell
     # If AWS_ACCESS_KEY_ID starts with ASIA, it's a temporary credential
     # and needs to be unset in order to be able to call
     # aws sts get-session-token; so we unset the aws credentials environment variables
