@@ -1,5 +1,5 @@
 from typing import Dict
-from .utils import sufficient_to_autopopulate
+from .bp_sufficiency import sufficient_to_autopopulate
 from .bp_history import history_of_diastolic_bp
 
 def main(event: Dict):
