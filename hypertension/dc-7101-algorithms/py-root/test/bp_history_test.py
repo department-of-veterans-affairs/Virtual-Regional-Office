@@ -1,5 +1,5 @@
 import pytest
-from lib.bp_history import history_of_diastolic_bp
+from lib.algorithms.bp_history import history_of_diastolic_bp
 
 @pytest.mark.parametrize(
     "request_data, diastolic_bp_predominantly_100_or_more",

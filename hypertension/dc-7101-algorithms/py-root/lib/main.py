@@ -1,6 +1,6 @@
 from typing import Dict
-from .bp_sufficiency import sufficient_to_autopopulate
-from .bp_history import history_of_diastolic_bp
+from .algorithms.bp_sufficiency import sufficient_to_autopopulate
+from .algorithms.bp_history import history_of_diastolic_bp
 
 def main(event: Dict):
     statusCode = 200

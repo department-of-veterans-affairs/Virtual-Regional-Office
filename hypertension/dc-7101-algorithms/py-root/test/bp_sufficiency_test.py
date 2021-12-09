@@ -1,5 +1,5 @@
 import pytest
-from lib.bp_sufficiency import sufficient_to_autopopulate
+from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
 
 @pytest.mark.parametrize(
     "request_data, predominance_calculation",
