@@ -2,7 +2,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import operator
 
-def tally_reading_counts(bp_readings, use_diastolic):
+def tally_diastolic_counts(bp_readings):
     diastolic_bucket_count = {
         "130": 0,
         "120": 0,
@@ -11,46 +11,49 @@ def tally_reading_counts(bp_readings, use_diastolic):
         "less_than_one_hundred": 0
     }
 
+    for reading in bp_readings:
+        curr = reading["diastolic"]
+
+        key = None
+        if curr >= 130:
+            key = "130"
+        elif curr >= 120 and curr < 130:
+            key = "120"
+        elif curr >= 110 and curr < 120:
+            key = "110"
+        elif curr >= 100 and curr < 110:
+            key = "100"
+        else:
+            key = "less_than_one_hundred"
+
+        reading["diastolic_key"] = key
+        diastolic_bucket_count[key] += 1
+
+    return diastolic_bucket_count
+
+
+def tally_systolic_counts(bp_readings):
     systolic_bucket_count = {
         "200": 0,
         "160": 0,
         "less_than_one_sixty": 0
     }
 
-    if use_diastolic:
-        type = "diastolic"
-        bucket_count = diastolic_bucket_count
-    else:
-        type = "systolic"
-        bucket_count = systolic_bucket_count
-
     for reading in bp_readings:
-        curr = reading[type]
+        curr = reading["systolic"]
 
         key = None
-        if use_diastolic:
-            if curr >= 130:
-                key = "130"
-            elif curr >= 120 and curr < 130:
-                key = "120"
-            elif curr >= 110 and curr < 120:
-                key = "110"
-            elif curr >= 100 and curr < 110:
-                key = "100"
-            else:
-                key = "less_than_one_hundred"
+        if curr >= 200:
+            key = "200"
+        elif curr >= 160:
+            key = "160"
         else:
-            if curr >= 200:
-                key = "200"
-            elif curr >= 160:
-                key = "160"
-            else:
-                key = "less_than_one_sixty"
+            key = "less_than_one_sixty"
 
-        reading[f"{type}_key"] = key
-        bucket_count[key] += 1
+        reading["systolic_key"] = key
+        systolic_bucket_count[key] += 1
 
-    return calculate_reading_from_bucket_count(bucket_count, bp_readings, type)
+    return systolic_bucket_count
 
 
 def calculate_reading_from_bucket_count(bucket_count, bp_readings, type):
@@ -107,7 +110,7 @@ def history_of_diastolic_bp(request):
     bp_readings = request["bp"]
     bp_readings_length = len(bp_readings)
     readings_greater_or_equal_to_one_hundred = 0
-    
+
     if bp_readings_length > 0:
         for reading in bp_readings:
             if reading["diastolic"] >= 100:
@@ -134,7 +137,7 @@ def sufficient_to_autopopulate (request):
         bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
         if bp_reading_date >= date_of_claim_date - relativedelta(years=1):
             filter_bp_readings.append(reading)
-    
+
     if len(filter_bp_readings) <= 1 or not bp_readings_meet_date_specs(date_of_claim, filter_bp_readings):
         predominance_calculation["success"] = False
         return predominance_calculation
@@ -146,7 +149,9 @@ def sufficient_to_autopopulate (request):
             predominance_calculation["predominant_diastolic_reading"] = most_recent_reading["diastolic"]
             predominance_calculation["predominant_systolic_reading"] = most_recent_reading["systolic"]
         elif len(filter_bp_readings) > 2:
-            predominance_calculation["predominant_diastolic_reading"] = tally_reading_counts(filter_bp_readings, True)
-            predominance_calculation["predominant_systolic_reading"] = tally_reading_counts(filter_bp_readings, False)
+            diastolic_bucket_count = tally_diastolic_counts(filter_bp_readings)
+            predominance_calculation["predominant_diastolic_reading"] = calculate_reading_from_bucket_count(diastolic_bucket_count, filter_bp_readings, 'diastolic')
+            systolic_bucket_count = tally_systolic_counts(filter_bp_readings)
+            predominance_calculation["predominant_systolic_reading"] = calculate_reading_from_bucket_count(systolic_bucket_count, filter_bp_readings, 'systolic')
 
     return predominance_calculation
