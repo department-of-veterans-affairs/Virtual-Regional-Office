@@ -1,5 +1,29 @@
 import pytest
-from lib.algorithms.utils import bp_readings_meet_date_specs
+from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_counts
+
+# @pytest.mark.parametrize(
+#     "bp_readings, result",
+#     [
+#         # Valid reading
+#         (
+#             [
+#                 {
+#                     "diastolic": 115,
+#                     "systolic": 180,
+#                     "date": "2021-10-10"
+#                 },
+#                 {
+#                     "diastolic": 110,
+#                     "systolic": 200,
+#                     "date": "2021-09-01"
+#                 }
+#             ],
+#         ),
+#     ],
+# )
+# def test_tally_diastolic_counts(bp_readings, result):
+#     assert tally_diastolic_counts(bp_readings) == result
+
 
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",
@@ -8,16 +32,16 @@ from lib.algorithms.utils import bp_readings_meet_date_specs
         (
             '2021-11-09',
             [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-10-10"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
+                {
+                    "diastolic": 115,
+                    "systolic": 180,
+                    "date": "2021-10-10"
+                },
+                {
+                    "diastolic": 110,
+                    "systolic": 200,
+                    "date": "2021-09-01"
+                }
             ],
             True
         ),
@@ -25,16 +49,16 @@ from lib.algorithms.utils import bp_readings_meet_date_specs
         (
             '2021-11-09',
             [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-10-10"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-05-12"
-                    }
+                {
+                    "diastolic": 115,
+                    "systolic": 180,
+                    "date": "2021-10-10"
+                },
+                {
+                    "diastolic": 110,
+                    "systolic": 200,
+                    "date": "2021-05-12"
+                }
             ],
             False
         ),
@@ -42,16 +66,16 @@ from lib.algorithms.utils import bp_readings_meet_date_specs
         (
             '2021-11-09',
             [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-10-09"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
+                {
+                    "diastolic": 115,
+                    "systolic": 180,
+                    "date": "2021-10-09"
+                },
+                {
+                    "diastolic": 110,
+                    "systolic": 200,
+                    "date": "2021-09-01"
+                }
             ],
             False
         ),
@@ -59,11 +83,11 @@ from lib.algorithms.utils import bp_readings_meet_date_specs
         (
             '2021-11-09',
             [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-10-10"
-                    }
+                {
+                    "diastolic": 115,
+                    "systolic": 180,
+                    "date": "2021-10-10"
+                }
             ],
             False
         ),
