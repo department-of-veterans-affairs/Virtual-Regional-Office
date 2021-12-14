@@ -6,7 +6,7 @@ def tally_diastolic_counts(bp_readings):
     Give a list of blood pressure readings, determine how many of each reading are included in each diastolic BP bucket
 
     :param bp_readings: list of blood pressure readings
-    :type request: list
+    :type bp_readings: list
     :return: dict with keys which match the diastolic BP buckets and the number of readings in the list for each diastolic bucket type
     :rtype: dict
     """
@@ -45,10 +45,11 @@ def tally_systolic_counts(bp_readings):
     Give a list of blood pressure readings, determine how many of each reading are included in each systolic BP bucket
 
     :param bp_readings: list of blood pressure readings
-    :type request: list
+    :type bp_readings: list
     :return: dict with keys which match the systolic BP buckets and the number of readings in the list for each systolic bucket type
     :rtype: dict
     """
+
     systolic_bucket = {
         "200": 0,
         "160": 0,
@@ -77,10 +78,15 @@ def calculate_reading_from_bucket(bucket, bp_readings, type):
     Determine the predominant rating from a list of BP readings
 
     :param bucket: dict of blood pressure buckets and how many of each bucket type there are for the given blood pressure readings
-    :type request: dict 
-    :return: dict with keys which match the systolic BP buckets and the number of readings in the list for each systolic bucket type
+    :type bucket: dict
+    :param bp_readings: list of blood pressure readings
+    :type bp_readings: list
+    :param type: string notating either diastolic or systolic
+    :type type: string
+    :return: most recent predominant BP reading
     :rtype: dict
     """
+
     largest_count = 0
     largest_count_bucket = None
 
