@@ -2,7 +2,16 @@ from datetime import datetime
 import operator
 
 def tally_diastolic_counts(bp_readings):
-    diastolic_bucket_count = {
+    """
+    Give a list of blood pressure readings, determine how many of each reading are included in each diastolic BP bucket
+
+    :param bp_readings: list of blood pressure readings
+    :type request: list
+    :return: dict with keys which match the diastolic bp buckets and the number of readings in the list for each diastolic bucket type
+    :rtype: dict
+    """
+
+    diastolic_bucket = {
         "130": 0,
         "120": 0,
         "110": 0,
@@ -26,13 +35,21 @@ def tally_diastolic_counts(bp_readings):
             key = "less_than_one_hundred"
 
         reading["diastolic_key"] = key
-        diastolic_bucket_count[key] += 1
+        diastolic_bucket[key] += 1
 
-    return diastolic_bucket_count
+    return diastolic_bucket
 
 
 def tally_systolic_counts(bp_readings):
-    systolic_bucket_count = {
+    """
+    Give a list of blood pressure readings, determine how many of each reading are included in each systolic BP bucket
+
+    :param bp_readings: list of blood pressure readings
+    :type request: list
+    :return: dict with keys which match the systolic bp buckets and the number of readings in the list for each systolic bucket type
+    :rtype: dict
+    """
+    systolic_bucket = {
         "200": 0,
         "160": 0,
         "less_than_one_sixty": 0
@@ -50,17 +67,17 @@ def tally_systolic_counts(bp_readings):
             key = "less_than_one_sixty"
 
         reading["systolic_key"] = key
-        systolic_bucket_count[key] += 1
+        systolic_bucket[key] += 1
 
-    return systolic_bucket_count
+    return systolic_bucket
 
 
-def calculate_reading_from_bucket_count(bucket_count, bp_readings, type):
+def calculate_reading_from_bucket(bucket, bp_readings, type):
     largest_count = 0
     largest_count_bucket = None
 
-    for key in bucket_count:
-        curr_count = bucket_count[key]
+    for key in bucket:
+        curr_count = bucket[key]
         key_and_largest_count_are_ints = (
             largest_count_bucket != None
             and key != "less_than_one_hundred"

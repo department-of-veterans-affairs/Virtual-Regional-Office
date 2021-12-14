@@ -1,5 +1,5 @@
 import pytest
-from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket_count
+from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket
 
 @pytest.mark.parametrize(
     "bp_readings, result",
@@ -98,7 +98,7 @@ def test_tally_systolic_counts(bp_readings, result):
     assert tally_systolic_counts(bp_readings) == result
 
 @pytest.mark.parametrize(
-    "bucket_count, bp_readings, type, result",
+    "bucket, bp_readings, type, result",
     [
         # Test diastolic readings
         (
@@ -212,8 +212,8 @@ def test_tally_systolic_counts(bp_readings, result):
         ),
     ],
 )
-def test_calculate_reading_from_bucket_count(bucket_count, bp_readings, type, result):
-    assert calculate_reading_from_bucket_count(bucket_count, bp_readings, type) == result
+def test_calculate_reading_from_bucket(bucket, bp_readings, type, result):
+    assert calculate_reading_from_bucket(bucket, bp_readings, type) == result
 
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",

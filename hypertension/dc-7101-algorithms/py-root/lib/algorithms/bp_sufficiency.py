@@ -1,7 +1,7 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from .utils import tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket_count, bp_readings_meet_date_specs
+from .utils import tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket, bp_readings_meet_date_specs
 
 def sufficient_to_autopopulate (request):
     """
@@ -41,9 +41,9 @@ def sufficient_to_autopopulate (request):
             predominance_calculation["predominant_diastolic_reading"] = most_recent_reading["diastolic"]
             predominance_calculation["predominant_systolic_reading"] = most_recent_reading["systolic"]
         elif len(filter_bp_readings) > 2:
-            diastolic_bucket_count = tally_diastolic_counts(filter_bp_readings)
-            predominance_calculation["predominant_diastolic_reading"] = calculate_reading_from_bucket_count(diastolic_bucket_count, filter_bp_readings, 'diastolic')
-            systolic_bucket_count = tally_systolic_counts(filter_bp_readings)
-            predominance_calculation["predominant_systolic_reading"] = calculate_reading_from_bucket_count(systolic_bucket_count, filter_bp_readings, 'systolic')
+            diastolic_bucket = tally_diastolic_counts(filter_bp_readings)
+            predominance_calculation["predominant_diastolic_reading"] = calculate_reading_from_bucket(diastolic_bucket, filter_bp_readings, 'diastolic')
+            systolic_bucket = tally_systolic_counts(filter_bp_readings)
+            predominance_calculation["predominant_systolic_reading"] = calculate_reading_from_bucket(systolic_bucket, filter_bp_readings, 'systolic')
 
     return predominance_calculation
