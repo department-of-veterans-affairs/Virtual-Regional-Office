@@ -98,7 +98,7 @@ def test_tally_systolic_counts(bp_readings, result):
     assert tally_systolic_counts(bp_readings) == result
 
 @pytest.mark.parametrize(
-    "bucket, bp_readings, type, result",
+    "bucket, bp_readings, filter_for_diastolic, result",
     [
         # Test diastolic readings
         (
@@ -159,7 +159,7 @@ def test_tally_systolic_counts(bp_readings, result):
                     "diastolic_key": '130'
                 }
             ],
-            'diastolic',
+            True,
             140
         ),
         # Test systolic readings
@@ -207,13 +207,13 @@ def test_tally_systolic_counts(bp_readings, result):
                     "systolic_key": 'less_than_one_sixty'
                 },
             ],
-            'systolic',
+            False,
             200
         ),
     ],
 )
-def test_calculate_reading_from_bucket(bucket, bp_readings, type, result):
-    assert calculate_reading_from_bucket(bucket, bp_readings, type) == result
+def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic, result):
+    assert calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic) == result
 
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",
