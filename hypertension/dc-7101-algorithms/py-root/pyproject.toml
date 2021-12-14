@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "dc-7101-algorithms"
+version = "0.0.1"
+description = ""
+authors = ["Aaron Houlihan <aaron@amida.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pytest-watch = "^4.2.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

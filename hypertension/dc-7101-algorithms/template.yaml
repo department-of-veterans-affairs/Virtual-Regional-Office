@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Description: Hypertension Data Processor
+
+Resources:
+    VroHtnDataProcessor:
+        Type: AWS::Serverless::Function
+        Properties:
+            Description: "Converts raw blood pressure and medication data into the criteria the VASRD Rules Manager expects to evalute DC 7101 hypertensive vascular disease"
+            CodeUri: py-root/
+            Handler: app.lambda_handler
+            Runtime: python3.9
+            Role: !GetAtt VroHtnDataProcessorRole.Arn
+    VroHtnDataProcessorRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: 'vro-htn-data-processor-role'
+        # "Allows Lambda to assume this role"
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                - Effect: Allow
+                  Action: sts:AssumeRole
+                  # TODO: Limit this down. Allowing all lambda to assume this role is too much. Limit it
+                  # to just the ARN of your lambda function.
+                  Principal:
+                      Service: lambda.amazonaws.com
+                # TODO: Cleanup this comment: It's unfortunate that they use the word "Role" in the name, because it's actually a policy.
+            ManagedPolicyArns:
+            - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
