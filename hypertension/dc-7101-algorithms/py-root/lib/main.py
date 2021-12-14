@@ -24,7 +24,7 @@ def main(event: Dict):
 
         # if sufficient_to_autopopulate returns 'success': False, but history_of_diastolic_bp doesn't
         # Note that the inverse can't happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn't)
-        # because the only way history_of_diastolic_bp can fail is if there are no bp readings, which would cause
+        # because the only way history_of_diastolic_bp can fail is if there are no BP readings, which would cause
         # sufficient_to_autopopulate to fail as well
 
         # Additionally, there's no way for requires continuous medication to fail as well 
