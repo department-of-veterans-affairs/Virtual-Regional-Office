@@ -1,4 +1,13 @@
 def history_of_diastolic_bp(request):
+    """
+    Determine whether the Veteran has a history of diastolic pressure predominantly 100 or more
+
+    :param request: request body
+    :type request: dict
+    :return: response body indicating success or failure with additional attributes
+    :rtype: dict
+    """
+
     diastolic_history_calculation = {
         "success": True
     }

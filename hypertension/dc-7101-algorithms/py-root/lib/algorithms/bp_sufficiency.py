@@ -4,6 +4,16 @@ from dateutil.relativedelta import relativedelta
 from .utils import tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket_count, bp_readings_meet_date_specs
 
 def sufficient_to_autopopulate (request):
+    """
+    Determine if there is enough BP data to calculate a predominant reading,
+    and if so return the predominant rating
+
+    :param request: request body
+    :type request: dict
+    :return: response body indicating success or failure with additional attributes
+    :rtype: dict
+    """
+
     predominance_calculation = {
         "success": True,
     }

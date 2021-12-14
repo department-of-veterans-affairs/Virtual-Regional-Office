@@ -5,6 +5,15 @@ from .algorithms.continuous_medication import continuous_medication_required
 from .algorithms.utils import hypertension_medications
 
 def main(event: Dict):
+    """
+    Take a request that includes hypertension related data, and return a response
+
+    :param event: request body
+    :type event: dict
+    :return: response body
+    :rtype: dict
+    """
+
     statusCode = 200
     try:
         predominance_calculation = sufficient_to_autopopulate(event)
