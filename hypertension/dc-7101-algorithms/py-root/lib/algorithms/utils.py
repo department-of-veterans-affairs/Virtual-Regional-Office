@@ -102,4 +102,17 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
 
     return claim_within_one_month and claim_within_six_months
 
+hypertension_medications = {
+    "benazepril",
+    "lotensin",
+    "captopril",
+    "capoten",
+    "enalapril",
+    "enalaprilat",
+    "fosinopril",
+    "monopril",
+    "lisinopril",
+    "prinivil",
+    "zestril",
+}
 

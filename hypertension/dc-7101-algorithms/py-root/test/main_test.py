@@ -4,7 +4,7 @@ from lib.main import main
 @pytest.mark.parametrize(
     "request_data, response",
     [
-        # Both calculator functions return valid results readings
+        # All three calculator functions return valid results readings
         (
             {
                 "bp": [
@@ -19,8 +19,9 @@ from lib.main import main
                         "date": "2021-09-01"
                     }
                 ],
-                "medication": [],
+                "medication": ["Capoten"],
                 'date_of_claim': '2021-11-09',
+                'veteran_is_service_connected': True
             },
             {
                 "statusCode": 200,
@@ -38,6 +39,10 @@ from lib.main import main
                     "diastolic_history_calculation": {
                         "diastolic_bp_predominantly_100_or_more": True,
                         "success": True 
+                    },
+                    "requires_continuous_medication": {
+                        "continuous_medication_required": True,
+                        "success": True
                     }
                 }
             }
@@ -62,6 +67,7 @@ from lib.main import main
                 ],
                 "medication": [],
                 'date_of_claim': '2021-11-09',
+                'veteran_is_service_connected': True
             },
             {
                 "statusCode": 209,
@@ -77,17 +83,22 @@ from lib.main import main
                     "diastolic_history_calculation": {
                         "diastolic_bp_predominantly_100_or_more": True,
                         "success": True 
+                    },
+                    "requires_continuous_medication": {
+                        "continuous_medication_required": False,
+                        "success": True
                     }
                 }
             }
         ),
-        # both algos fail
+        # sufficiency and history algos fail
         (
             {
                 "bp": [
                 ],
                 "medication": [],
                 'date_of_claim': '2021-11-09',
+                'veteran_is_service_connected': True
             },
             {
                 "statusCode": 400,
@@ -102,6 +113,10 @@ from lib.main import main
                     },
                     "diastolic_history_calculation": {
                         "success": False 
+                    },
+                    "requires_continuous_medication": {
+                        "continuous_medication_required": False,
+                        "success": True
                     }
                 }
             }
@@ -123,6 +138,7 @@ from lib.main import main
                 ],
                 "medication": [],
                 'date_of_claim': '2021-11-09',
+                'veteran_is_service_connected': True
             },
             {
                 "statusCode": 500,
@@ -137,6 +153,9 @@ from lib.main import main
                     },
                     "diastolic_history_calculation": {
                         "success": False 
+                    },
+                    "requires_continuous_medication": {
+                        "success": False
                     }
                 }
             }
@@ -158,6 +177,7 @@ from lib.main import main
                 ],
                 "medication": [],
                 'date_of_claim': '2021-11-09',
+                'veteran_is_service_connected': True
             },
             {
                 "statusCode": 500,
@@ -172,6 +192,9 @@ from lib.main import main
                     },
                     "diastolic_history_calculation": {
                         "success": False 
+                    },
+                    "requires_continuous_medication": {
+                        "success": False
                     }
                 }
             }
