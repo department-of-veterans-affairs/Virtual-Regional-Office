@@ -116,6 +116,17 @@ def calculate_reading_from_bucket(bucket, bp_readings, type):
 
 
 def bp_readings_meet_date_specs(date_of_claim, bp_readings):
+    """
+    Determine from a list of BP readings if there exists two readings with a 1 month and 6 month date window 
+
+    :param date_of_claim: string of date of claim
+    :type date_of_claim: string
+    :param bp_readings: list of blood pressure readings
+    :type bp_readings: list
+    :return: boolean indicating if readings within the two date windows are present
+    :rtype: boolean
+    """
+
     claim_within_six_months = False
     claim_within_one_month = False
     date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
