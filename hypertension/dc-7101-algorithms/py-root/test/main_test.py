@@ -202,5 +202,13 @@ from lib.main import main
     ],
 )
 def test_main(request_data, response):
+    """
+    Test the function that takes the request and returns the response
+
+    :param request_data: request body with blood pressure readings and other data
+    :type request_data: dict
+    :param response: response after running data through algorithms
+    :type response: dict
+    """
     assert main(request_data) == response
 

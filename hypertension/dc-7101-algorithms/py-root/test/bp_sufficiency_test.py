@@ -228,5 +228,13 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
     ],
 )
 def test_sufficient_to_autopopulate(request_data, predominance_calculation):
+    """
+    Test the history of blood pressure sufficiency algorithm
+
+    :param request_data: request body with blood pressure readings and other data
+    :type request_data: dict
+    :param predominance_calculation: correct return value from algorithm
+    :type predominance_calculation: dict
+    """
     assert sufficient_to_autopopulate(request_data) == predominance_calculation
 

@@ -157,4 +157,12 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
     ],
 )
 def test_history_of_diastolic_bp(request_data, diastolic_bp_predominantly_100_or_more):
+    """
+    Test the history of blood pressure algorithm
+
+    :param request_data: request body with blood pressure readings and other data
+    :type request_data: dict
+    :param diastolic_bp_predominantly_100_or_more: correct return value from algorithm 
+    :type diastolic_bp_predominantly_100_or_more: dict
+    """
     assert history_of_diastolic_bp(request_data) == diastolic_bp_predominantly_100_or_more

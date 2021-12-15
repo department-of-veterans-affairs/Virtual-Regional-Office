@@ -48,6 +48,14 @@ from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_co
     ],
 )
 def test_tally_diastolic_counts(bp_readings, result):
+    """
+    Test counting the number of diastolic readings for each blood pressure 'bucket'
+
+    :param bp_readings: list of blood pressure readings
+    :type bp_readings: list
+    :param result: dict of blood pressure buckets with the number of counts of each bucket
+    :type result: dict
+    """
     assert tally_diastolic_counts(bp_readings) == result
 
 @pytest.mark.parametrize(
@@ -95,6 +103,14 @@ def test_tally_diastolic_counts(bp_readings, result):
     ],
 )
 def test_tally_systolic_counts(bp_readings, result):
+    """
+    Test counting the number of systolic readings for each blood pressure 'bucket'
+
+    :param bp_readings: list of blood pressure readings
+    :type bp_readings: list
+    :param result: dict of blood pressure buckets with the number of counts of each bucket
+    :type result: dict
+    """
     assert tally_systolic_counts(bp_readings) == result
 
 @pytest.mark.parametrize(
@@ -213,6 +229,18 @@ def test_tally_systolic_counts(bp_readings, result):
     ],
 )
 def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic, result):
+    """
+    Test calculating the predominant blood pressure reading from a list of bp readings and a bucket count
+
+    :param bucket: dict of blood pressure buckets with the number of counts of each bucket
+    :type bucket: dict
+    :param bp_readings: list of blood pressure readings
+    :type bp_readings: list
+    :param filter_for_diastolic: boolean indicating if we are looking for diastolic or systolic
+    :type filter_for_diastolic: boolean
+    :param result: int value showing the predominant rating
+    :type result: int
+    """
     assert calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic) == result
 
 @pytest.mark.parametrize(
@@ -290,4 +318,14 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
     ],
 )
 def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
+    """
+    Test function that determines if the blood pressure readings contain a readings that are within 1 month and 6 months of the date of claim
+
+    :param date_of_claim: string representation of the date of claim
+    :type date_of_claim: string
+    :param bp_readings: list of blood pressure readings
+    :type bp_readings: list
+    :param result: boolean describing whether or not the blood pressure readings meet the specifications
+    :type result: bool
+    """
     assert bp_readings_meet_date_specs(date_of_claim, bp_readings) == result

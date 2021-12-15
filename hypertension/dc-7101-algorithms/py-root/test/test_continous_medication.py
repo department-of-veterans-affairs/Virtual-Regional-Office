@@ -108,4 +108,14 @@ from lib.algorithms.utils import hypertension_medications
     ],
 )
 def test_continuous_medication_required(request_data, hypertension_medications, continuous_medication_required_calculation):
+    """
+    Test the history of continuous medication required algorithm
+
+    :param request_data: request body with blood pressure readings and other data
+    :type request_data: dict
+    :param hypertension_medications: set of medications that treat hypertension 
+    :type hypertension_medications: set
+    :param continuous_medication_required_calculation: correct return value from algorithm
+    :type continuous_medication_required_calculation: dict
+    """
     assert continuous_medication_required(request_data, hypertension_medications) == continuous_medication_required_calculation
