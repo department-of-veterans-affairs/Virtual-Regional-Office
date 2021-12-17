@@ -20,6 +20,7 @@ poetry-install: ## Run poetry install in the `py-root/` directory.
 
 .PHONY: test
 test: ## Pytest with watch enabled. No other steps.
+	make poetry-install
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) run ptw -c -- --capture=no;
 
