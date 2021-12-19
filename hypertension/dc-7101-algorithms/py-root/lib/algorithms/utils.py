@@ -3,7 +3,7 @@ import operator
 
 def tally_diastolic_counts(bp_readings):
     """
-    Give a list of blood pressure readings, determine how many of each reading are included in each diastolic BP bucket
+    Give a list of blood pressure readings, determine how many of each reading are included in each of the diastolic BP buckets created by the 38 CFR 4.104 DC 7101 rating percentages.
 
     :param bp_readings: list of blood pressure readings
     :type bp_readings: list
@@ -42,7 +42,7 @@ def tally_diastolic_counts(bp_readings):
 
 def tally_systolic_counts(bp_readings):
     """
-    Give a list of blood pressure readings, determine how many of each reading are included in each systolic BP bucket
+    Give a list of blood pressure readings, determine how many of each reading are included in each of the systolic BP buckets created by the 38 CFR 4.104 DC 7101 rating percentages.
 
     :param bp_readings: list of blood pressure readings
     :type bp_readings: list
