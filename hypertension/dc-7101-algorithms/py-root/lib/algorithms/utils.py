@@ -132,22 +132,23 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
     :rtype: boolean
     """
 
-    claim_within_six_months = False
-    claim_within_one_month = False
+    reading_within_one_month = False
+    reading_within_six_months = False
     date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
 
     for reading in bp_readings:
         bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
-        within_thirty_days = (date_of_claim_date - bp_reading_date).days <= 30
+        one_month_difference = (date_of_claim_date - bp_reading_date).days <= 30
+        six_month_difference = (date_of_claim_date - bp_reading_date).days <= 180
 
-        if (within_thirty_days and not claim_within_one_month):
-            claim_within_one_month = True
-        elif (within_thirty_days and claim_within_one_month):
-            claim_within_six_months = True
-        elif ((date_of_claim_date - bp_reading_date).days <= 180 and not claim_within_six_months):
-            claim_within_six_months = True
+        if (one_month_difference and not reading_within_one_month):
+            reading_within_one_month = True
+        elif (one_month_difference and reading_within_one_month):
+            reading_within_six_months = True
+        elif (six_month_difference and not reading_within_six_months):
+            reading_within_six_months = True
 
-    return claim_within_one_month and claim_within_six_months
+    return reading_within_one_month and reading_within_six_months
 
 hypertension_medications = {
     "benazepril",
