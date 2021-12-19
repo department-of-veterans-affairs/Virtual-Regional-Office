@@ -1,5 +1,5 @@
 import pytest
-from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket
+from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_buckets
 
 @pytest.mark.parametrize(
     "bp_readings, result",
@@ -228,7 +228,7 @@ def test_tally_systolic_counts(bp_readings, result):
         ),
     ],
 )
-def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic, result):
+def test_calculate_reading_from_buckets(bucket, bp_readings, filter_for_diastolic, result):
     """
     Test calculating the predominant blood pressure reading from a list of bp readings and a bucket count
 
@@ -241,7 +241,7 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
     :param result: int value showing the predominant rating
     :type result: int
     """
-    assert calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic) == result
+    assert calculate_reading_from_buckets(bucket, bp_readings, filter_for_diastolic) == result
 
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",

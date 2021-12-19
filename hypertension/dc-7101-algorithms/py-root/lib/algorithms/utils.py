@@ -11,7 +11,7 @@ def tally_diastolic_counts(bp_readings):
     :rtype: dict
     """
 
-    diastolic_bucket = {
+    diastolic_buckets = {
         "130": 0,
         "120": 0,
         "110": 0,
@@ -35,9 +35,9 @@ def tally_diastolic_counts(bp_readings):
             key = "less_than_100"
 
         reading["diastolic_key"] = key
-        diastolic_bucket[key] += 1
+        diastolic_buckets[key] += 1
 
-    return diastolic_bucket
+    return diastolic_buckets
 
 
 def tally_systolic_counts(bp_readings):
@@ -50,7 +50,7 @@ def tally_systolic_counts(bp_readings):
     :rtype: dict
     """
 
-    systolic_bucket = {
+    systolic_buckets = {
         "200": 0,
         "160": 0,
         "less_than_160": 0
@@ -68,16 +68,16 @@ def tally_systolic_counts(bp_readings):
             key = "less_than_160"
 
         reading["systolic_key"] = key
-        systolic_bucket[key] += 1
+        systolic_buckets[key] += 1
 
-    return systolic_bucket
+    return systolic_buckets
 
 
-def calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic):
+def calculate_reading_from_buckets(buckets, bp_readings, filter_for_diastolic):
     """
     Determine the predominant rating from a list of BP readings
 
-    :param bucket: dict of blood pressure buckets and how many of each bucket type there are for the given blood pressure readings
+    :param buckets: dict of blood pressure buckets and how many of each bucket type there are for the given blood pressure readings
     :type bucket: dict
     :param bp_readings: list of blood pressure readings
     :type bp_readings: list
@@ -95,8 +95,8 @@ def calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic):
     else:
         type = 'systolic'
 
-    for key in bucket:
-        curr_count = bucket[key]
+    for key in buckets:
+        curr_count = buckets[key]
         key_and_largest_count_are_ints = (
             largest_count_bucket != None
             and key != "less_than_100"
