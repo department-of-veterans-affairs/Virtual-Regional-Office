@@ -130,49 +130,49 @@ def test_tally_systolic_counts(bp_readings, result):
                     "diastolic": 115,
                     "systolic": 180,
                     "date": "2021-10-10",
-                    "diastolic_key": '110'
+                    "diastolic_key": "110"
                 },
                 {
                     "diastolic": 110,
                     "systolic": 200,
                     "date": "2021-09-01",
-                    "diastolic_key": '110'
+                    "diastolic_key": "110"
                 },
                 {
                     "diastolic": 105,
                     "systolic": 180,
                     "date": "2021-10-10",
-                    "diastolic_key": '100'
+                    "diastolic_key": "100"
                 },
                 {
                     "diastolic": 121,
                     "systolic": 200,
                     "date": "2021-09-01",
-                    "diastolic_key": '120'
+                    "diastolic_key": "120"
                 },
                 {
                     "diastolic": 91,
                     "systolic": 200,
                     "date": "2021-09-01",
-                    "diastolic_key": 'less_than_100'
+                    "diastolic_key": "less_than_100"
                 },
                 {
                     "diastolic": 95,
                     "systolic": 180,
                     "date": "2021-10-01",
-                    "diastolic_key": 'less_than_100'
+                    "diastolic_key": "less_than_100"
                 },
                 {
                     "diastolic": 135,
                     "systolic": 190,
                     "date": "2021-09-01",
-                    "diastolic_key": '130'
+                    "diastolic_key": "130"
                 },
                 {
                     "diastolic": 140,
                     "systolic": 200,
                     "date": "2021-09-05",
-                    "diastolic_key": '130'
+                    "diastolic_key": "130"
                 }
             ],
             True,
@@ -190,37 +190,37 @@ def test_tally_systolic_counts(bp_readings, result):
                     "diastolic": 115,
                     "systolic": 180,
                     "date": "2021-10-10",
-                    "systolic_key": '160'
+                    "systolic_key": "160"
                 },
                 {
                     "diastolic": 110,
                     "systolic": 210,
                     "date": "2021-09-01",
-                    "systolic_key": '200'
+                    "systolic_key": "200"
                 },
                 {
                     "diastolic": 105,
                     "systolic": 180,
                     "date": "2021-10-10",
-                    "systolic_key": '160'
+                    "systolic_key": "160"
                 },
                 {
                     "diastolic": 121,
                     "systolic": 200,
                     "date": "2021-09-02",
-                    "systolic_key": '200'
+                    "systolic_key": "200"
                 },
                 {
                     "diastolic": 91,
                     "systolic": 150,
                     "date": "2021-09-01",
-                    "systolic_key": 'less_than_160'
+                    "systolic_key": "less_than_160"
                 },
                 {
                     "diastolic": 95,
                     "systolic": 155,
                     "date": "2021-10-01",
-                    "systolic_key": 'less_than_160'
+                    "systolic_key": "less_than_160"
                 },
             ],
             False,
@@ -248,7 +248,7 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
     [
         # Valid reading
         (
-            '2021-11-09',
+            "2021-11-09",
             [
                 {
                     "diastolic": 115,
@@ -265,7 +265,7 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
         ),
         # Reading within 30 days, no reading within 180 days (181 days)
         (
-            '2021-11-09',
+            "2021-11-09",
             [
                 {
                     "diastolic": 115,
@@ -282,7 +282,7 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
         ),
         # Reading within 180 days, no reading within 30 days (reading has 31 days)
         (
-            '2021-11-09',
+            "2021-11-09",
             [
                 {
                     "diastolic": 115,
@@ -299,7 +299,7 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
         ),
         # 1 reading
         (
-            '2021-11-09',
+            "2021-11-09",
             [
                 {
                     "diastolic": 115,
@@ -311,7 +311,7 @@ def test_calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic
         ),
         # 0 readings
         (
-            '2021-11-09',
+            "2021-11-09",
             [],
             False
         )
