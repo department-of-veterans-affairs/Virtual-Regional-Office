@@ -16,7 +16,7 @@ def tally_diastolic_counts(bp_readings):
         "120": 0,
         "110": 0,
         "100": 0,
-        "less_than_one_hundred": 0
+        "less_than_100": 0
     }
 
     for reading in bp_readings:
@@ -32,7 +32,7 @@ def tally_diastolic_counts(bp_readings):
         elif curr >= 100 and curr < 110:
             key = "100"
         else:
-            key = "less_than_one_hundred"
+            key = "less_than_100"
 
         reading["diastolic_key"] = key
         diastolic_bucket[key] += 1
@@ -53,7 +53,7 @@ def tally_systolic_counts(bp_readings):
     systolic_bucket = {
         "200": 0,
         "160": 0,
-        "less_than_one_sixty": 0
+        "less_than_160": 0
     }
 
     for reading in bp_readings:
@@ -65,7 +65,7 @@ def tally_systolic_counts(bp_readings):
         elif curr >= 160:
             key = "160"
         else:
-            key = "less_than_one_sixty"
+            key = "less_than_160"
 
         reading["systolic_key"] = key
         systolic_bucket[key] += 1
@@ -99,8 +99,8 @@ def calculate_reading_from_bucket(bucket, bp_readings, filter_for_diastolic):
         curr_count = bucket[key]
         key_and_largest_count_are_ints = (
             largest_count_bucket != None
-            and key != "less_than_one_hundred"
-            and key != "less_than_one_sixty"
+            and key != "less_than_100"
+            and key != "less_than_160"
             )
 
         if curr_count > largest_count:

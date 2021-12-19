@@ -42,7 +42,7 @@ from lib.algorithms.utils import bp_readings_meet_date_specs, tally_diastolic_co
                 "120": 1,
                 "110": 2,
                 "100": 1,
-                "less_than_one_hundred": 1
+                "less_than_100": 1
             }
         ),
     ],
@@ -97,7 +97,7 @@ def test_tally_diastolic_counts(bp_readings, result):
             {
                 "200": 2,
                 "160": 2,
-                "less_than_one_sixty": 2
+                "less_than_160": 2
             }
         ),
     ],
@@ -123,7 +123,7 @@ def test_tally_systolic_counts(bp_readings, result):
                 "120": 1,
                 "110": 2,
                 "100": 1,
-                "less_than_one_hundred": 2
+                "less_than_100": 2
             },
             [
                 {
@@ -154,13 +154,13 @@ def test_tally_systolic_counts(bp_readings, result):
                     "diastolic": 91,
                     "systolic": 200,
                     "date": "2021-09-01",
-                    "diastolic_key": 'less_than_one_hundred'
+                    "diastolic_key": 'less_than_100'
                 },
                 {
                     "diastolic": 95,
                     "systolic": 180,
                     "date": "2021-10-01",
-                    "diastolic_key": 'less_than_one_hundred'
+                    "diastolic_key": 'less_than_100'
                 },
                 {
                     "diastolic": 135,
@@ -183,7 +183,7 @@ def test_tally_systolic_counts(bp_readings, result):
             {
                 "200": 2,
                 "160": 2,
-                "less_than_one_sixty": 2
+                "less_than_160": 2
             },
             [
                 {
@@ -214,13 +214,13 @@ def test_tally_systolic_counts(bp_readings, result):
                     "diastolic": 91,
                     "systolic": 150,
                     "date": "2021-09-01",
-                    "systolic_key": 'less_than_one_sixty'
+                    "systolic_key": 'less_than_160'
                 },
                 {
                     "diastolic": 95,
                     "systolic": 155,
                     "date": "2021-10-01",
-                    "systolic_key": 'less_than_one_sixty'
+                    "systolic_key": 'less_than_160'
                 },
             ],
             False,
