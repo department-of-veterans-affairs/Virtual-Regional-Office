@@ -1,7 +1,12 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from .utils import tally_diastolic_counts, tally_systolic_counts, calculate_reading_from_bucket, bp_readings_meet_date_specs
+from .utils import (
+    tally_diastolic_counts,
+    tally_systolic_counts,
+    calculate_reading_from_bucket,
+    bp_readings_meet_date_specs
+)
 
 def sufficient_to_autopopulate (request):
     """
