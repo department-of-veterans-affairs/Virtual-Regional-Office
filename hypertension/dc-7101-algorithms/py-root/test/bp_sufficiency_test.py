@@ -19,12 +19,12 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-09-01"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": True,
-                'predominant_diastolic_reading': 115,
-                'predominant_systolic_reading': 180
+                "predominant_diastolic_reading": 115,
+                "predominant_systolic_reading": 180
             },
         ),
         # 2 reading test case with one out of range date
@@ -47,12 +47,12 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2020-11-08"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": True,
-                'predominant_diastolic_reading': 115,
-                'predominant_systolic_reading': 180
+                "predominant_diastolic_reading": 115,
+                "predominant_systolic_reading": 180
             },
         ),
         # +2 reading test case with no out of range dates
@@ -61,47 +61,47 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
             {
                 "bp": [
                     {
-                        'systolic': 181,
-                        'diastolic': 112,
-                        'date': '2021-10-09'
+                        "systolic": 181,
+                        "diastolic": 112,
+                        "date": "2021-10-09"
                     },
                     {
-                        'systolic': 181,
-                        'diastolic': 109,
-                        'date': '2021-10-10'
+                        "systolic": 181,
+                        "diastolic": 109,
+                        "date": "2021-10-10"
                     },
                     {
-                        'systolic': 131,
-                        'diastolic': 113,
-                        'date': '2021-05-13'
+                        "systolic": 131,
+                        "diastolic": 113,
+                        "date": "2021-05-13"
                     },
                     {
-                        'systolic': 160,
-                        'diastolic': 101,
-                        'date': '2021-09-13'
+                        "systolic": 160,
+                        "diastolic": 101,
+                        "date": "2021-09-13"
                     },
                     {
-                        'systolic': 120,
-                        'diastolic': 104,
-                        'date': '2021-09-13'
+                        "systolic": 120,
+                        "diastolic": 104,
+                        "date": "2021-09-13"
                     },
                     {
-                        'systolic': 180,
-                        'diastolic': 116,
-                        'date': '2021-10-13'
+                        "systolic": 180,
+                        "diastolic": 116,
+                        "date": "2021-10-13"
                     },
                     {
-                        'systolic': 155,
-                        'diastolic': 111,
-                        'date': '2021-10-14'
+                        "systolic": 155,
+                        "diastolic": 111,
+                        "date": "2021-10-14"
                     },
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": True,
-                'predominant_diastolic_reading': 111,
-                'predominant_systolic_reading': 180
+                "predominant_diastolic_reading": 111,
+                "predominant_systolic_reading": 180
             },
         ),
         # +2 reading test case with no out of range dates
@@ -111,42 +111,42 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
             {
                 "bp": [
                     {
-                        'systolic': 181,
-                        'diastolic': 109,
-                        'date': '2021-10-10'
+                        "systolic": 181,
+                        "diastolic": 109,
+                        "date": "2021-10-10"
                     },
                     {
-                        'systolic': 131,
-                        'diastolic': 113,
-                        'date': '2021-05-13'
+                        "systolic": 131,
+                        "diastolic": 113,
+                        "date": "2021-05-13"
                     },
                     {
-                        'systolic': 160,
-                        'diastolic': 101,
-                        'date': '2021-09-13'
+                        "systolic": 160,
+                        "diastolic": 101,
+                        "date": "2021-09-13"
                     },
                     {
-                        'systolic': 120,
-                        'diastolic': 104,
-                        'date': '2021-09-13'
+                        "systolic": 120,
+                        "diastolic": 104,
+                        "date": "2021-09-13"
                     },
                     {
-                        'systolic': 180,
-                        'diastolic': 116,
-                        'date': '2021-10-13'
+                        "systolic": 180,
+                        "diastolic": 116,
+                        "date": "2021-10-13"
                     },
                     {
-                        'systolic': 155,
-                        'diastolic': 111,
-                        'date': '2021-10-14'
+                        "systolic": 155,
+                        "diastolic": 111,
+                        "date": "2021-10-14"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": True,
-                'predominant_diastolic_reading': 111,
-                'predominant_systolic_reading': 180
+                "predominant_diastolic_reading": 111,
+                "predominant_systolic_reading": 180
             },
         ),
         # +2 reading test case with 1 out of range date (which would change the results if included)
@@ -154,47 +154,47 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
             {
                 "bp": [
                     {
-                        'systolic': 181,
-                        'diastolic': 109,
-                        'date': '2021-10-10'
+                        "systolic": 181,
+                        "diastolic": 109,
+                        "date": "2021-10-10"
                     },
                     {
-                        'systolic': 131,
-                        'diastolic': 113,
-                        'date': '2021-05-13'
+                        "systolic": 131,
+                        "diastolic": 113,
+                        "date": "2021-05-13"
                     },
                     {
-                        'systolic': 160,
-                        'diastolic': 101,
-                        'date': '2021-09-13'
+                        "systolic": 160,
+                        "diastolic": 101,
+                        "date": "2021-09-13"
                     },
                     {
-                        'systolic': 120,
-                        'diastolic': 104,
-                        'date': '2021-09-13'
+                        "systolic": 120,
+                        "diastolic": 104,
+                        "date": "2021-09-13"
                     },
                     {
-                        'systolic': 180,
-                        'diastolic': 116,
-                        'date': '2021-10-13'
+                        "systolic": 180,
+                        "diastolic": 116,
+                        "date": "2021-10-13"
                     },
                     {
-                        'systolic': 155,
-                        'diastolic': 111,
-                        'date': '2021-10-14'
+                        "systolic": 155,
+                        "diastolic": 111,
+                        "date": "2021-10-14"
                     },
                     {
-                        'systolic': 154,
-                        'diastolic': 105,
-                        'date': '2020-11-08'
+                        "systolic": 154,
+                        "diastolic": 105,
+                        "date": "2020-11-08"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": True,
-                'predominant_diastolic_reading': 111,
-                'predominant_systolic_reading': 180
+                "predominant_diastolic_reading": 111,
+                "predominant_systolic_reading": 180
             },
         ),
         # 2 readings, but no reading within 30 days
@@ -212,7 +212,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-09-01"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": False,
@@ -233,7 +233,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-10-10"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": False,
@@ -249,7 +249,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-10-10"
                     }
                 ],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": False,
@@ -259,7 +259,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
         (
             {
                 "bp": [],
-                'date_of_claim': '2021-11-09',
+                "date_of_claim": "2021-11-09",
             },
             {
                 "success": False,
