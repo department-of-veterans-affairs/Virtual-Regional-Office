@@ -47,6 +47,20 @@ from lib.algorithms.utils import hypertension_medications
                 "continuous_medication_required": False
             },
         ),
+        # Service connected, multiple medications, some to treat and others not to treat hypertension
+        (
+            {
+                "bp": [],
+                "medication": ["Benazepril", "Advil"],
+                'date_of_claim': '2021-11-09',
+                'veteran_is_service_connected': True
+            },
+            hypertension_medications,
+            {
+                "success": True,
+                "continuous_medication_required": True
+            },
+        ),
         # Service connected but no medication
         (
             {
