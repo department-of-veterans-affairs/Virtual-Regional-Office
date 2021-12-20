@@ -94,8 +94,7 @@ from lib.main import main
         # sufficiency and history algos fail
         (
             {
-                "bp": [
-                ],
+                "bp": [],
                 "medication": [],
                 "date_of_claim": "2021-11-09",
                 "veteran_is_service_connected": True
