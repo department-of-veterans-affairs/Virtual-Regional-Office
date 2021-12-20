@@ -19,7 +19,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-09-01"
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -48,7 +47,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2020-11-08"
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -98,7 +96,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         'date': '2021-10-14'
                     },
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -144,7 +141,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         'date': '2021-10-14'
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -193,7 +189,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         'date': '2020-11-08'
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -217,7 +212,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-09-01"
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -239,7 +233,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-10-10"
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -256,7 +249,6 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
                         "date": "2021-10-10"
                     }
                 ],
-                "medication": [],
                 'date_of_claim': '2021-11-09',
             },
             {
@@ -266,9 +258,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
         # 0 readings
         (
             {
-                "bp": [
-                ],
-                "medication": [],
+                "bp": [],
                 'date_of_claim': '2021-11-09',
             },
             {
