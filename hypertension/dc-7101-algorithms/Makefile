@@ -24,12 +24,20 @@ test: ## Pytest with watch enabled. No other steps.
 	cd ./$(PYTHON_PROJECT_DIR); \
 	$(POETRY) run ptw -c -- --capture=no;
 
+.PHONY: create-requirements.txt
+create-requirements.txt: ## Uses `poetry export` to auto-generate the Python requirements.txt
+	cd ./$(PYTHON_PROJECT_DIR); \
+	$(POETRY) export --without-hashes -f requirements.txt -o requirements.txt --with-credentials ; \
+	cd ..; \
+
 .PHONY: deploy-guided
 deploy-guided: ## Build and sam deploy --guided.
+	make create-requirements.txt
 	$(SAM) build
 	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
 
 .PHONY: deploy
 deploy: ## Build and sam deploy.
+	make create-requirements.txt
 	$(SAM) build
 	$(SAM) deploy --no-confirm-changeset
