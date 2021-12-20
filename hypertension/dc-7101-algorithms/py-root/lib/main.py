@@ -2,7 +2,6 @@ from typing import Dict
 from .algorithms.bp_sufficiency import sufficient_to_autopopulate
 from .algorithms.bp_history import history_of_diastolic_bp
 from .algorithms.continuous_medication import continuous_medication_required
-from .algorithms.utils import hypertension_medications
 
 def main(event: Dict):
     """
@@ -18,7 +17,7 @@ def main(event: Dict):
     try:
         predominance_calculation = sufficient_to_autopopulate(event)
         diastolic_history_calculation = history_of_diastolic_bp(event)
-        requires_continuous_medication = continuous_medication_required(event, hypertension_medications)
+        requires_continuous_medication = continuous_medication_required(event)
         predominance_calculation_status = predominance_calculation["success"]
         diastolic_history_calculation_status = diastolic_history_calculation["success"]
 
