@@ -19,13 +19,13 @@ def continuous_medication_required(request, hypertension_medications):
     return continuous_medication_required_calculation
 
   veterans_medication_list = request["medication"]
-  veteran_medication_is_hypertension_medication = False
+  vet_is_taking_htn_medication = False
   for medication in veterans_medication_list:
     if (medication.lower() in hypertension_medications):
-      veteran_medication_is_hypertension_medication = True
+      vet_is_taking_htn_medication = True
       break
 
-  continuous_medication_required_calculation["continuous_medication_required"] = veteran_medication_is_hypertension_medication
+  continuous_medication_required_calculation["continuous_medication_required"] = vet_is_taking_htn_medication
   
   return continuous_medication_required_calculation
 
