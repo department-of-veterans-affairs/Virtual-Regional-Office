@@ -8,18 +8,7 @@ from lib.algorithms.utils import hypertension_medications
         # Service connected and medication used to treat hypertension
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
-                ],
+                "bp": [],
                 "medication": ["Benazepril"],
                 'date_of_claim': '2021-11-09',
                 'veteran_is_service_connected': True
@@ -33,18 +22,7 @@ from lib.algorithms.utils import hypertension_medications
         # Not service connected but uses medication used to treat hypertension
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
-                ],
+                "bp": [],
                 "medication": ["Benazepril"],
                 'date_of_claim': '2021-11-09',
                 'veteran_is_service_connected': False
@@ -58,18 +36,7 @@ from lib.algorithms.utils import hypertension_medications
         # Service connected but doesn't use medication used to treat hypertension
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
-                ],
+                "bp": [],
                 "medication": ["Advil"],
                 'date_of_claim': '2021-11-09',
                 'veteran_is_service_connected': True
@@ -83,18 +50,7 @@ from lib.algorithms.utils import hypertension_medications
         # Service connected but no medication
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
-                ],
+                "bp": [],
                 "medication": [],
                 'date_of_claim': '2021-11-09',
                 'veteran_is_service_connected': True
