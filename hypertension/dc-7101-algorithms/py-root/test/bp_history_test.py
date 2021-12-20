@@ -7,10 +7,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
         # 0 readings
         (
             {
-                "bp": [
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                "bp": []
             },
             {
                 "success": False
@@ -25,9 +22,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
                         "systolic": 180,
                         "date": "2021-11-01"
                     },
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                ]
             },
             {
                 "diastolic_bp_predominantly_100_or_more": True,
@@ -43,9 +38,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
                         "systolic": 180,
                         "date": "2021-11-01"
                     },
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                ]
             },
             {
                 "diastolic_bp_predominantly_100_or_more": False,
@@ -66,9 +59,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
                         "systolic": 200,
                         "date": "2021-09-01"
                     }
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                ]
             },
             {
                 "diastolic_bp_predominantly_100_or_more": True,
@@ -89,9 +80,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
                         "systolic": 200,
                         "date": "2021-09-01"
                     }
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                ]
             },
             {
                 "diastolic_bp_predominantly_100_or_more": False,
@@ -117,9 +106,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
                         "systolic": 200,
                         "date": "2021-09-02"
                     }
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                ]
             },
             {
                 "diastolic_bp_predominantly_100_or_more": True,
@@ -145,9 +132,7 @@ from lib.algorithms.bp_history import history_of_diastolic_bp
                         "systolic": 200,
                         "date": "2021-09-02"
                     }
-                ],
-                "medication": [],
-                'date_of_claim': '2021-11-09',
+                ]
             },
             {
                 "diastolic_bp_predominantly_100_or_more": False,
