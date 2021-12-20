@@ -129,8 +129,7 @@ from lib.main import main
                         "systolic": 200,
                         "date": "2021-09-01"
                     },
-                    {
-                        "medication": 120,
+                    { 
                         "systolic": 180,
                         "date": "2021-11-01"
                     }
