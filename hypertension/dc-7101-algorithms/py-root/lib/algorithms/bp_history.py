@@ -1,6 +1,6 @@
 def history_of_diastolic_bp(request):
     """
-    Determine if the Veteran has a history of "diastolic pressure predominantly 100 or more"
+    Determine if the Veteran has "a history of diastolic pressure predominantly 100 or more"
 
     :param request: request body
     :type request: dict
