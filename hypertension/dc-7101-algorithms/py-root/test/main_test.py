@@ -20,8 +20,8 @@ from lib.main import main
                     }
                 ],
                 "medication": ["Capoten"],
-                'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 200,
@@ -33,8 +33,8 @@ from lib.main import main
                 "body": {
                     "predominance_calculation": {
                         "success": True,
-                        'predominant_diastolic_reading': 115,
-                        'predominant_systolic_reading': 180
+                        "predominant_diastolic_reading": 115,
+                        "predominant_systolic_reading": 180
                     },
                     "diastolic_history_calculation": {
                         "diastolic_bp_predominantly_100_or_more": True,
@@ -66,8 +66,8 @@ from lib.main import main
                     }
                 ],
                 "medication": [],
-                'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 209,
@@ -97,8 +97,8 @@ from lib.main import main
                 "bp": [
                 ],
                 "medication": [],
-                'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 400,
@@ -137,8 +137,8 @@ from lib.main import main
                     }
                 ],
                 "medication": [],
-                'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 500,
@@ -176,8 +176,8 @@ from lib.main import main
                     }
                 ],
                 "medication": [],
-                'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 500,
