@@ -58,7 +58,57 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
             },
         ),
         # +2 reading test case with no out of range dates
-        # this also validates that given an equal number of two categories
+        # Total number of readings is odd
+        (
+            {
+                "bp": [
+                    {
+                        'systolic': 181,
+                        'diastolic': 112,
+                        'date': '2021-10-09'
+                    },
+                    {
+                        'systolic': 181,
+                        'diastolic': 109,
+                        'date': '2021-10-10'
+                    },
+                    {
+                        'systolic': 131,
+                        'diastolic': 113,
+                        'date': '2021-05-13'
+                    },
+                    {
+                        'systolic': 160,
+                        'diastolic': 101,
+                        'date': '2021-09-13'
+                    },
+                    {
+                        'systolic': 120,
+                        'diastolic': 104,
+                        'date': '2021-09-13'
+                    },
+                    {
+                        'systolic': 180,
+                        'diastolic': 116,
+                        'date': '2021-10-13'
+                    },
+                    {
+                        'systolic': 155,
+                        'diastolic': 111,
+                        'date': '2021-10-14'
+                    },
+                ],
+                "medication": [],
+                'date_of_claim': '2021-11-09',
+            },
+            {
+                "success": True,
+                'predominant_diastolic_reading': 111,
+                'predominant_systolic_reading': 180
+            },
+        ),
+        # +2 reading test case with no out of range dates
+        # This also validates that given an equal number of two categories
         # the algorithm chooses the higher rating for both categories
         (
             {
