@@ -46,9 +46,9 @@ def sufficient_to_autopopulate (request):
             predominance_calculation["predominant_diastolic_reading"] = most_recent_reading["diastolic"]
             predominance_calculation["predominant_systolic_reading"] = most_recent_reading["systolic"]
         elif len(valid_bp_readings) > 2:
-            diastolic_bucket = tally_diastolic_counts(valid_bp_readings)
-            predominance_calculation["predominant_diastolic_reading"] = calculate_reading_from_buckets(diastolic_bucket, valid_bp_readings, True)
-            systolic_bucket = tally_systolic_counts(valid_bp_readings)
-            predominance_calculation["predominant_systolic_reading"] = calculate_reading_from_buckets(systolic_bucket, valid_bp_readings, False)
+            bucketed_diastolic_readings = tally_diastolic_counts(valid_bp_readings)
+            predominance_calculation["predominant_diastolic_reading"] = calculate_reading_from_buckets(bucketed_diastolic_readings, valid_bp_readings, True)
+            bucketed_systolic_readings = tally_systolic_counts(valid_bp_readings)
+            predominance_calculation["predominant_systolic_reading"] = calculate_reading_from_buckets(bucketed_systolic_readings, valid_bp_readings, False)
 
     return predominance_calculation
