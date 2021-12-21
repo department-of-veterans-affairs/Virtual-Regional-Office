@@ -38,6 +38,8 @@ Resources:
         Type: AWS::IAM::Role
         Properties:
             # "Allows Lambda to assume this role"
+            Path: /project/
+            PermissionsBoundary: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/vaec/project-admin
             AssumeRolePolicyDocument:
                 Version: '2012-10-17'
                 Statement:
