@@ -34,7 +34,7 @@ create-requirements.txt: ## Uses `poetry export` to auto-generate the Python req
 deploy-guided: ## Build and sam deploy --guided.
 	make create-requirements.txt
 	$(SAM) build
-	$(SAM) deploy --guided --capabilities CAPABILITY_NAMED_IAM
+	$(SAM) deploy --guided
 
 .PHONY: deploy
 deploy: ## Build and sam deploy.

@@ -37,8 +37,7 @@ Resources:
     VroHtnDataProcessorRole:
         Type: AWS::IAM::Role
         Properties:
-            RoleName: 'vro-htn-data-processor-role'
-        # "Allows Lambda to assume this role"
+            # "Allows Lambda to assume this role"
             AssumeRolePolicyDocument:
                 Version: '2012-10-17'
                 Statement:
