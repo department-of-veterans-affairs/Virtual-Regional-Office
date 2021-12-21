@@ -1,27 +1,30 @@
+import json
 import pytest
 from lib.main import main
 
 @pytest.mark.parametrize(
-    "request_data, response",
+    "request_body, response",
     [
         # All three calculator functions return valid results readings
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    }
-                ],
-                "medication": ["Capoten"],
-                "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": True
+                "body": json.dumps({
+                    "bp": [
+                        {
+                            "diastolic": 115,
+                            "systolic": 180,
+                            "date": "2021-11-01"
+                        },
+                        {
+                            "diastolic": 110,
+                            "systolic": 200,
+                            "date": "2021-09-01"
+                        }
+                    ],
+                    "medication": ["Capoten"],
+                    "date_of_claim": "2021-11-09",
+                    "veteran_is_service_connected": True
+                })
             },
             {
                 "statusCode": 200,
@@ -30,7 +33,7 @@ from lib.main import main
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "OPTIONS,POST"
                 },
-                "body": {
+                "body": json.dumps({
                     "predominance_calculation": {
                         "success": True,
                         "predominant_diastolic_reading": 115,
@@ -44,7 +47,7 @@ from lib.main import main
                         "continuous_medication_required": True,
                         "success": True
                     }
-                }
+                })
             }
         ),
         # sufficient_to_autopopulate returns 'success': False, but history_of_diastolic_bp doesn't
@@ -53,21 +56,23 @@ from lib.main import main
         # sufficient_to_autopopulate to fail as well 
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 115,
-                        "systolic": 180,
-                        "date": "2020-11-01"
-                    },
-                    {
-                        "diastolic": 110,
-                        "systolic": 200,
-                        "date": "2020-09-01"
-                    }
-                ],
-                "medication": [],
-                "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": True
+                "body": json.dumps({
+                    "bp": [
+                        {
+                            "diastolic": 115,
+                            "systolic": 180,
+                            "date": "2020-11-01"
+                        },
+                        {
+                            "diastolic": 110,
+                            "systolic": 200,
+                            "date": "2020-09-01"
+                        }
+                    ],
+                    "medication": [],
+                    "date_of_claim": "2021-11-09",
+                    "veteran_is_service_connected": True
+                })
             },
             {
                 "statusCode": 209,
@@ -76,7 +81,7 @@ from lib.main import main
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "OPTIONS,POST"
                 },
-                "body": {
+                "body": json.dumps({
                     "predominance_calculation": {
                         "success": False,
                     },
@@ -88,16 +93,18 @@ from lib.main import main
                         "continuous_medication_required": False,
                         "success": True
                     }
-                }
+                })
             }
         ),
         # sufficiency and history algos fail
         (
             {
-                "bp": [],
-                "medication": [],
-                "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": True
+                "body": json.dumps({
+                    "bp": [],
+                    "medication": [],
+                    "date_of_claim": "2021-11-09",
+                    "veteran_is_service_connected": True
+                })
             },
             {
                 "statusCode": 400,
@@ -106,7 +113,7 @@ from lib.main import main
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "OPTIONS,POST"
                 },
-                "body": {
+                "body": json.dumps({
                     "predominance_calculation": {
                         "success": False,
                     },
@@ -117,24 +124,26 @@ from lib.main import main
                         "continuous_medication_required": False,
                         "success": True
                     }
-                }
+                })
             }
         ),
         # Bad data (KeyError) - "diastolic" key is missing in second reading
         (
             {
-                "bp": [
-                    {
-                        "diastolic": 111,
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    },
-                    { 
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    }
-                ],
-                "date_of_claim": "2021-11-09",
+                "body": json.dumps({
+                    "bp": [
+                        {
+                            "diastolic": 111,
+                            "systolic": 200,
+                            "date": "2021-09-01"
+                        },
+                        {
+                            "systolic": 180,
+                            "date": "2021-11-01"
+                        }
+                    ],
+                    "date_of_claim": "2021-11-09",
+                })
             },
             {
                 "statusCode": 500,
@@ -143,7 +152,7 @@ from lib.main import main
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "OPTIONS,POST"
                 },
-                "body": {
+                "body": json.dumps({
                     "predominance_calculation": {
                         "success": False,
                     },
@@ -153,25 +162,27 @@ from lib.main import main
                     "requires_continuous_medication": {
                         "success": False
                     }
-                }
+                })
             }
         ),
         # Bad data (TypeError) - "diastolic" value is string instead of int
         (
             {
-                "bp": [
+                "body": json.dumps({
+                    "bp": [
                     {
-                        "diastolic": "180",
-                        "systolic": 200,
-                        "date": "2021-09-01"
-                    },
-                    {
-                        "diastolic": 120,
-                        "systolic": 180,
-                        "date": "2021-11-01"
-                    }
-                ],
-                "date_of_claim": "2021-11-09",
+                            "diastolic": "180",
+                            "systolic": 200,
+                            "date": "2021-09-01"
+                        },
+                        {
+                            "diastolic": 120,
+                            "systolic": 180,
+                            "date": "2021-11-01"
+                        }
+                    ],
+                    "date_of_claim": "2021-11-09",
+                })
             },
             {
                 "statusCode": 500,
@@ -180,7 +191,7 @@ from lib.main import main
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "OPTIONS,POST"
                 },
-                "body": {
+                "body": json.dumps({
                     "predominance_calculation": {
                         "success": False,
                     },
@@ -190,19 +201,20 @@ from lib.main import main
                     "requires_continuous_medication": {
                         "success": False
                     }
-                }
+                })
             }
         ),
     ],
 )
-def test_main(request_data, response):
+def test_main(request_body, response):
     """
     Test the function that takes the request and returns the response
 
-    :param request_data: request body with blood pressure readings and other data
-    :type request_data: dict
+    :param request_body: request body with blood pressure readings and other data
+    :type request_body: dict
     :param response: response after running data through algorithms
     :type response: dict
     """
-    assert main(request_data) == response
+    api_response = main(request_body)
 
+    assert json.loads(api_response["body"]) == json.loads(response["body"])

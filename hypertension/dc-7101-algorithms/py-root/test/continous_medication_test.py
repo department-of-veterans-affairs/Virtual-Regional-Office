@@ -2,7 +2,7 @@ import pytest
 from lib.algorithms.continuous_medication import continuous_medication_required
 
 @pytest.mark.parametrize(
-    "request_data, continuous_medication_required_calculation",
+    "request_body, continuous_medication_required_calculation",
     [
         # Service connected and medication used to treat hypertension
         (
@@ -71,13 +71,13 @@ from lib.algorithms.continuous_medication import continuous_medication_required
         ),
     ],
 )
-def test_continuous_medication_required(request_data, continuous_medication_required_calculation):
+def test_continuous_medication_required(request_body, continuous_medication_required_calculation):
     """
     Test the history of continuous medication required algorithm
 
-    :param request_data: request body with blood pressure readings and other data
-    :type request_data: dict
+    :param request_body: request body with blood pressure readings and other data
+    :type request_body: dict
     :param continuous_medication_required_calculation: correct return value from algorithm
     :type continuous_medication_required_calculation: dict
     """
-    assert continuous_medication_required(request_data) == continuous_medication_required_calculation
+    assert continuous_medication_required(request_body) == continuous_medication_required_calculation

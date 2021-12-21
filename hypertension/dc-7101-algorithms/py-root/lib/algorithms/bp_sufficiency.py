@@ -8,13 +8,13 @@ from .utils import (
     bp_readings_meet_date_specs
 )
 
-def sufficient_to_autopopulate (request):
+def sufficient_to_autopopulate (request_body):
     """
     Determine if there is enough BP data to calculate a predominant reading,
     and if so return the predominant rating
 
-    :param request: request body
-    :type request: dict
+    :param request_body: request body
+    :type request_body: dict
     :return: response body indicating success or failure with additional attributes
     :rtype: dict
     """
@@ -22,11 +22,11 @@ def sufficient_to_autopopulate (request):
     predominance_calculation = {
         "success": True,
     }
-    date_of_claim = request["date_of_claim"]
+    date_of_claim = request_body["date_of_claim"]
     valid_bp_readings = []
     date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
 
-    for reading in request["bp"]:
+    for reading in request_body["bp"]:
         bp_reading_date = datetime.strptime(reading["date"], "%Y-%m-%d").date()
         if bp_reading_date >= date_of_claim_date - relativedelta(years=1):
             valid_bp_readings.append(reading)

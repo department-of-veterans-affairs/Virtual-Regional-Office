@@ -1,3 +1,4 @@
+import json
 from typing import Dict
 from .algorithms.bp_sufficiency import sufficient_to_autopopulate
 from .algorithms.bp_history import history_of_diastolic_bp
@@ -12,12 +13,13 @@ def main(event: Dict):
     :return: response body
     :rtype: dict
     """
+    request_body = json.loads(event["body"])
 
     statusCode = 200
     try:
-        predominance_calculation = sufficient_to_autopopulate(event)
-        diastolic_history_calculation = history_of_diastolic_bp(event)
-        requires_continuous_medication = continuous_medication_required(event)
+        predominance_calculation = sufficient_to_autopopulate(request_body)
+        diastolic_history_calculation = history_of_diastolic_bp(request_body)
+        requires_continuous_medication = continuous_medication_required(request_body)
         predominance_calculation_status = predominance_calculation["success"]
         diastolic_history_calculation_status = diastolic_history_calculation["success"]
 
@@ -47,12 +49,9 @@ def main(event: Dict):
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "OPTIONS,POST"
             },
-            "body": {
+            "body": json.dumps({
                 "predominance_calculation": predominance_calculation,
                 "diastolic_history_calculation": diastolic_history_calculation,
                 "requires_continuous_medication": requires_continuous_medication 
-            }
+            })
         }
-
-
-

@@ -1,9 +1,9 @@
-def history_of_diastolic_bp(request):
+def history_of_diastolic_bp(request_body):
     """
     Determine if the Veteran has "a history of diastolic pressure predominantly 100 or more"
 
-    :param request: request body
-    :type request: dict
+    :param request_body: request body
+    :type request_body: dict
     :return: response body indicating success or failure with additional attributes
     :rtype: dict
     """
@@ -11,7 +11,7 @@ def history_of_diastolic_bp(request):
     diastolic_history_calculation = {
         "success": True
     }
-    bp_readings = request["bp"]
+    bp_readings = request_body["bp"]
     bp_readings_length = len(bp_readings)
     readings_greater_or_equal_to_one_hundred = 0
 

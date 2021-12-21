@@ -1,11 +1,11 @@
 from .utils import hypertension_medications
 
-def continuous_medication_required(request):
+def continuous_medication_required(request_body):
   """
   Determine if there is the veteran requires continuous medication for hypertension
 
-  :param request: request body
-  :type request: dict
+  :param request_body: request body
+  :type request_body: dict
   :return: response body indicating success or failure with additional attributes 
   :rtype: dict
   """
@@ -14,11 +14,11 @@ def continuous_medication_required(request):
         "success": True
   }
 
-  if not request["veteran_is_service_connected"]:
+  if not request_body["veteran_is_service_connected"]:
     continuous_medication_required_calculation["continuous_medication_required"] = False
     return continuous_medication_required_calculation
 
-  veterans_medication_list = request["medication"]
+  veterans_medication_list = request_body["medication"]
   vet_is_taking_htn_medication = False
   for medication in veterans_medication_list:
     if (medication.lower() in hypertension_medications):
