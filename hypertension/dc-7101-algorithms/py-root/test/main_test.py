@@ -120,7 +120,7 @@ from lib.main import main
                 }
             }
         ),
-        # Bad data (KeyError)
+        # Bad data (KeyError) - "diastolic" key is missing in second reading
         (
             {
                 "bp": [
@@ -134,9 +134,7 @@ from lib.main import main
                         "date": "2021-11-01"
                     }
                 ],
-                "medication": [],
                 "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 500,
@@ -158,7 +156,7 @@ from lib.main import main
                 }
             }
         ),
-        # Bad data (TypeError)
+        # Bad data (TypeError) - "diastolic" value is string instead of int
         (
             {
                 "bp": [
@@ -173,9 +171,7 @@ from lib.main import main
                         "date": "2021-11-01"
                     }
                 ],
-                "medication": [],
                 "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": True
             },
             {
                 "statusCode": 500,
