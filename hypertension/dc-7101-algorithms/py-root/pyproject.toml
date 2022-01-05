@@ -8,6 +8,7 @@ authors = ["Aaron Houlihan <aaron@amida.com>"]
 python = "^3.9"
 python-util = "^1.2.1"
 python-dateutil = "^2.8.2"
+Cerberus = "^1.3.4"
 
 [tool.poetry.dev-dependencies]
 pytest-watch = "^4.2.0"

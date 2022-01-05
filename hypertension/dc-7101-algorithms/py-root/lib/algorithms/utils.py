@@ -1,5 +1,6 @@
 from datetime import datetime
 import operator
+from cerberus import Validator
 
 def tally_diastolic_counts(bp_readings):
     """
@@ -91,9 +92,9 @@ def calculate_reading_from_buckets(buckets, bp_readings, filter_for_diastolic):
     largest_count_bucket = None
 
     if filter_for_diastolic:
-        type = 'diastolic'
+        type = "diastolic"
     else:
-        type = 'systolic'
+        type = "systolic"
 
     for key in buckets:
         curr_count = buckets[key]
@@ -149,6 +150,38 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
             reading_within_six_months = True
 
     return reading_within_one_month and reading_within_six_months
+
+def validate_request_body(request_body):
+    schema = {
+        "body": {
+            "type": "dict",
+            "schema": {
+                "date_of_claim": {"type": "string"},
+                "veteran_is_service_connected": {"type": "boolean"},
+                "bp": {
+                    "type": "list",
+                    "schema": {
+                        "type": "dict",
+                        "allow_unknown": True,
+                        "schema": {
+                            "diastolic": {"type": "integer"},
+                            "systolic": {"type": "integer"},
+                            "date": {"type": "string"}
+                        }
+                    }
+                },
+                "medication": {
+                    "type": "list",
+                    "schema": {
+                        "type": "string",
+                    }
+                }
+            }
+        }
+    }
+    v = Validator(schema)
+
+    return v.validate(request_body)
 
 hypertension_medications = {
     "benazepril",
