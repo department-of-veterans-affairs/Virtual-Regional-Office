@@ -1,4 +1,16 @@
-from .utils import hypertension_medications
+hypertension_medications = {
+    "benazepril",
+    "lotensin",
+    "captopril",
+    "capoten",
+    "enalapril",
+    "enalaprilat",
+    "fosinopril",
+    "monopril",
+    "lisinopril",
+    "prinivil",
+    "zestril",
+}
 
 def continuous_medication_required(request_body):
   """
@@ -26,6 +38,6 @@ def continuous_medication_required(request_body):
       break
 
   continuous_medication_required_calculation["continuous_medication_required"] = vet_is_taking_htn_medication
-  
+
   return continuous_medication_required_calculation
 
