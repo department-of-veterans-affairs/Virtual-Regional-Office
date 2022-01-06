@@ -41,7 +41,7 @@ from lib.main import main
                     },
                     "diastolic_history_calculation": {
                         "diastolic_bp_predominantly_100_or_more": True,
-                        "success": True 
+                        "success": True
                     },
                     "requires_continuous_medication": {
                         "continuous_medication_required": True,
@@ -50,8 +50,8 @@ from lib.main import main
                 })
             }
         ),
-        # sufficient_to_autopopulate returns 'success': False, but history_of_diastolic_bp doesn't
-        # Note that the inverse can't happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn't)
+        # sufficient_to_autopopulate returns "success": False, but history_of_diastolic_bp doesn"t
+        # Note that the inverse can"t happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn"t)
         # because the only way history_of_diastolic_bp can fail is if there are no bp readings, which would cause
         # sufficient_to_autopopulate to fail as well 
         (
@@ -87,7 +87,7 @@ from lib.main import main
                     },
                     "diastolic_history_calculation": {
                         "diastolic_bp_predominantly_100_or_more": True,
-                        "success": True 
+                        "success": True
                     },
                     "requires_continuous_medication": {
                         "continuous_medication_required": False,
@@ -118,7 +118,7 @@ from lib.main import main
                         "success": False,
                     },
                     "diastolic_history_calculation": {
-                        "success": False 
+                        "success": False
                     },
                     "requires_continuous_medication": {
                         "continuous_medication_required": False,
@@ -127,7 +127,7 @@ from lib.main import main
                 })
             }
         ),
-        # Bad data (KeyError) - "diastolic" key is missing in second reading
+        # # Bad data - "diastolic" key is missing in second reading
         (
             {
                 "body": json.dumps({
@@ -146,7 +146,7 @@ from lib.main import main
                 })
             },
             {
-                "statusCode": 500,
+                "statusCode": 400,
                 "headers": {
                     "Access-Control-Allow-Headers" : "Content-Type",
                     "Access-Control-Allow-Origin": "*",
@@ -157,20 +157,21 @@ from lib.main import main
                         "success": False,
                     },
                     "diastolic_history_calculation": {
-                        "success": False 
+                        "success": False
                     },
                     "requires_continuous_medication": {
                         "success": False
-                    }
+                    },
+                    "errors": {"bp": [{"1": [{"diastolic": ["required field"]}]}]}
                 })
             }
         ),
-        # Bad data (TypeError) - "diastolic" value is string instead of int
+        # # Bad data - "diastolic" value is string instead of int, medication is an int, veteran_is... is a string
         (
             {
                 "body": json.dumps({
                     "bp": [
-                    {
+                        {
                             "diastolic": "180",
                             "systolic": 200,
                             "date": "2021-09-01"
@@ -182,10 +183,12 @@ from lib.main import main
                         }
                     ],
                     "date_of_claim": "2021-11-09",
+                    "medication": [11],
+                    "veteran_is_service_connected": "True"
                 })
             },
             {
-                "statusCode": 500,
+                "statusCode": 400,
                 "headers": {
                     "Access-Control-Allow-Headers" : "Content-Type",
                     "Access-Control-Allow-Origin": "*",
@@ -196,10 +199,15 @@ from lib.main import main
                         "success": False,
                     },
                     "diastolic_history_calculation": {
-                        "success": False 
+                        "success": False
                     },
                     "requires_continuous_medication": {
                         "success": False
+                    },
+                    "errors": {
+                        "bp": [{"0": [{"diastolic": ["must be of integer type"]}]}],
+                        "medication": [{"0": ["must be of string type"]}],
+                        "veteran_is_service_connected": ["must be of boolean type"]
                     }
                 })
             }

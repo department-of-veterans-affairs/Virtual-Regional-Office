@@ -152,30 +152,33 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
     return reading_within_one_month and reading_within_six_months
 
 def validate_request_body(request_body):
+    """
+    Validates that the request body conforms to the expected data format
+
+    :param request_body: request body converted from json
+    :type request_body: dict
+    :return: dict with boolean result showing if request is valid and if not, any applicable errors
+    :rtype: dict
+    """
     schema = {
-        "body": {
-            "type": "dict",
+        "date_of_claim": {"type": "string"},
+        "veteran_is_service_connected": {"type": "boolean"},
+        "bp": {
+            "type": "list",
             "schema": {
-                "date_of_claim": {"type": "string"},
-                "veteran_is_service_connected": {"type": "boolean"},
-                "bp": {
-                    "type": "list",
-                    "schema": {
-                        "type": "dict",
-                        "allow_unknown": True,
-                        "schema": {
-                            "diastolic": {"type": "integer"},
-                            "systolic": {"type": "integer"},
-                            "date": {"type": "string"}
-                        }
-                    }
-                },
-                "medication": {
-                    "type": "list",
-                    "schema": {
-                        "type": "string",
-                    }
+                "type": "dict",
+                "require_all": True,
+                "schema": {
+                    "diastolic": {"type": "integer"},
+                    "systolic": {"type": "integer"},
+                    "date": {"type": "string"}
                 }
+            }
+        },
+        "medication": {
+            "type": "list",
+            "schema": {
+                "type": "string",
             }
         }
     }

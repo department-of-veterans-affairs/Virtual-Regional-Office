@@ -341,56 +341,50 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
     [
         (
             {
-                "body": {
-                    "bp": [
-                        {
-                            "diastolic": 115,
-                            "systolic": 180,
-                            "date": "2021-11-01"
-                        },
-                        {
-                            "diastolic": 110,
-                            "systolic": 200,
-                            "date": "2021-09-01"
-                        }
-                    ],
-                    "medication": ["Capoten"],
-                    "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected": True
-                }
+                "bp": [
+                    {
+                        "diastolic": 115,
+                        "systolic": 180,
+                        "date": "2021-11-01"
+                    },
+                    {
+                        "diastolic": 110,
+                        "systolic": 200,
+                        "date": "2021-09-01"
+                    }
+                ],
+                "medication": ["Capoten"],
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": True
             },
             True,
             {}
         ),
         (
             {
-                "body": {
-                    "bp": [
-                        {
-                            "diastolic": 115,
-                            "systolic": "180",
-                            "date": "2021-11-01"
-                        },
-                        {
-                            "diastolic": 110,
-                            "systolic": 200,
-                            "date": "2021-09-01"
-                        }
-                    ],
-                    "medication": [1],
-                    "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected": "True"
-                }
+                "bp": [
+                    {
+                        "diastolic": 115,
+                        "systolic": "180",
+                        "date": "2021-11-01"
+                    },
+                    {
+                        "diastolic": 110,
+                        "systolic": 200,
+                        "date": "2021-09-01"
+                    }
+                ],
+                "medication": [1],
+                "date_of_claim": "2021-11-09",
+                "veteran_is_service_connected": "True"
             },
             False,
-            {'body': [
-                {'bp': [
-                    {0: [{'systolic': ['must be of integer type']}]}
-                    ],
-                    'medication': [{0: ['must be of string type']}],
-                    'veteran_is_service_connected': ['must be of boolean type']
-                }
-            ]}
+            {'bp': [
+                {0: [{'systolic': ['must be of integer type']}]}
+                ],
+                'medication': [{0: ['must be of string type']}],
+                'veteran_is_service_connected': ['must be of boolean type']
+            }
         ),
     ],
 )
