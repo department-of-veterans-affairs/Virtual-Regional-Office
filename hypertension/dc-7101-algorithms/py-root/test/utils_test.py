@@ -337,7 +337,7 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
     assert bp_readings_meet_date_specs(date_of_claim, bp_readings) == result
 
 @pytest.mark.parametrize(
-    "request_body, result",
+    "request_body, result_is_valid, errors",
     [
         (
             {
@@ -359,11 +359,42 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
                     "veteran_is_service_connected": True
                 }
             },
-            True
+            True,
+            {}
+        ),
+        (
+            {
+                "body": {
+                    "bp": [
+                        {
+                            "diastolic": 115,
+                            "systolic": "180",
+                            "date": "2021-11-01"
+                        },
+                        {
+                            "diastolic": 110,
+                            "systolic": 200,
+                            "date": "2021-09-01"
+                        }
+                    ],
+                    "medication": [1],
+                    "date_of_claim": "2021-11-09",
+                    "veteran_is_service_connected": "True"
+                }
+            },
+            False,
+            {'body': [
+                {'bp': [
+                    {0: [{'systolic': ['must be of integer type']}]}
+                    ],
+                    'medication': [{0: ['must be of string type']}],
+                    'veteran_is_service_connected': ['must be of boolean type']
+                }
+            ]}
         ),
     ],
 )
-def test_validate_request_body(request_body, result):
+def test_validate_request_body(request_body, result_is_valid, errors):
     """
     Test function that determines if the blood pressure readings contain a readings that are within 1 month and 6 months of the date of claim
 
@@ -374,4 +405,6 @@ def test_validate_request_body(request_body, result):
     :param result: boolean describing whether or not the blood pressure readings meet the specifications
     :type result: bool
     """
-    assert validate_request_body(request_body) == result
+    result = validate_request_body(request_body)
+    assert result["is_valid"] == result_is_valid
+    assert result["errors"] == errors

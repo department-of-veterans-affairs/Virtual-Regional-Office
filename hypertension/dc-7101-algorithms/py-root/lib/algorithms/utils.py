@@ -181,7 +181,10 @@ def validate_request_body(request_body):
     }
     v = Validator(schema)
 
-    return v.validate(request_body)
+    return {
+        "is_valid": v.validate(request_body),
+        "errors": v.errors
+    }
 
 hypertension_medications = {
     "benazepril",
