@@ -50,8 +50,8 @@ from lib.main import main
                 })
             }
         ),
-        # sufficient_to_autopopulate returns "success": False, but history_of_diastolic_bp doesn"t
-        # Note that the inverse can"t happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn"t)
+        # sufficient_to_autopopulate returns "success": False, but history_of_diastolic_bp doesn't
+        # Note that the inverse can't happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn't)
         # because the only way history_of_diastolic_bp can fail is if there are no bp readings, which would cause
         # sufficient_to_autopopulate to fail as well 
         (
@@ -127,7 +127,7 @@ from lib.main import main
                 })
             }
         ),
-        # # Bad data - "diastolic" key is missing in second reading
+        # Bad data - "diastolic" key is missing in second reading
         (
             {
                 "body": json.dumps({
@@ -166,7 +166,7 @@ from lib.main import main
                 })
             }
         ),
-        # # Bad data - "diastolic" value is string instead of int, medication is an int, veteran_is... is a string
+        # Bad data - "diastolic" value is string instead of int, medication is an int, veteran_is... is a string
         (
             {
                 "body": json.dumps({

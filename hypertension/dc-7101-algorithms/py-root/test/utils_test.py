@@ -379,11 +379,11 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
                 "veteran_is_service_connected": "True"
             },
             False,
-            {'bp': [
-                {0: [{'systolic': ['must be of integer type']}]}
+            {"bp": [
+                {0: [{"systolic": ["must be of integer type"]}]}
                 ],
-                'medication': [{0: ['must be of string type']}],
-                'veteran_is_service_connected': ['must be of boolean type']
+                "medication": [{0: ["must be of string type"]}],
+                "veteran_is_service_connected": ["must be of boolean type"]
             }
         ),
     ],
