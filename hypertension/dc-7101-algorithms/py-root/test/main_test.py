@@ -96,7 +96,7 @@ from lib.main import main
                 })
             }
         ),
-        # sufficiency and history algos fail
+        # Sufficiency and history algos fail
         (
             {
                 "body": json.dumps({
@@ -127,7 +127,7 @@ from lib.main import main
                 })
             }
         ),
-        # Bad data - "diastolic" key is missing in second reading
+        # Bad data: "diastolic" key is missing in second reading
         (
             {
                 "body": json.dumps({
@@ -166,7 +166,10 @@ from lib.main import main
                 })
             }
         ),
-        # Bad data - "diastolic" value is string instead of int, medication is an int, veteran_is... is a string
+        # Bad data:
+        # - "diastolic" value is string instead of int
+        # - Medication is an array with a single element *that is an int* rather than string
+        # - "veteran_is_service_connected" is a string
         (
             {
                 "body": json.dumps({
