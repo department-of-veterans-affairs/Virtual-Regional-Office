@@ -24,7 +24,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
             {
                 "success": True,
                 "predominant_diastolic_reading": 115,
-                "predominant_systolic_reading": 180
+                "predominant_systolic_reading": 200
             },
         ),
         # 2 reading test case with one out of range date
@@ -52,7 +52,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate
             {
                 "success": True,
                 "predominant_diastolic_reading": 115,
-                "predominant_systolic_reading": 180
+                "predominant_systolic_reading": 200
             },
         ),
         # +2 reading test case with no out of range dates
