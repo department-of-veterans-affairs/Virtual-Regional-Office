@@ -364,25 +364,43 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
             {
                 "bp": [
                     {
-                        "diastolic": 115,
                         "systolic": "180",
                         "date": "2021-11-01"
                     },
                     {
-                        "diastolic": 110,
+                        "diastolic": "110",
                         "systolic": 200,
-                        "date": "2021-09-01"
+                        "date": 20210901
                     }
                 ],
-                "medication": [1],
-                "date_of_claim": "2021-11-09",
+                "medication": [123],
+                "date_of_claim": 20211109,
                 "veteran_is_service_connected_for_dc7101": "True"
             },
             False,
-            {"bp": [
-                {0: [{"systolic": ["must be of integer type"]}]}
+            {
+                "bp": [
+                    {
+                        0: [
+                            {
+                                "systolic": ["must be of integer type"],
+                                "diastolic": ["required field"]
+                            }
+                        ],
+                        1: [
+                            {
+                                "date": ["must be of string type"],
+                                "diastolic": ["must be of integer type"]
+                            }
+                        ]
+                    }
                 ],
-                "medication": [{0: ["must be of string type"]}],
+                "medication": [
+                    {
+                        0: ["must be of string type"]
+                    }
+                ],
+                "date_of_claim": ["must be of string type"],
                 "veteran_is_service_connected_for_dc7101": ["must be of boolean type"]
             }
         ),
