@@ -10,7 +10,7 @@ from lib.algorithms.continuous_medication import continuous_medication_required
                 "bp": [],
                 "medication": ["Benazepril"],
                 'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                'veteran_is_service_connected_for_dc7101': True
             },
             {
                 "success": True,
@@ -23,7 +23,7 @@ from lib.algorithms.continuous_medication import continuous_medication_required
                 "bp": [],
                 "medication": ["Benazepril"],
                 'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': False
+                'veteran_is_service_connected_for_dc7101': False
             },
             {
                 "success": True,
@@ -36,7 +36,7 @@ from lib.algorithms.continuous_medication import continuous_medication_required
                 "bp": [],
                 "medication": ["Advil"],
                 'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                'veteran_is_service_connected_for_dc7101': True
             },
             {
                 "success": True,
@@ -49,7 +49,7 @@ from lib.algorithms.continuous_medication import continuous_medication_required
                 "bp": [],
                 "medication": ["Benazepril", "Advil"],
                 'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                'veteran_is_service_connected_for_dc7101': True
             },
             {
                 "success": True,
@@ -62,7 +62,7 @@ from lib.algorithms.continuous_medication import continuous_medication_required
                 "bp": [],
                 "medication": [],
                 'date_of_claim': '2021-11-09',
-                'veteran_is_service_connected': True
+                'veteran_is_service_connected_for_dc7101': True
             },
             {
                 "success": True,

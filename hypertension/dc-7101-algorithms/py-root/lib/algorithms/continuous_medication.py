@@ -14,7 +14,7 @@ def continuous_medication_required(request_body):
         "success": True
   }
 
-  if not request_body["veteran_is_service_connected"]:
+  if not request_body["veteran_is_service_connected_for_dc7101"]:
     continuous_medication_required_calculation["continuous_medication_required"] = False
     return continuous_medication_required_calculation
 

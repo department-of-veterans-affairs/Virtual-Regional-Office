@@ -162,7 +162,7 @@ def validate_request_body(request_body):
     """
     schema = {
         "date_of_claim": {"type": "string"},
-        "veteran_is_service_connected": {"type": "boolean"},
+        "veteran_is_service_connected_for_dc7101": {"type": "boolean"},
         "bp": {
             "type": "list",
             "schema": {

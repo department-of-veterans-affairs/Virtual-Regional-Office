@@ -23,7 +23,7 @@ from lib.main import main
                     ],
                     "medication": ["Capoten"],
                     "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected": True
+                    "veteran_is_service_connected_for_dc7101": True
                 })
             },
             {
@@ -71,7 +71,7 @@ from lib.main import main
                     ],
                     "medication": [],
                     "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected": True
+                    "veteran_is_service_connected_for_dc7101": True
                 })
             },
             {
@@ -103,7 +103,7 @@ from lib.main import main
                     "bp": [],
                     "medication": [],
                     "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected": True
+                    "veteran_is_service_connected_for_dc7101": True
                 })
             },
             {
@@ -169,7 +169,7 @@ from lib.main import main
         # Bad data:
         # - "diastolic" value is string instead of int
         # - Medication is an array with a single element *that is an int* rather than string
-        # - "veteran_is_service_connected" is a string
+        # - "veteran_is_service_connected_for_dc7101" is a string
         (
             {
                 "body": json.dumps({
@@ -187,7 +187,7 @@ from lib.main import main
                     ],
                     "date_of_claim": "2021-11-09",
                     "medication": [11],
-                    "veteran_is_service_connected": "True"
+                    "veteran_is_service_connected_for_dc7101": "True"
                 })
             },
             {
@@ -210,7 +210,7 @@ from lib.main import main
                     "errors": {
                         "bp": [{"0": [{"diastolic": ["must be of integer type"]}]}],
                         "medication": [{"0": ["must be of string type"]}],
-                        "veteran_is_service_connected": ["must be of boolean type"]
+                        "veteran_is_service_connected_for_dc7101": ["must be of boolean type"]
                     }
                 })
             }

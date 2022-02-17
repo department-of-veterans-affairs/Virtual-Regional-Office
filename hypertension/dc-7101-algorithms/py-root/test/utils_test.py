@@ -355,7 +355,7 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
                 ],
                 "medication": ["Capoten"],
                 "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": True
+                "veteran_is_service_connected_for_dc7101": True
             },
             True,
             {}
@@ -376,14 +376,14 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
                 ],
                 "medication": [1],
                 "date_of_claim": "2021-11-09",
-                "veteran_is_service_connected": "True"
+                "veteran_is_service_connected_for_dc7101": "True"
             },
             False,
             {"bp": [
                 {0: [{"systolic": ["must be of integer type"]}]}
                 ],
                 "medication": [{0: ["must be of string type"]}],
-                "veteran_is_service_connected": ["must be of boolean type"]
+                "veteran_is_service_connected_for_dc7101": ["must be of boolean type"]
             }
         ),
     ],
