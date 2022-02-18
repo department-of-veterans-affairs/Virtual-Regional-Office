@@ -3,6 +3,7 @@ from typing import Dict
 from .algorithms.bp_sufficiency import sufficient_to_autopopulate
 from .algorithms.bp_history import history_of_diastolic_bp
 from .algorithms.continuous_medication import continuous_medication_required
+from .algorithms.utils import validate_request_body
 
 def main(event: Dict):
     """
@@ -16,7 +17,11 @@ def main(event: Dict):
     request_body = json.loads(event["body"])
 
     statusCode = 200
-    try:
+
+    validation_results = validate_request_body(request_body)
+    response_body = {}
+
+    if validation_results["is_valid"]:
         predominance_calculation = sufficient_to_autopopulate(request_body)
         diastolic_history_calculation = history_of_diastolic_bp(request_body)
         requires_continuous_medication = continuous_medication_required(request_body)
@@ -36,22 +41,25 @@ def main(event: Dict):
         elif not predominance_calculation_status and not diastolic_history_calculation_status:
             statusCode = 400
 
-    except Exception as e:
-        statusCode = 500
+    else:
+        statusCode = 400
         predominance_calculation = {"success": False}
         diastolic_history_calculation = {"success": False}
         requires_continuous_medication = {"success": False}
+        response_body["errors"] = validation_results["errors"]
+
+    response_body.update({
+        "predominance_calculation": predominance_calculation,
+        "diastolic_history_calculation": diastolic_history_calculation,
+        "requires_continuous_medication": requires_continuous_medication 
+    })
 
     return {
-            "statusCode": statusCode,
-            "headers": {
-                "Access-Control-Allow-Headers" : "Content-Type",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
-            },
-            "body": json.dumps({
-                "predominance_calculation": predominance_calculation,
-                "diastolic_history_calculation": diastolic_history_calculation,
-                "requires_continuous_medication": requires_continuous_medication 
-            })
-        }
+        "statusCode": statusCode,
+        "headers": {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST"
+        },
+        "body": json.dumps(response_body)
+    }
