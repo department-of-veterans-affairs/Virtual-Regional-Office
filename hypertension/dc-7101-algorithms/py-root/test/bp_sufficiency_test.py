@@ -124,19 +124,27 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
                     "systolic": 180,
                     "date": "2021-10-01",
                 },
+                # Per the algorithm, when the total number of BP readings is 3 or greater, if there
+                # are multiple values within the Predominant Percent Range of Diastolic Readings
+                # (PPRDR) (see algorithm document for definition) then *most recent* reading is the
+                # predominant reading (i.e. not neccessarily the *highest* reading reading within
+                # the PPRDR).
+                # The following two readings are ordered specifically this way in this list to
+                # exercise the date sorting portion of the algorithm, to test that it's working
+                # properly.
                 {
                     "diastolic": 135,
                     "systolic": 155,
-                    "date": "2021-09-01",
+                    "date": "2021-09-05",
                 },
                 {
                     "diastolic": 140,
                     "systolic": 150,
-                    "date": "2021-09-05",
-                }
+                    "date": "2021-09-01",
+                },
             ],
             {
-                "diastolic_value": 140,
+                "diastolic_value": 135,
                 "systolic_value": 200
             }
         )

@@ -73,6 +73,11 @@ def calculate_predominant_ratings(bp_readings):
         else:
             systolic_0_to_159.append(reading)
 
+    # This is a **list** of lists (rather than a dict of lists) because we want
+    # to preserve order...
+    # ...and we want to preserve order because, when there is a tie in the
+    # total number of readings in mulitiple BP range buckets, we want to pick
+    # the BP range bucket of the higher BP range.
     list_of_diastolic_lists = [
         diastolic_120_to_129,
         diastolic_110_to_119,
@@ -96,9 +101,9 @@ def calculate_predominant_ratings(bp_readings):
         if len(systolic_list) > len(longest_systolic_list):
             longest_systolic_list = systolic_list
 
-    diastolic_list.sort(key=operator.itemgetter("date"))
+    longest_diastolic_list.sort(key=operator.itemgetter("date"))
 
-    systolic_list.sort(key=operator.itemgetter("date"))
+    longest_systolic_list.sort(key=operator.itemgetter("date"))
 
     return {
         "systolic_value": longest_systolic_list[-1]["systolic"],
