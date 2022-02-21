@@ -1,6 +1,6 @@
 import json
 from typing import Dict
-from .algorithms.bp_sufficiency import sufficient_to_autopopulate
+from .algorithms.predominant_bp import sufficient_to_autopopulate
 from .algorithms.bp_history import history_of_diastolic_bp
 from .algorithms.continuous_medication import continuous_medication_required
 from .algorithms.utils import validate_request_body

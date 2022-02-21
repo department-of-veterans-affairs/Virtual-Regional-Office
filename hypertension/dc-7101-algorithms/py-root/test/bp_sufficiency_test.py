@@ -1,5 +1,5 @@
 import pytest
-from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_readings_meet_date_specs, calculate_predominant_readings
+from lib.algorithms.predominant_bp import sufficient_to_autopopulate, bp_readings_meet_date_specs, calculate_predominant_readings
 
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",
