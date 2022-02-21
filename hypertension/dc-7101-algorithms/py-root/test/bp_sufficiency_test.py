@@ -1,5 +1,5 @@
 import pytest
-from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_readings_meet_date_specs, calculate_predominant_ratings
+from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_readings_meet_date_specs, calculate_predominant_readings
 
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",
@@ -153,7 +153,7 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
         )
     ],
 )
-def test_calculate_predominant_ratings(bp_readings, result):
+def test_calculate_predominant_readings(bp_readings, result):
     """
     Test calculating the predominant blood pressure reading from a list of bp readings
 
@@ -162,7 +162,7 @@ def test_calculate_predominant_ratings(bp_readings, result):
     :param result: int value showing the predominant rating
     :type result: int
     """
-    assert calculate_predominant_ratings(bp_readings) == result
+    assert calculate_predominant_readings(bp_readings) == result
 
 
 @pytest.mark.parametrize(

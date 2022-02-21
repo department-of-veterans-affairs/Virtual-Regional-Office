@@ -32,7 +32,7 @@ def bp_readings_meet_date_specs(date_of_claim, bp_readings):
 
     return reading_within_one_month and reading_within_six_months
 
-def calculate_predominant_ratings(bp_readings):
+def calculate_predominant_readings(bp_readings):
     """
     Calculate the predominant diastolic and systolic values from a list of BP readings
 
@@ -147,7 +147,7 @@ def sufficient_to_autopopulate (request_body):
             predominance_calculation["predominant_systolic_reading"] = first_reading["systolic"] if first_reading["systolic"] > second_reading["systolic"] else second_reading["systolic"] 
 
         elif len(valid_bp_readings) > 2:
-            results = calculate_predominant_ratings(valid_bp_readings)
+            results = calculate_predominant_readings(valid_bp_readings)
             predominance_calculation["predominant_diastolic_reading"] = results["diastolic_value"]
             predominance_calculation["predominant_systolic_reading"] = results["systolic_value"]
 
