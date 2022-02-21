@@ -4,7 +4,9 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_reading
 @pytest.mark.parametrize(
     "date_of_claim, bp_readings, result",
     [
-        # Valid reading
+        # Date requirements met (1x within 30 days + 1x within 180 days).
+        # This also tests the edge cases in that 10/10 is exactly 30 days before 11/9
+        # and 5/13 is exactly 180 days before 11/9
         (
             "2021-11-09",
             [
@@ -16,12 +18,13 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_reading
                 {
                     "diastolic": 110,
                     "systolic": 200,
-                    "date": "2021-09-01"
+                    "date": "2021-05-13"
                 }
             ],
             True
         ),
-        # Reading within 30 days, no reading within 180 days (181 days)
+        # Yes reading within 30 days, but no reading within 180 days.
+        # This also tests the edge case in that 5/12 is *181* days before 11/9
         (
             "2021-11-09",
             [
@@ -38,7 +41,8 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_reading
             ],
             False
         ),
-        # Reading within 180 days, no reading within 30 days (reading has 31 days)
+        # Yes reading within 180 days, but no reading within 30 days
+        # This also tests the edge case in that 10/9 is *31* days before 11/9
         (
             "2021-11-09",
             [
@@ -55,7 +59,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_reading
             ],
             False
         ),
-        # 1 reading
+        # Date specs not met because 1 reading is insufficient data.
         (
             "2021-11-09",
             [
@@ -67,7 +71,7 @@ from lib.algorithms.bp_sufficiency import sufficient_to_autopopulate, bp_reading
             ],
             False
         ),
-        # 0 readings
+        # Date specs not met because 0 readings is insufficient data.
         (
             "2021-11-09",
             [],
@@ -126,12 +130,11 @@ def test_bp_readings_meet_date_specs(date_of_claim, bp_readings, result):
                 },
                 # Per the algorithm, when the total number of BP readings is 3 or greater, if there
                 # are multiple values within the Predominant Percent Range of Diastolic Readings
-                # (PPRDR) (see algorithm document for definition) then *most recent* reading is the
-                # predominant reading (i.e. not neccessarily the *highest* reading reading within
-                # the PPRDR).
-                # The following two readings are ordered specifically this way in this list to
-                # exercise the date sorting portion of the algorithm, to test that it's working
-                # properly.
+                # (PPRDR) (see algorithm document for definition) then *most recent* reading in the
+                # PPRDR is the predominant reading (i.e. not neccessarily the *highest* reading
+                # reading within the PPRDR).
+                # The following two readings are ordered specifically this way in this Python list
+                # to exercise and test the date sorting portion of the algorithm.
                 {
                     "diastolic": 135,
                     "systolic": 155,
@@ -165,7 +168,7 @@ def test_calculate_predominant_ratings(bp_readings, result):
 @pytest.mark.parametrize(
     "request_body, predominance_calculation",
     [
-        # 2 reading test case with no out of range dates
+        # Two readings. No out of range dates.
         (
             {
                 "bp": [
