@@ -1,7 +1,5 @@
 import pytest
-from lib.algorithms.utils import (
-    validate_request_body
-)
+from lib.algorithms.utils import validate_request_body
 
 
 @pytest.mark.parametrize(
