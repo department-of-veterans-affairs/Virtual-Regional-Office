@@ -41,6 +41,13 @@ def calculate_predominant_readings(bp_readings):
     :return: dictionary with systolic and diastolic values 
     :rtype: dict
     """
+
+    if len(bp_readings) == 2:
+        return {
+            "systolic_value": max(bp_readings[0]["systolic"], bp_readings[1]["systolic"]),
+            "diastolic_value": max(bp_readings[0]["diastolic"], bp_readings[1]["diastolic"])
+        }
+
     diastolic_130_and_above = []
     diastolic_120_to_129 = []
     diastolic_110_to_119 = []
@@ -138,17 +145,8 @@ def sufficient_to_autopopulate (request_body):
         return predominance_calculation
 
     elif len(valid_bp_readings) > 1 and bp_readings_meet_date_specs(date_of_claim, valid_bp_readings):
-
-        if len(valid_bp_readings) == 2:
-            first_reading = valid_bp_readings[0]
-            second_reading = valid_bp_readings[1]
-
-            predominance_calculation["predominant_diastolic_reading"] = first_reading["diastolic"] if first_reading["diastolic"] > second_reading["diastolic"] else second_reading["diastolic"] 
-            predominance_calculation["predominant_systolic_reading"] = first_reading["systolic"] if first_reading["systolic"] > second_reading["systolic"] else second_reading["systolic"] 
-
-        elif len(valid_bp_readings) > 2:
-            results = calculate_predominant_readings(valid_bp_readings)
-            predominance_calculation["predominant_diastolic_reading"] = results["diastolic_value"]
-            predominance_calculation["predominant_systolic_reading"] = results["systolic_value"]
+        results = calculate_predominant_readings(valid_bp_readings)
+        predominance_calculation["predominant_diastolic_reading"] = results["diastolic_value"]
+        predominance_calculation["predominant_systolic_reading"] = results["systolic_value"]
 
     return predominance_calculation
