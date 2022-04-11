@@ -10,7 +10,7 @@ Resources:
             Description: "Converts raw blood pressure and medication data into the criteria the VASRD Rules Manager expects to evalute DC 7101 hypertensive vascular disease"
             CodeUri: py-root/
             Handler: app.lambda_handler
-            Runtime: python3.9
+            Runtime: python3.8
             Role: !GetAtt VroHtnDataProcessorRole.Arn
             Events:
                 VroCalculationAlgorithms:

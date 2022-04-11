@@ -10,10 +10,10 @@ from lib.aws_secrets_manager import (
 
 
 def load_config(
-    icn: str,
-    key_loc: Optional[str] = None,
-    client_id: Optional[str] = None,
-) -> dict:
+        icn,
+        key_loc,
+        client_id,
+):
 
     if key_loc:
         secret = load_secret(key_loc)
