@@ -11,8 +11,8 @@ from lib.aws_secrets_manager import (
 
 def load_config(
         icn,
-        key_loc,
-        client_id,
+        key_loc=None,
+        client_id=None,
 ):
 
     if key_loc:
