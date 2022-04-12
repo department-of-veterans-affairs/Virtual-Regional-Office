@@ -31,6 +31,30 @@ template_variables = {
       "diastolic": "0",
       "systolic": "0"
     }
+  ],
+  "diastolic_bp_measurements_under_100": [
+    {
+      "facility": "Placeholder",
+      "date": "0/0/00",
+      "diastolic": "0",
+      "systolic": "0"
+    }
+  ],
+  "diastolic_bp_measurements_over_100": [
+    {
+      "facility": "Placeholder",
+      "date": "0/0/00",
+      "diastolic": "0",
+      "systolic": "0"
+    }
+  ],
+  "diastolic_bp_measurements_over_120": [
+    {
+      "facility": "Placeholder",
+      "date": "0/0/00",
+      "diastolic": "0",
+      "systolic": "0"
+    }
   ]
 }
 
