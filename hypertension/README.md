@@ -278,6 +278,13 @@ We have a helper script for exporting session credentials to your shell environm
 cd stack_deployment; poetry install; source export_aws_mfa_credentials.sh; cd ..
 ```
 
+or follow the directions here: [AWS doc](https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/)
+
+# Testing a Gateway API using Postman
+
+In the AWS console, navigate to the API Gateway service. Select an API and select `Stages`. Select the hyperlink of a Stage and choose the export tab. [Screenshot](hypertension/docs/AWS_console.png) for reference
+
+
 # Git Workflow
 
 We use the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow); in summary, this means that we write code primarily in feature branches that are then merged to `develop`, and only push to the primary branch from there.
