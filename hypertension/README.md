@@ -282,7 +282,7 @@ or follow the directions here: [AWS doc](https://aws.amazon.com/premiumsupport/k
 
 # Testing a Gateway API using Postman
 
-In the AWS console, navigate to the API Gateway service. Select an API and select `Stages`. Select the hyperlink of a Stage and choose the export tab. [Screenshot](hypertension/docs/AWS_console.png) for reference
+In the AWS console, navigate to the `API Gateway` service. Select an API and select `Stages`. Select the hyperlink of a Stage and choose the export tab. [Screenshot](hypertension/docs/AWS_console.png) for reference
 
 
 # Git Workflow
