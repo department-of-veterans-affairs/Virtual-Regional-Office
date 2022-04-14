@@ -10,6 +10,7 @@ env = Environment(
 template = env.get_template("hypertension.html")
 
 template_variables = {
+  # HYPERTENSION VARIABLES
   "name": "test",
   "ssn": "000-00-0000",
   "dob": "0/0/00",
@@ -55,7 +56,31 @@ template_variables = {
       "diastolic": "0",
       "systolic": "0"
     }
-  ]
+  ],
+  # PACT SHEET VARIABLES
+  "pdf_title": "PACT Data Sheet",
+  "pdf_header": "Integrated Patient Profile",
+  "name": "test",
+  "dob": "0/0/00",
+  "ethnicity": "test",
+  "address": "test",
+  "team_assignments": [
+    {
+      "team_type": "test",
+      "location": "test",
+      "team": "test",
+      "status": "test",
+      "provider_role": "test",
+      "provider_name": "test"
+    }
+  ],
+  "blood_pressure": "0",
+  "body_mass_index": "0",
+  "risk_scores": "test",
+  "immunizations": "test",
+  "candidate": "test",
+  "treatment_note": "test",
+  "conditions_and_diseases": "test"
 }
 
 
