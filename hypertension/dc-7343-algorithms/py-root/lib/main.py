@@ -28,33 +28,18 @@ def main(event: Dict):
         medication_match_result_status = medication_match_result["success"]
         active_cancer_result_status = active_cancer_result["success"]
 
-        # if active medication date complete within 6 months
-
-
-        # if sufficient_to_autopopulate returns 'success': False, but history_of_diastolic_bp doesn't
-        # Note that the inverse can't happen (where history_of_diastolic_bp fails while sufficient_to_autopopulate doesn't)
-        # because the only way history_of_diastolic_bp can fail is if there are no BP readings, which would cause
-        # sufficient_to_autopopulate to fail as well
-
-        # Additionally, there's no way for requires continuous medication to fail as well
-        if (
-                (diastolic_history_calculation_status and not predominance_calculation_status)
-        ):
+        if not all([medication_match_result_status, active_cancer_result_status]):
             statusCode = 209
-        elif not predominance_calculation_status and not diastolic_history_calculation_status:
-            statusCode = 400
 
     else:
         statusCode = 400
-        active_cancer = {"success": False}
-        requires_continuous_medication = {"success": False}
-        active_procedure = {"success": False}
+        active_cancer_result = {"success": False}
+        medication_match_result = {"success": False}
         response_body["errors"] = validation_results["errors"]
 
     response_body.update({
-        "active_cancer": predominance_calculation,
-        "diastolic_history_calculation": diastolic_history_calculation,
-        "requires_continuous_medication": requires_continuous_medication
+        "active_cancer": active_cancer_result,
+        "requires_continuous_medication": medication_match_result
     })
 
     return {
