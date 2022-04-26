@@ -13,6 +13,7 @@ def load_config(
         icn,
         key_loc=None,
         client_id=None,
+        # add VASRD_code
 ):
 
     if key_loc:
@@ -41,13 +42,32 @@ def load_config(
                 "client_id": client_id,
             },
             "vet_health_api_observation": {
-                "fhir_observation_endpoint": os.environ[
+                "fhir_endpoint": os.environ[
                     "LighthouseObservationUrl"
                 ],
                 "fhir_category": os.environ["LighthouseObservationCategory"],
-                "fhir_loinc_code": os.environ[
+                "fhir_code": os.environ[
                     "LighthouseObservationLoincCode"
                 ],
+            },
+            "vet_health_api_condition": {
+                "fhir_endpoint": os.environ[
+                    "LighthouseConditionUrl"
+                ],
+                "fhir_category": "encounter-diagnosis",
+                "fhir_clinical_status": "active",
+            },
+            "vet_health_api_medication": {
+                "fhir_endpoint": os.environ[
+                    "LighthouseMedicationUrl"
+                ],
+                "fhir_category": ""
+            },
+            "vet_health_api_procedure": {
+                "fhir_endpoint": os.environ[
+                    "LighthouseProcedureUrl"
+                ],
+                "fhir_category": ""
             },
             "icn": icn,
         }

@@ -5,6 +5,7 @@ from lib.utils import load_config
 # pylint: disable=unused-argument
 def lambda_handler(event, context):  # pragma: no cover
     config = load_config(event["icn"])
+    # add VASRD code
     return main(config, event)
 
 

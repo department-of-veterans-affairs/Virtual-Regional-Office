@@ -1,0 +1,101 @@
+import pytest
+from lib.algorithms.utils import validate_request_body
+
+
+@pytest.mark.parametrize(
+    "request_body, result_is_valid, errors",
+    [
+        (
+                {
+                    "condition": [
+                        {
+                            "code": 363419009,
+                            "text": "Malignant tumor of head of pancreas (disorder)",
+                            "onset_date": "2021-11-01",
+                            "abatement_date": "2022-04-01"
+                        },
+                    ],
+                    "medication": ["5-fluorouracil",
+                                   "Irinotecan"],
+                    "procedure": [
+                        {
+                            "code": "174710004",
+                            "text": "(Surgery - distal subtotal pancreatectomy)",
+                            "performed_date": "2021-12-01",
+                            "last_update_date": "2021-12-15",
+                            "status": "completed"
+                        }
+                    ],
+                    "date_of_claim": "2021-11-09",
+                    "veteran_is_service_connected_for_dc7343": True
+                },
+                True,
+                {}
+        ),
+        (
+                {
+                    "condition": [
+                        {
+                            "code": "363419009",
+                            "text": "Malignant tumor of head of pancreas (disorder)",
+                            "onset_date": "2021-11-01",
+                            "abatement_date": "2022-04-01"
+                        },
+                    ],
+                    "medication": [5,
+                                   "Irinotecan"],
+                    "procedure": [
+                        {
+                            "code": 174710004,
+                            "text": "(Surgery - distal subtotal pancreatectomy)",
+                            "performed_date": "2021-12-01",
+                            "last_update_date": "2021-12-15",
+                            "status": "completed"
+                        }
+                    ],
+                    "date_of_claim": 20211109,
+                    "veteran_is_service_connected_for_dc7343": "True"
+                },
+                False,
+                {
+                    "condition": [
+                        {
+                            0: [
+                                {
+                                    "code": ["must be of integer type"],
+                                }
+                            ]
+                        }
+                    ],
+                    "medication": [
+                        {
+                            0: ["must be of string type"]
+                        }
+                    ],
+                    "procedure": [
+                        {
+                            0: [
+                                {
+                                    "code": ["must be of string type"],
+                                }
+                            ]
+                        }
+                    ],
+                    "date_of_claim": ["must be of string type"],
+                    "veteran_is_service_connected_for_dc7343": ["must be of boolean type"]
+                }
+        ),
+    ],
+)
+def test_validate_request_body(request_body, result_is_valid, errors):
+    """
+    Test function
+
+    :param date_of_claim: string representation of the date of claim
+    :type date_of_claim: string
+    :param result: boolean describing whether or not the blood pressure readings meet the specifications
+    :type result: bool
+    """
+    result = validate_request_body(request_body)
+    assert result["is_valid"] == result_is_valid
+    assert result["errors"] == errors
