@@ -27,7 +27,6 @@ from lib.algorithms.active_condition import active_cancer_condition
                         }
                     ],
                     "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected_for_dc7343": True
                 },
                 {"active_cancer_present": True,
                  "active_cancer_matches_count": 1,

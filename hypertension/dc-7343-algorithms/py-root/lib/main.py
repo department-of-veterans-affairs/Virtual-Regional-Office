@@ -14,7 +14,7 @@ def main(event: Dict):
     :return: response body
     :rtype: dict
     """
-    request_body = json.loads(event["body"])
+    request_body = event.json
 
     statusCode = 200
 

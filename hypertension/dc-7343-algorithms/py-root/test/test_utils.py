@@ -13,7 +13,7 @@ from lib.algorithms.utils import validate_request_body
                             "text": "Malignant tumor of head of pancreas (disorder)",
                             "onset_date": "2021-11-01",
                             "abatement_date": "2022-04-01"
-                        },
+                        }
                     ],
                     "medication": ["5-fluorouracil",
                                    "Irinotecan"],
@@ -26,8 +26,7 @@ from lib.algorithms.utils import validate_request_body
                             "status": "completed"
                         }
                     ],
-                    "date_of_claim": "2021-11-09",
-                    "veteran_is_service_connected_for_dc7343": True
+                    "date_of_claim": "2021-11-09"
                 },
                 True,
                 {}
@@ -40,7 +39,7 @@ from lib.algorithms.utils import validate_request_body
                             "text": "Malignant tumor of head of pancreas (disorder)",
                             "onset_date": "2021-11-01",
                             "abatement_date": "2022-04-01"
-                        },
+                        }
                     ],
                     "medication": [5,
                                    "Irinotecan"],
@@ -54,7 +53,6 @@ from lib.algorithms.utils import validate_request_body
                         }
                     ],
                     "date_of_claim": 20211109,
-                    "veteran_is_service_connected_for_dc7343": "True"
                 },
                 False,
                 {
@@ -82,7 +80,6 @@ from lib.algorithms.utils import validate_request_body
                         }
                     ],
                     "date_of_claim": ["must be of string type"],
-                    "veteran_is_service_connected_for_dc7343": ["must be of boolean type"]
                 }
         ),
     ],

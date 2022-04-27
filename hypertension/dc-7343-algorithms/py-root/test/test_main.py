@@ -30,7 +30,6 @@ from lib.main import main
                                 }
                             ],
                             "date_of_claim": "2021-11-09",
-                            "veteran_is_service_connected_for_dc7343": True
                         })
                 },
                 {

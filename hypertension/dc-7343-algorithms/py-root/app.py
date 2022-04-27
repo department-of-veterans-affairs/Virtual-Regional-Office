@@ -1,6 +1,11 @@
+
+from flask import Flask, request
+
 from lib.main import main  # pragma: no cover (main is tested elsewhere)
 
+app = Flask(__name__)
 
-# pylint: disable=unused-argument
-def lambda_handler(event, context):  # pragma: no cover
-    return main(event)
+
+@app.route("/calculate", methods=['POST'])
+def handler():
+    return main(request)  # pragma: no cover
