@@ -1,5 +1,6 @@
 import os
 import argparse
+import json
 
 from dotenv import load_dotenv
 
@@ -10,15 +11,11 @@ load_dotenv("../.env")
 
 """
 Usage example:
-    python fetch_bp_data.py 000aaa ./private.pem \
+    python fetch_cancer_data.py 000aaa ./private.pem \
         assertion-params.json observation-request-params.json 123456789
-
 This script depends on the env variables you set in .env
-
 This script expects the following arguments, in order:
-
     icn: the ICN of the individual to query for.
-
 """
 
 
@@ -34,9 +31,25 @@ def cli_main():
         config["lighthouse"]["auth"], icn
     )
 
-    observation_response = fetch_lh_data(config["lighthouse"]["vet_health_api_observation"], icn, access_token)
+    condition_response = fetch_lh_data(
+        config["lighthouse"]["vet_health_api_condition"], icn, access_token
+    )
 
-    handle_api_response(observation_response)
+    medication_response = fetch_lh_data(
+        config["lighthouse"]["vet_health_api_medication"], icn, access_token
+    )
+
+    procedure_response = fetch_lh_data(
+        config["lighthouse"]["vet_health_api_procedure"], icn, access_token
+    )
+
+    handle_api_response(
+        {
+            "condition_response": condition_response,
+            "medication_response": medication_response,
+            "procedure_response": procedure_response
+        }
+    )
 
 
 def get_cli_args():
@@ -55,7 +68,7 @@ def setup_cli_parser():
 
 
 def handle_api_response(api_response):
-    print(api_response)
+    print(json.dumps(api_response, indent=2))
 
 
 if __name__ == "__main__":
