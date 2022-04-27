@@ -1,1 +1,0 @@
-This folder can be deployed as a Lambdda function to handle the logical process for pancreatic cancer, VASRD code: DC7343
