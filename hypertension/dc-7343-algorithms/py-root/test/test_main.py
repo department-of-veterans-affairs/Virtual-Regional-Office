@@ -29,6 +29,8 @@ from lib.main import main
                                     "status": "completed"
                                 }
                             ],
+                            'procedures_in_last_six_months': {'pc_procedure_within_six_months': True,
+                                                              'success': True},
                             "date_of_claim": "2021-11-09",
                         })
                 },
@@ -76,7 +78,6 @@ from lib.main import main
                             }
                         ],
                         "date_of_claim": "2021-11-09",
-                        "veteran_is_service_connected_for_dc7343": True
                     })
                 },
                 {
@@ -144,6 +145,6 @@ def test_main(request_body, response):
     :param response: response after running data through algorithms
     :type response: dict
     """
-    api_response = main(request_body)
+    api_response = main(json.loads(request_body["body"]))
 
     assert json.loads(api_response["body"]) == json.loads(response["body"])

@@ -3,6 +3,7 @@ from typing import Dict
 from .algorithms.utils import validate_request_body
 from .algorithms.active_condition import active_cancer_condition
 from .algorithms.medication import medication_match
+from .algorithms.procedure import procedure_match
 
 
 def main(event: Dict):
@@ -14,7 +15,7 @@ def main(event: Dict):
     :return: response body
     :rtype: dict
     """
-    request_body = event.json
+    request_body = event
 
     statusCode = 200
 
@@ -25,21 +26,19 @@ def main(event: Dict):
 
         active_cancer_result = active_cancer_condition(request_body)
         medication_match_result = medication_match(request_body)
-        medication_match_result_status = medication_match_result["success"]
-        active_cancer_result_status = active_cancer_result["success"]
-
-        if not all([medication_match_result_status, active_cancer_result_status]):
-            statusCode = 209
+        procedure_match_result = procedure_match(request_body)
 
     else:
         statusCode = 400
         active_cancer_result = {"success": False}
         medication_match_result = {"success": False}
+        procedure_match_result = {"success": False}
         response_body["errors"] = validation_results["errors"]
 
     response_body.update({
         "active_cancer": active_cancer_result,
-        "requires_continuous_medication": medication_match_result
+        "requires_continuous_medication": medication_match_result,
+        "procedures_in_last_six_months": procedure_match_result,
     })
 
     return {

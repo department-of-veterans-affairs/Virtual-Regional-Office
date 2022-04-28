@@ -34,13 +34,14 @@ def active_cancer_condition(request_body):
     :rtype: dict
     """
 
+    # verify disorder
+
     active_cancer_result = {
         "success": True
     }
 
     active_pc_cancer = []
-    date_of_claim = request_body["date_of_claim"]
-    date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
+
     active_cancer_result["active_cancer_present"] = False
 
     for condition in request_body["condition"]:

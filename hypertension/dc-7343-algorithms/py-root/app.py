@@ -8,4 +8,4 @@ app = Flask(__name__)
 
 @app.route("/calculate", methods=['POST'])
 def handler():
-    return main(request)  # pragma: no cover
+    return main(request.json)  # pragma: no cover

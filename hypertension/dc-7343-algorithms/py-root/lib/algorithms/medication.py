@@ -12,10 +12,12 @@ pc_medications = {
     "Sunitinib",
     "Everolimus",
     "Octreotide",
-    "Lanreotide"
+    "Lanreotide",
 }
 
-pc_procedure = {}
+pc_rx_norm = {
+    1736854, 583214, 1860480, 1736776
+}
 
 
 def medication_match(request_body):
@@ -28,12 +30,12 @@ def medication_match(request_body):
     :rtype: dict
     """
 
-    continuous_medication_required_calculation = {
+    medication_match_calculation = {
         "success": True
     }
 
     veterans_medication_list = request_body["medication"]
-    veterans_procedure_list = request_body["procedure"]
+
     vet_is_taking_pc_medication = False
     medication_matches = 0
     for medication in veterans_medication_list:
@@ -41,8 +43,8 @@ def medication_match(request_body):
             vet_is_taking_pc_medication = True
             medication_matches += 1
 
-    continuous_medication_required_calculation["continuous_medication_required"] = vet_is_taking_pc_medication
-    continuous_medication_required_calculation["continuous_medication_matches_count"] = medication_matches
+    medication_match_calculation["continuous_medication_required"] = vet_is_taking_pc_medication
+    medication_match_calculation["continuous_medication_matches_count"] = medication_matches
 
-    return continuous_medication_required_calculation
+    return medication_match_calculation
 
