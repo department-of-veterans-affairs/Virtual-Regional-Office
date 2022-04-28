@@ -15,8 +15,13 @@ from lib.algorithms.medication import medication_match
                             "abatement_date": "2022-04-01"
                         },
                     ],
-                    "medication": ["5-fluorouracil",
-                                   "Irinotecan"],
+                    "medication": [{"text": "5-fluorouracil",
+                                    "code": 4492,
+                                    "date": "2022-04-01"},
+                                   {"text": "Irinotecan",
+                                    "code": 1726319,
+                                    "date": "2022-04-01"}
+                                   ],
                     "procedure": [
                         {
                             "code": 174710004,

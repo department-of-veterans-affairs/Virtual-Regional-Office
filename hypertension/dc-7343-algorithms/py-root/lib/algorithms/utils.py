@@ -27,9 +27,11 @@ def validate_request_body(request_body):
         "medication": {
             "type": "list",
             "schema": {
-                "type": "string",
+                "type": "dict",
                 "schema": {
-                    "date": {"type": "string"}
+                    "date": {"type": "string"},
+                    "text": {"type": "string"},
+                    "code": {"type": "integer"}
                     }
                 }
             },

@@ -2,7 +2,7 @@ from datetime import datetime
 
 pc_procedure = {
     "(Surgery - distal subtotal pancreatectomy)",
-    703423002
+    #703423002
 }
 
 
@@ -29,10 +29,10 @@ def procedure_match(request_body):
         if procedure["text"].lower() in [x.lower() for x in pc_procedure]:
             procedure_date = procedure["performed_date"]
             procedure_date_formatted = datetime.strptime(procedure_date, "%Y-%m-%d").date()
-            if procedure["status"] == "complete" and (date_of_claim_date - procedure_date_formatted).days <= 180:
-                continue
-            else:
+            if (date_of_claim_date - procedure_date_formatted).days <= 180:
                 pc_procedure_within_six_months = True
+            else:
+                continue
 
     procedure_match_calculation["pc_procedure_within_six_months"] = pc_procedure_within_six_months
 

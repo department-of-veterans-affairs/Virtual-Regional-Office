@@ -18,8 +18,12 @@ from lib.main import main
                                     "abatement_date": "2022-04-01"
                                 },
                             ],
-                            "medication": ["5-fluorouracil",
-                                           "Irinotecan"],
+                            "medication": [{"text": "5-fluorouracil",
+                                            "code": 4492,
+                                            "date": "2022-04-01"},
+                                           {"text": "Irinotecan",
+                                            "code": 1726319,
+                                            "date": "2022-04-01"}],
                             "procedure": [
                                 {
                                     "code": "174710004",
@@ -29,8 +33,6 @@ from lib.main import main
                                     "status": "completed"
                                 }
                             ],
-                            'procedures_in_last_six_months': {'pc_procedure_within_six_months': True,
-                                                              'success': True},
                             "date_of_claim": "2021-11-09",
                         })
                 },
@@ -51,7 +53,9 @@ from lib.main import main
                             "continuous_medication_required": True,
                             "continuous_medication_matches_count": 2,
                             "success": True
-                        }
+                        },
+                        'procedures_in_last_six_months': {'pc_procedure_within_six_months': True,
+                                                          'success': True},
                     })
                 }
         ),
@@ -67,7 +71,6 @@ from lib.main import main
                                 "abatement_date": "2022-04-01"
                             },
                         ],
-                        "medication": [],
                         "procedure": [
                             {
                                 "code": "174710004",
@@ -77,6 +80,7 @@ from lib.main import main
                                 "status": "completed"
                             }
                         ],
+                        "medication": [],
                         "date_of_claim": "2021-11-09",
                     })
                 },
@@ -97,8 +101,9 @@ from lib.main import main
                             "continuous_medication_required": False,
                             "continuous_medication_matches_count": 0,
                             "success": True
-                        }
-
+                        },
+                        'procedures_in_last_six_months': {'pc_procedure_within_six_months': True,
+                                                          'success': True},
                     })
                 }
         ),
@@ -110,7 +115,6 @@ from lib.main import main
                         "medication": [],
                         "procedure": [],
                         "date_of_claim": "2021-11-09",
-                        "veteran_is_service_connected_for_dc7343": True
                     })
                 },
                 {
@@ -130,7 +134,9 @@ from lib.main import main
                             "continuous_medication_required": False,
                             "continuous_medication_matches_count": 0,
                             "success": True
-                        }
+                        },
+                        'procedures_in_last_six_months': {'pc_procedure_within_six_months': False,
+                                                          'success': True},
                     })
                 }
         ),

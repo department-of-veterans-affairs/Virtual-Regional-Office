@@ -15,8 +15,12 @@ from lib.algorithms.utils import validate_request_body
                             "abatement_date": "2022-04-01"
                         }
                     ],
-                    "medication": ["5-fluorouracil",
-                                   "Irinotecan"],
+                    "medication": [{"text": "5-fluorouracil",
+                                    "code": 4492,
+                                    "date": "2022-04-01"},
+                                   {"text": "Irinotecan",
+                                    "code": 1726319,
+                                    "date": "2022-04-01"}],
                     "procedure": [
                         {
                             "code": "174710004",
@@ -41,8 +45,12 @@ from lib.algorithms.utils import validate_request_body
                             "abatement_date": "2022-04-01"
                         }
                     ],
-                    "medication": [5,
-                                   "Irinotecan"],
+                    "medication": [{"text": 5,
+                                    "code": 4492,
+                                    "date": "2022-04-01"},
+                                   {"text": "Irinotecan",
+                                    "code": 1726319,
+                                    "date": "2022-04-01"}],
                     "procedure": [
                         {
                             "code": 174710004,
@@ -65,11 +73,9 @@ from lib.algorithms.utils import validate_request_body
                             ]
                         }
                     ],
-                    "medication": [
+                    'medication': [
                         {
-                            0: ["must be of string type"]
-                        }
-                    ],
+                            0: [{'text': ['must be of string type']}]}],
                     "procedure": [
                         {
                             0: [
