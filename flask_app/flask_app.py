@@ -9,9 +9,8 @@ def pdf_generator():
     request_json = request.get_json()
     pdf_type = request_json["pdf_type"]
     return_pdf = request_json["return_pdf"]
-    pdf_data = request_json["pdf_data"]
 
-    template = generate_template_file(f"{pdf_type}", pdf_data)
+    template = generate_template_file(f"{pdf_type}", request_json)
     if return_pdf:
       pdf = generate_pdf_from_string(template)
       response = make_response(pdf)

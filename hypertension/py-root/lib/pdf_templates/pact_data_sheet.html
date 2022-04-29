@@ -141,13 +141,24 @@
 					<table class="table table-bordered table-sm">
 						<thead>
 							<tr>
-								<th class="text-center">Conditions and Diseases</th>
+								<th class="text-center" colspan="4">Conditions and Diseases</th>
+							</tr>
+							<tr>
+								<th>Code</th>
+								<th>Description</th>
+								<th>Onset Date</th>
+								<th>Abatement Date</th>
 							</tr>
 						</thead>
 						<tbody>
+							{% for cond in condition %}
 							<tr>
-								<td>{{conditions_and_diseases}}</td>
+								<td>{{cond.code}}</td>
+								<td>{{cond.text}}</td>
+								<td>{{cond.onset_date}}</td>
+								<td>{{cond.abatement_date}}</td>
 							</tr>
+							{% endfor %}
 						</tbody>
 					</table>
 				</div>

@@ -21,5 +21,27 @@
   "immunizations": "Placeholder",
   "candidate": "Placeholder",
   "treatment_note": "Placeholder",
-  "conditions_and_diseases": "Placeholder"
+  "condition": [
+    {
+      "code": "0000",
+      "text": "Placeholder",
+      "onset_date": "00/00/00",
+      "abatement_date": "00/00/00"
+    }
+  ],
+  "procedure": [
+    {
+      "code": "0000",
+      "text": "Placeholder",
+      "performed_date": "00/00/00",
+      "last_update_date": "00/00/00",
+      "status": "Placeholder"
+    }
+  ],
+  "medication": [
+    {
+      "text": "Placeholder",
+      "start_date": "00/00/00"
+    }
+  ]
 }
