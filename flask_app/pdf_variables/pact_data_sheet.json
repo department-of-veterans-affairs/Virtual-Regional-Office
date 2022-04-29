@@ -40,8 +40,9 @@
   ],
   "medication": [
     {
+      "code": "0000",
       "text": "Placeholder",
-      "start_date": "00/00/00"
+      "date": "00/00/00"
     }
   ]
 }

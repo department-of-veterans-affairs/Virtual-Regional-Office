@@ -175,6 +175,7 @@
 							<th class="text-center" colspan="4">Medication</th>
 						</tr>
 						<tr>
+							<th class="col-header">Code</th>
 							<th class="col-header">Description</th>
 							<th class="col-header">Start Date</th>
 						</tr>
@@ -182,8 +183,9 @@
 					<tbody>
 						{% for med in medication %}
 						<tr>
+							<td>{{med.code}}</td>
 							<td>{{med.text}}</td>
-							<td>{{med.start_date}}</td>
+							<td>{{med.ddate}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
