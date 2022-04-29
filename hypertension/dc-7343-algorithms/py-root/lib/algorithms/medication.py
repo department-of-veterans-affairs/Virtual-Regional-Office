@@ -17,8 +17,27 @@ pc_medications = {
     "Lanreotide",
 }
 
+# JB: Different amounts of medicine in RxNORM have different codes so this is not comprehensive yet
+# (example: http://purl.bioontology.org/ontology/RXNORM/7617)
 pc_rx_norm = {
-    1736854, 583214, 1860480, 1736776, 1726319, 4492
+    1736854,
+    583214,
+    1860480,
+    1736776,
+    1726319,
+    4492,
+    12574,
+    310380,
+    51499,
+    32592,
+    56946,
+    194000,
+    72962,
+    51499,
+    357977,
+    68092,
+    141704,
+    7617
 }
 
 
