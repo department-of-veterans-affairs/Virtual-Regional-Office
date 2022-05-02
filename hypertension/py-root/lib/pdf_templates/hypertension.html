@@ -19085,23 +19085,23 @@ window.application = new Application();
 										</div>
 									</div>
 									<div id="Diastolic_100_and_up_10">
-										
+										{% for measurement in diastolic_bp_measurements_over_100 %}
 										<div id="BP_Table_Data_Row_jw" class="BP_Table_Data_Row">
 											<svg class="Frame_jx">
 												<rect id="Frame_jx" rx="0" ry="0" x="0" y="0" width="1539.528" height="74.625">
 												</rect>
 											</svg>
 											<div id="Facility_vd">
-												<span>Placeholder</span>
+												<span>{{ measurement.facility }}</span>
 											</div>
 											<div id="Date_ve">
-												<span>0/0/00</span>
+												<span>{{ measurement.date }}</span>
 											</div>
 											<div id="Diastolic_vf">
-												<span>0</span>
+												<span>{{ measurement.diastolic }}</span>
 											</div>
 											<div id="Systolic_vg">
-												<span>0</span>
+												<span>{{ measurement.systolic }}</span>
 											</div>
 											<div id="Evidence_Source_Badge_j">
 												<svg class="Rectangle_598_j">
@@ -19113,7 +19113,7 @@ window.application = new Application();
 												</div>
 											</div>
 										</div>
-										
+										{% endfor %}
 									</div>
 								</div>
 							</div>
@@ -19411,23 +19411,23 @@ window.application = new Application();
 									</div>
 								</div>
 								<div id="Diastolic_100_and_down_0">
-									
+									{% for measurement in diastolic_bp_measurements_under_100 %}
 									<div id="BP_Table_Data_Row_nk" class="BP_Table_Data_Row">
 										<svg class="Frame_nl">
 											<rect id="Frame_nl" rx="0" ry="0" x="0" y="0" width="1539.528" height="74.625">
 											</rect>
 										</svg>
 										<div id="Facility_vd">
-											<span>Placeholder</span>
+											<span>{{ measurement.facility }}</span>
 										</div>
 										<div id="Date_ve">
-											<span>0/0/00</span>
+											<span>{{ measurement.date }}</span>
 										</div>
 										<div id="Diastolic_vf">
-											<span>0</span>
+											<span>{{ measurement.diastolic }}</span>
 										</div>
 										<div id="Systolic_vg">
-											<span>0</span>
+											<span>{{ measurement.systolic }}</span>
 										</div>
 										<div id="Evidence_Source_Badge_nq">
 											<svg class="Rectangle_598_nr">
@@ -19439,27 +19439,27 @@ window.application = new Application();
 											</div>
 										</div>
 									</div>
-									
+									{% endfor %}
 								</div>
 							</div>
 							<div id="Diastolic_120_and_up_40">
-								
+								{% for measurement in diastolic_bp_measurements_over_120 %}
 								<div id="BP_Table_Data_Row_oc" class="BP_Table_Data_Row">
 									<svg class="Frame_od">
 										<rect id="Frame_od" rx="0" ry="0" x="0" y="0" width="1539.528" height="74.625">
 										</rect>
 									</svg>
 									<div id="Facility_vd">
-										<span>Placeholder</span>
+										<span>{{ measurement.facility }}</span>
 									</div>
 									<div id="Date_ve">
-										<span>0/0/00</span>
+										<span>{{ measurement.date }}</span>
 									</div>
 									<div id="Diastolic_vf">
-										<span>0</span>
+										<span>{{ measurement.diastolic }}</span>
 									</div>
 									<div id="Systolic_vg">
-										<span>0</span>
+										<span>{{ measurement.systolic }}</span>
 									</div>
 									<div id="Evidence_Source_Badge_oi">
 										<svg class="Rectangle_598_oj">
@@ -19471,7 +19471,7 @@ window.application = new Application();
 										</div>
 									</div>
 								</div>
-								
+								{% endfor %}
 							</div>
 						</div>
 					</div>
@@ -19747,23 +19747,23 @@ window.application = new Application();
 							</div>
 						</div>
 						<div id="Systolic_BP_Data_Table_200_and">
-							
+							{% for measurement in systolic_bp_measurements %}
 							<div id="BP_Table_Data_Row_vb" class="BP_Table_Data_Row">
 								<svg class="Frame_vc">
 									<rect id="Frame_vc" rx="0" ry="0" x="0" y="0" width="1524.659" height="72.476">
 									</rect>
 								</svg>
 								<div id="Facility_vd">
-									<span>Placeholder</span>
+									<span>{{ measurement.facility }}</span>
 								</div>
 								<div id="Date_ve">
-									<span>0/0/00</span>
+									<span>{{ measurement.date }}</span>
 								</div>
 								<div id="Diastolic_vf">
-									<span>0</span>
+									<span>{{ measurement.diastolic }}</span>
 								</div>
 								<div id="Systolic_vg">
-									<span>0</span>
+									<span>{{ measurement.systolic }}</span>
 								</div>
 								<div id="Evidence_Source_Badge_vh">
 									<svg class="Rectangle_598_vi">
@@ -19775,7 +19775,7 @@ window.application = new Application();
 									</div>
 								</div>
 							</div>
-							
+							{% endfor %}
 							<div id="BP_Table_Header_vk" class="BP_Table_Header">
 								<svg class="Frame_vl">
 									<rect id="Frame_vl" rx="0" ry="0" x="0" y="0" width="1524.659" height="72.476">
@@ -20997,7 +20997,7 @@ window.application = new Application();
 									<div id="Name_of_medicine" class="Name_of_medicine">
 										<div id="Name_of_medicine_p" class="Name_of_medicine">
 											<div id="Name_of_medicine_q">
-												<span>Placeholder</span>
+												<span>{{medicine_name}}</span>
 											</div>
 										</div>
 									</div>
@@ -21100,16 +21100,16 @@ window.application = new Application();
 				<div id="Group_1344">
 					<div id="Group_1340">
 						<div id="n_19">
-							<span>0</span>
+							<span>{{systolic_pressure_summary_min}}</span>
 						</div>
 						<div id="n_21">
-							<span>0</span>
+							<span>{{systolic_pressure_summary_max}}</span>
 						</div>
 						<div id="n_67">
-							<span>0</span>
+							<span>{{systolic_pressure_summary_avg}}</span>
 						</div>
 						<div id="n_90_-_210">
-							<span>0 - 0</span>
+							<span>{{systolic_pressure_summary_predominant_range[0]}} - {{systolic_pressure_summary_predominant_range[1]}}</span>
 						</div>
 						<div id="Systolic_Blood_Pressure_t">
 							<span>Systolic Blood Pressure</span>
@@ -21123,16 +21123,16 @@ window.application = new Application();
 				<div id="Group_1345">
 					<div id="Group_1339">
 						<div id="n_8_-_120">
-							<span>0 - 0</span>
+							<span>{{diastolic_pressure_summary_predominant_range[0]}} - {{diastolic_pressure_summary_predominant_range[1]}}</span>
 						</div>
 						<div id="n_15">
-							<span>0</span>
+							<span>{{diastolic_pressure_summary_avg}}</span>
 						</div>
 						<div id="n_37">
-							<span>0</span>
+							<span>{{diastolic_pressure_summary_min}}</span>
 						</div>
 						<div id="n_9">
-							<span>0</span>
+							<span>{{diastolic_pressure_summary_max}}</span>
 						</div>
 						<div id="Diastolic_Blood_Pressure_">
 							<span>Diastolic Blood Pressure</span>
@@ -21199,7 +21199,7 @@ window.application = new Application();
 						</div>
 						<div id="Date_of_Birth">
 							<div id="n_3271983">
-								<span>0/0/00</span>
+								<span>{{dob}}</span>
 							</div>
 							<div id="Date_of_Birth_r">
 								<span>Date of Birth</span>
@@ -21207,7 +21207,7 @@ window.application = new Application();
 						</div>
 						<div id="SSN">
 							<div id="n_91-29-1948">
-								<span>000-00-0000</span>
+								<span>{{ssn}}</span>
 							</div>
 							<div id="SSN_u">
 								<span>SSN</span>
@@ -21215,7 +21215,7 @@ window.application = new Application();
 						</div>
 						<div id="Veterans_Name">
 							<div id="John_B_Smyth">
-								<span>test</span>
+								<span>{{name}}</span>
 							</div>
 							<div id="Veterans_Name_x">
 								<span>Veteran’s Name</span>
