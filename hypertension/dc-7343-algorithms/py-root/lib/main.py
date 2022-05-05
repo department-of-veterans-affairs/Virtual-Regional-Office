@@ -16,6 +16,7 @@ def main(event: Dict):
     :rtype: dict
     """
     request_body = event
+    # JB: If running with lambda app, change line 18 to: request_body = json.loads(event["body"])
 
     statusCode = 200
 

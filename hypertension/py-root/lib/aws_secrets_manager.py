@@ -6,12 +6,12 @@ import boto3
 # encode our RSA PEM to make it single line before we upload it to
 # Secrets Manager. See docs/design-notes.md
 def get_lighthouse_rsa_key(aws_secret_arn):  # pragma: no cover
-    sm_client = boto3.client("secretsmanager")
+    sm_client = boto3.client("secretsmanager", region_name="us-east-1")
     base64_encoded_pem = sm_client.get_secret_value(SecretId=aws_secret_arn)[
         "SecretString"
     ]
     result_bytes = base64.b64decode(base64_encoded_pem)
-
+    print(result_bytes.decode())
     return result_bytes.decode()
 
 
