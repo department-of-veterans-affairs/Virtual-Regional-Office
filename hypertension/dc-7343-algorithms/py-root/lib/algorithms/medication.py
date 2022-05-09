@@ -1,4 +1,5 @@
 from datetime import datetime
+import rx_norm
 
 pc_medications = {
     "Gemcitabine",
@@ -15,29 +16,6 @@ pc_medications = {
     "Everolimus",
     "Octreotide",
     "Lanreotide",
-}
-
-# JB: Different amounts of medicine in RxNORM have different codes so this is not comprehensive yet
-# (example: http://purl.bioontology.org/ontology/RXNORM/7617)
-pc_rx_norm = {
-    1736854,
-    583214,
-    1860480,
-    1736776,
-    1726319,
-    4492,
-    12574,
-    310380,
-    51499,
-    32592,
-    56946,
-    194000,
-    72962,
-    51499,
-    357977,
-    68092,
-    141704,
-    7617
 }
 
 
@@ -62,7 +40,7 @@ def medication_match(request_body):
     vet_is_taking_pc_medication_within_six_months = False
     medication_matches = 0
     for medication in veterans_medication_list:
-        if medication["text"].lower() in [x.lower() for x in pc_medications] or medication["code"] in pc_rx_norm:
+        if medication["text"].lower() in [x.lower() for x in pc_medications] or medication["code"] in rx_norm:
             medication_date = medication["date"]
             medication_date_formatted = datetime.strptime(medication_date, "%Y-%m-%d").date()
             if (date_of_claim_date - medication_date_formatted).days <= 180:
