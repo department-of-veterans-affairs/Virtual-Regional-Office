@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "dc-7101-algorithms"
+version = "0.0.1"
+description = ""
+authors = ["Julian Bregstone <julian@amida.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-util = "^1.2.1"
+python-dateutil = "^2.8.2"
+Cerberus = "^1.3.4"
+
+[tool.poetry.dev-dependencies]
+pytest-watch = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

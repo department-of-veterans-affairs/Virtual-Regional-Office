@@ -17,7 +17,7 @@ def validate_request_body(request_body):
             "schema": {
                 "type": "dict",
                 "schema": {
-                    "code": {"type": "integer"},
+                    "code": {"type": "string"},
                     "text": {"type": "string"},
                     "onset_date": {"type": "string"},
                     "abatement_date": {"type": "string"}

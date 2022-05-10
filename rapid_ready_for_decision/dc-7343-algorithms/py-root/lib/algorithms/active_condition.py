@@ -36,20 +36,11 @@ def active_cancer_condition(request_body):
 
     # verify disorder
 
-    active_cancer_result = {
-        "success": True
-    }
-
-    active_pc_cancer = []
-
-    active_cancer_result["active_cancer_present"] = False
+    active_cancer_result = {"success": True, "active_cancer_present": False}
 
     for condition in request_body["condition"]:
         condition_date = datetime.strptime(condition["onset_date"], "%Y-%m-%d").date()
         if int(condition["code"]) in snomed_cancer:
             active_cancer_result["active_cancer_present"] = True
-            active_pc_cancer.append(condition)
-
-    active_cancer_result["active_cancer_matches_count"] = len(active_pc_cancer)
 
     return active_cancer_result
