@@ -27,7 +27,7 @@ Swagger(
 @app.route("/calculate", methods=['POST'])
 def handler():
     """
-    file: dc7343-1.0.2-resolved.yaml
+    file: dc7343-1.0.2-swagger.yaml
 
     """
     return main(request.json)  # pragma: no cover

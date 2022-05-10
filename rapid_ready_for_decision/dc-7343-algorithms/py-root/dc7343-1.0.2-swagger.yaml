@@ -1,19 +1,16 @@
----
-swagger: "2.0"
+swagger: '3.0'
 info:
   description: API for DC7343 logical processing
   version: 1.0.2
   title: DCC7343 algorithms
-host: virtserver.swaggerhub.com
-basePath: /jbregstone/dc7343/1.0.0
-schemes:
-- https
+
 paths:
   /calculate:
     post:
       summary: processes patient data
-      description: Determines if patient has active pancreatic cancer and/or is being treated with procedures/medicines for pancreatic cancer
       operationId: DC7343
+      description:
+        Determines if patient has active pancreatic cancer and/or is being treated with procedures/medicines for pancreatic cancer
       consumes:
       - application/json
       produces:
@@ -22,25 +19,29 @@ paths:
       - in: body
         name: medical_data_fhir
         description: Processed FHIR data
-        required: false
         schema:
           $ref: '#/definitions/MedicalData'
       responses:
-        "200":
-          description: processing successful
-        "400":
+        200:
+          description: processing successful 
+          content:
+            application/json:
+              schema:
+                $ref '#/definitions/response'
+        400:
           description: processing failed
+
 definitions:
   MedicalData:
     type: object
     required:
-    - condition
-    - date_of_claim
     - icn
-    - medication
-    - observation
-    - procedure
     - vasrd
+    - date_of_claim
+    - condition
+    - observation
+    - medication
+    - procedure
     properties:
       icn:
         type: integer
@@ -48,7 +49,7 @@ definitions:
       date_of_claim:
         type: string
         format: date-time
-        example: 2016-10-29T09:12:33.001Z
+        example: '2016-10-29T09:12:33.001Z'
       vasrd:
         type: integer
         example: 7343
@@ -63,49 +64,54 @@ definitions:
   condition:
     required:
     - code
+    - status
     - onset_date
     properties:
       code:
         type: string
-        example: "363419009"
+        example: 363419009
+      status: 
+        type: string
+        example: "active"
       text:
         type: string
-        example: Malignant tumor of head of pancreas (disorder)
+        example: "Malignant tumor of head of pancreas (disorder)"
       onset_date:
         format: date-time
-        example: 2016-08-29T09:12:33.001Z
+        example: '2016-08-29T09:12:33.001Z'
       abatement_date:
         format: date-time
-        example: 2016-09-29T09:12:33.001Z
+        example: '2016-09-29T09:12:33.001Z'
   observation:
     properties:
       code:
         type: string
-        example: 8462-4
-      text:
+        example: '8462-4'
+      text: 
         type: string
-        example: Diastolic Blood Pressure
+        example: 'Diastolic Blood Pressure'
       value:
         type: number
         example: 74.06721091966372
       unit:
         type: string
-        example: mm[Hg]
+        example: "mm[Hg]"
   medication:
     required:
-    - authoredOn
-    - code
     - text
+    - status
+    - code
+    - authoredOn
     properties:
       text:
         type: string
-        example: 5-fluorouracil
+        example: "5-fluorouracil"
       code:
         type: string
-        example: "4492"
+        example: 4492
       authoredOn:
         format: date-time
-        example: 2013-05-21T23:19:33Z
+        example: "2013-05-21T23:19:33Z"
   procedure:
     required:
     - code
@@ -113,16 +119,29 @@ definitions:
     properties:
       code:
         type: string
-        example: "174710004"
+        example: 174710004
       text:
         type: string
-        example: (Surgery - distal subtotal pancreatectomy)
+        example: "(Surgery - distal subtotal pancreatectomy)"
       performed_date:
         format: date-time
-        example: 2013-08-17T23:19:33Z
-      last_update_date:
+        example: "2013-08-17T23:19:33Z"
+      last_update_date: 
         format: date-time
-        example: 2013-08-17T23:19:33Z
-      status:
+        example: "2013-08-17T23:19:33Z"
+      status: 
         type: string
-        example: completed
+        example: "completed"
+  response:
+    properties:
+      rrd_eligible:
+        type: boolean
+        example: True
+      evidence:
+        type: object
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /jbregstone/dc7343/1.0.0
+schemes:
+ - https

@@ -34,8 +34,6 @@ def active_cancer_condition(request_body):
     :rtype: dict
     """
 
-    # verify disorder
-
     active_cancer_result = {"success": True, "active_cancer_present": False}
 
     for condition in request_body["condition"]:
