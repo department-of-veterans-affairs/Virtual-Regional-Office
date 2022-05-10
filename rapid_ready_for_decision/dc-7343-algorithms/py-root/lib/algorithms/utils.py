@@ -31,7 +31,7 @@ def validate_request_body(request_body):
                 "schema": {
                     "date": {"type": "string"},
                     "text": {"type": "string"},
-                    "code": {"type": "integer"}
+                    "code": {"type": "string"}
                     }
                 }
             },

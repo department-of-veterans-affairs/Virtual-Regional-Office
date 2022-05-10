@@ -38,7 +38,7 @@ def active_cancer_condition(request_body):
 
     for condition in request_body["condition"]:
         condition_date = datetime.strptime(condition["onset_date"], "%Y-%m-%d").date()
-        if int(condition["code"]) in snomed_cancer:
+        if int(condition["code"]) in [str(x) for x in snomed_cancer]:
             active_cancer_result["active_cancer_present"] = True
 
     return active_cancer_result

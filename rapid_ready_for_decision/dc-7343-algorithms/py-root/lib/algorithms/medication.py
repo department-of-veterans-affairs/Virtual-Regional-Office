@@ -342,12 +342,12 @@ def medication_match(request_body):
     vet_is_taking_pc_medication_within_six_months = False
     medication_matches = 0
     for medication in veterans_medication_list:
-        if medication["text"].lower() in [x.lower() for x in pc_medications] or medication["code"] in pc_medication_rx:
+        if medication["text"].lower() in [x.lower() for x in pc_medications] or \
+                medication["code"] in [str(x) for x in pc_medication_rx]:
             medication_date = medication["date"]
             medication_date_formatted = datetime.strptime(medication_date, "%Y-%m-%d").date()
             if (date_of_claim_date - medication_date_formatted).days <= 180:
                 vet_is_taking_pc_medication_within_six_months = True
-                medication_matches += 1
             else:
                 continue
 
