@@ -18,6 +18,7 @@ def validate_request_body(request_body):
                 "type": "dict",
                 "schema": {
                     "code": {"type": "string"},
+                    "status": {"type": "string"},
                     "text": {"type": "string"},
                     "onset_date": {"type": "string"},
                     "abatement_date": {"type": "string"}
@@ -29,7 +30,9 @@ def validate_request_body(request_body):
             "schema": {
                 "type": "dict",
                 "schema": {
+                    "authored_on": {"type": "string"},
                     "date": {"type": "string"},
+                    "status": {"type": "string"},
                     "text": {"type": "string"},
                     "code": {"type": "string"}
                     }
@@ -41,9 +44,9 @@ def validate_request_body(request_body):
                 "type": "dict",
                 "schema": {
                     "code": {"type": "string"},
+                    "code_system": {"type": "string"},
                     "text": {"type": "string"},
                     "performed_date": {"type": "string"},
-                    "last_update_date": {"type": "string"},
                     "status": {"type": "string"},
                 }
             }

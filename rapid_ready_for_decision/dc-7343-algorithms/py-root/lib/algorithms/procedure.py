@@ -55,24 +55,20 @@ def procedure_match(request_body):
     :rtype: dict
     """
     procedure_match_calculation = {
-        "success": True
+        "success": True,
+        "procedure_within_six_months": False
     }
-
-    veterans_procedure_list = request_body["procedure"]
 
     date_of_claim = request_body["date_of_claim"]
     date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
-    procedure_within_six_months = False
 
-    for procedure in veterans_procedure_list:
+    for procedure in request_body["procedure"]:
         if str(procedure["code"]) in pc_procedure:
             procedure_date = procedure["performed_date"]
             procedure_date_formatted = datetime.strptime(procedure_date, "%Y-%m-%d").date()
             if (date_of_claim_date - procedure_date_formatted).days <= 180:
-                procedure_within_six_months = True
+                procedure_match_calculation["procedure_within_six_months"] = True
             else:
                 continue
-
-    procedure_match_calculation["procedure_within_six_months"] = procedure_within_six_months
 
     return procedure_match_calculation

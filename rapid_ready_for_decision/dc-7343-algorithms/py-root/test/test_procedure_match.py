@@ -10,6 +10,7 @@ from lib.algorithms.procedure import procedure_match
                     "condition": [
                         {
                             "code": 363419009,
+                            "status": "active",
                             "text": "Malignant tumor of head of pancreas (disorder)",
                             "onset_date": "2021-11-01",
                             "abatement_date": "2022-04-01"

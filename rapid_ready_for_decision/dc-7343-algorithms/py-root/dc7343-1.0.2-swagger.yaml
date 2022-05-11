@@ -20,47 +20,53 @@ paths:
         name: medical_data_fhir
         description: Processed FHIR data
         schema:
-          $ref: '#/definitions/MedicalData'
+          MedicalData:
+            type: object
+            required:
+              - icn
+              - vasrd
+              - date_of_claim
+              - condition
+              - observation
+              - medication
+              - procedure
+            properties:
+              icn:
+                type: integer
+                example: 25
+              date_of_claim:
+                type: string
+                format: date-time
+                example: '2016-10-29T09:12:33.001Z'
+              vasrd:
+                type: integer
+                example: 7343
+              condition:
+                $ref: '#/definitions/condition'
+              observation:
+                $ref: '#/definitions/observation'
+              medication:
+                $ref: '#/definitions/medication'
+              procedure:
+                $ref: '#/definitions/procedure'
       responses:
         200:
           description: processing successful 
           content:
             application/json:
               schema:
-                $ref '#/definitions/response'
+                response:
+                  properties:
+                    rrd_eligible:
+                      type: boolean
+                      example: True
+                    evidence:
+                      type: object
         400:
           description: processing failed
 
 definitions:
-  MedicalData:
-    type: object
-    required:
-    - icn
-    - vasrd
-    - date_of_claim
-    - condition
-    - observation
-    - medication
-    - procedure
-    properties:
-      icn:
-        type: integer
-        example: 25
-      date_of_claim:
-        type: string
-        format: date-time
-        example: '2016-10-29T09:12:33.001Z'
-      vasrd:
-        type: integer
-        example: 7343
-      condition:
-        $ref: '#/definitions/condition'
-      observation:
-        $ref: '#/definitions/observation'
-      medication:
-        $ref: '#/definitions/medication'
-      procedure:
-        $ref: '#/definitions/procedure'
+
   condition:
     required:
     - code
@@ -132,13 +138,7 @@ definitions:
       status: 
         type: string
         example: "completed"
-  response:
-    properties:
-      rrd_eligible:
-        type: boolean
-        example: True
-      evidence:
-        type: object
+
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
