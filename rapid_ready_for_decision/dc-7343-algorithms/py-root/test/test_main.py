@@ -2,6 +2,7 @@ import json
 import pytest
 from lib.main import main
 
+
 @pytest.mark.parametrize(
     "request_body, response",
     [
@@ -12,7 +13,7 @@ from lib.main import main
                         {
                             "condition": [
                                 {
-                                    "code": 363419009,
+                                    "code": "363419009",
                                     "status": "active",
                                     "text": "Malignant tumor of head of pancreas (disorder)",
                                     "onset_date": "2021-11-01",
@@ -20,17 +21,19 @@ from lib.main import main
                                 },
                             ],
                             "medication": [{"text": "5-fluorouracil",
-                                            "code": 4492,
+                                            "code": "4492",
+                                            "status": "active",
                                             "date": "2022-04-01"},
                                            {"text": "Irinotecan",
-                                            "code": 1726319,
+                                            "code": "1726319",
+                                            "status": "active",
                                             "date": "2022-04-01"}],
                             "procedure": [
                                 {
                                     "code": "174710004",
+                                    "code_system": "http://snomed.info/sct",
                                     "text": "(Surgery - distal subtotal pancreatectomy)",
                                     "performed_date": "2021-12-01",
-                                    "last_update_date": "2021-12-15",
                                     "status": "completed"
                                 }
                             ],
@@ -44,20 +47,23 @@ from lib.main import main
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Methods": "OPTIONS,POST"
                     },
-                    "body": json.dumps({
-                        "active_cancer": {
-                            "success": True,
-                            "active_cancer_present": True,
-                            "active_cancer_matches_count": 1
+                    "body": json.dumps(
+                        {'evidence': {
+                            'active_cancer_result': {
+                                'active_cancer_present': True,
+                                'success': True
+                            },
+                            'medication_match_result': {
+                                'continuous_medication_required': True,
+                                'success': True
+                            },
+                            'procedures_in_last_six_months': {
+                                'procedure_within_six_months': True,
+                                'success': True
+                            }
                         },
-                        "requires_continuous_medication": {
-                            "continuous_medication_required": True,
-                            "continuous_medication_matches_count": 2,
-                            "success": True
-                        },
-                        'procedures_in_last_six_months': {'pc_procedure_within_six_months': True,
-                                                          'success': True},
-                    })
+                            'rrd_eligible': True}
+                    )
                 }
         ),
         (
@@ -66,7 +72,8 @@ from lib.main import main
 
                         "condition": [
                             {
-                                "code": 363419009,
+                                "code": "363419009",
+                                "status": "active",
                                 "text": "Malignant tumor of head of pancreas (disorder)",
                                 "onset_date": "2021-11-01",
                                 "abatement_date": "2022-04-01"
@@ -75,9 +82,9 @@ from lib.main import main
                         "procedure": [
                             {
                                 "code": "174710004",
+                                "code_system": "http://snomed.info/sct",
                                 "text": "(Surgery - distal subtotal pancreatectomy)",
                                 "performed_date": "2021-12-01",
-                                "last_update_date": "2021-12-15",
                                 "status": "completed"
                             }
                         ],
@@ -92,20 +99,25 @@ from lib.main import main
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Methods": "OPTIONS,POST"
                     },
-                    "body": json.dumps({
-                        "active_cancer": {
-                            "success": True,
-                            "active_cancer_present": True,
-                            "active_cancer_matches_count": 1
-                        },
-                        "requires_continuous_medication": {
-                            "continuous_medication_required": False,
-                            "continuous_medication_matches_count": 0,
-                            "success": True
-                        },
-                        'procedures_in_last_six_months': {'pc_procedure_within_six_months': True,
-                                                          'success': True},
-                    })
+                    "body": json.dumps(
+                        {
+                            'evidence': {
+                                'active_cancer_result': {
+                                    'active_cancer_present': True,
+                                    'success': True
+                                },
+                                'medication_match_result': {
+                                    'continuous_medication_required': False,
+                                    'success': True
+                                },
+                                'procedures_in_last_six_months': {
+                                    'procedure_within_six_months': True,
+                                    'success': True
+                                }
+                            },
+                            'rrd_eligible': True
+                        }
+                    )
                 }
         ),
         # Condition and Medication algorithms fail
@@ -125,20 +137,25 @@ from lib.main import main
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Methods": "OPTIONS,POST"
                     },
-                    "body": json.dumps({
-                        "active_cancer": {
-                            "success": True,
-                            "active_cancer_present": False,
-                            "active_cancer_matches_count": 0
-                        },
-                        "requires_continuous_medication": {
-                            "continuous_medication_required": False,
-                            "continuous_medication_matches_count": 0,
-                            "success": True
-                        },
-                        'procedures_in_last_six_months': {'pc_procedure_within_six_months': False,
-                                                          'success': True},
-                    })
+                    "body": json.dumps(
+                        {
+                            'evidence': {
+                                'active_cancer_result': {
+                                    'active_cancer_present': False,
+                                    'success': True
+                                },
+                                'medication_match_result': {
+                                    'continuous_medication_required': False,
+                                    'success': True
+                                },
+                                'procedures_in_last_six_months': {
+                                    'procedure_within_six_months': False,
+                                    'success': True
+                                }
+                            },
+                            'rrd_eligible': False
+                        }
+                    )
                 }
         ),
     ],

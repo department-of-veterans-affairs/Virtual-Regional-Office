@@ -29,6 +29,7 @@ from lib.algorithms.utils import validate_request_body
                             "code": "174710004",
                             "text": "(Surgery - distal subtotal pancreatectomy)",
                             "performed_date": "2021-12-01",
+                            "code_system":  "http://snomed.info/sct",
                             "status": "completed"
                         }
                     ],
@@ -61,6 +62,7 @@ from lib.algorithms.utils import validate_request_body
                             "code": 174710004,
                             "text": "(Surgery - distal subtotal pancreatectomy)",
                             "performed_date": "2021-12-01",
+                            "code_system": "http://snomed.info/sct",
                             "status": "completed"
                         }
                     ],

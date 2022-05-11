@@ -1,7 +1,7 @@
 import json
 from typing import Dict
 from .algorithms.utils import validate_request_body
-from .algorithms.active_condition import active_cancer_condition
+from .algorithms.condition import active_cancer_condition
 from .algorithms.medication import medication_match
 from .algorithms.procedure import procedure_match
 
@@ -32,7 +32,7 @@ def main(event: Dict):
 
         if active_cancer_result["active_cancer_present"] or \
                 medication_match_result["continuous_medication_required"] or \
-                medication_match_result["procedure_within_six_months"]:
+                procedure_match_result["procedure_within_six_months"]:
             rrd_eligible = True
 
     else:
