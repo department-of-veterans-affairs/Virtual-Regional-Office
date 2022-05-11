@@ -340,16 +340,16 @@ def medication_match(request_body):
     date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
 
     for medication in request_body["medication"]:
+
         if medication["text"].lower() in [x.lower() for x in pc_medications] or \
                 medication["code"] in [str(x) for x in pc_medication_rx]:
-            medication_date = medication["date"]
-            medication_date_formatted = datetime.strptime(medication_date, "%Y-%m-%d").date()
-            if medication["status"] == "active":
-                medication_match_calculation["continuous_medication_required"] = True
-            elif (date_of_claim_date - medication_date_formatted).days <= 180:
-                medication_match_calculation["continuous_medication_required"] = True
+            if medication["status"].lower() != "active":
+                medication_date = medication["date"]
+                medication_date_formatted = datetime.strptime(medication_date, "%Y-%m-%d").date()
+                if (date_of_claim_date - medication_date_formatted).days <= 180:
+                    medication_match_calculation["continuous_medication_required"] = True
             else:
-                continue
+                medication_match_calculation["continuous_medication_required"] = True
 
     return medication_match_calculation
 

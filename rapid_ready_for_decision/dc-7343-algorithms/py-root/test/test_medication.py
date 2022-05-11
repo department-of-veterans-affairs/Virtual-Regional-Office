@@ -9,7 +9,7 @@ from lib.algorithms.medication import medication_match
                 {
                     "condition": [
                         {
-                            "code": 363419009,
+                            "code": "363419009",
                             "status": "active",
                             "text": "Malignant tumor of head of pancreas (disorder)",
                             "onset_date": "2021-11-01",
@@ -17,28 +17,64 @@ from lib.algorithms.medication import medication_match
                         },
                     ],
                     "medication": [{"text": "5-fluorouracil",
-                                    "code": 4492,
-                                    "date": "2022-04-01"},
+                                    "code": "4492",
+                                    "date": "2022-04-01",
+                                    "status": "completed"},
                                    {"text": "Irinotecan",
-                                    "code": 1726319,
-                                    "date": "2022-04-01"}
+                                    "code": "1726319",
+                                    "date": "2022-04-01",
+                                    "status": "completed"}
                                    ],
                     "procedure": [
                         {
-                            "code": 174710004,
+                            "code": "174710004",
                             "text": "(Surgery - distal subtotal pancreatectomy)",
                             "performed_date": "2021-12-01",
                             "last_update_date": "2021-12-15",
                             "status": "completed"
                         }
                     ],
-                    "date_of_claim": "2021-11-09",
+                    "date_of_claim": "2022-11-09",
                 },
-                {"continuous_medication_required": True,
-                 "continuous_medication_matches_count": 2,
+                {"continuous_medication_required": False,
                  "success": True},
                 {}
         ),
+        (
+                {
+                    "condition": [
+                        {
+                            "code": "363419009",
+                            "status": "active",
+                            "text": "Malignant tumor of head of pancreas (disorder)",
+                            "onset_date": "2021-11-01",
+                            "abatement_date": "2022-04-01"
+                        },
+                    ],
+                    "medication": [{"text": "5-fluorouracil",
+                                    "code": "4492",
+                                    "date": "2022-04-01",
+                                    "status": "active"},
+                                   {"text": "Irinotecan",
+                                    "code": "1726319",
+                                    "date": "2022-04-01",
+                                    "status": "active"}
+                                   ],
+                    "procedure": [
+                        {
+                            "code": "174710004",
+                            "text": "(Surgery - distal subtotal pancreatectomy)",
+                            "performed_date": "2021-12-01",
+                            "last_update_date": "2021-12-15",
+                            "status": "completed"
+                        }
+                    ],
+                    "date_of_claim": "2022-01-09",
+                },
+                {"continuous_medication_required": True,
+                 "success": True},
+                {}
+        )
     ])
 def test_medication(request_body, medication_match_result, errors):
 
