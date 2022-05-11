@@ -1,6 +1,6 @@
 from datetime import datetime
 
-pc_procedure = {
+pc_procedure_cpt = {
     "1007926",
     "48153",
     "48154",
@@ -44,6 +44,72 @@ pc_procedure = {
     "77338",
 }
 
+pc_procedure_snomed = {
+    116031009,
+    401004,
+    174710004,
+    235468001,
+    235469009,
+    235470005,
+    265461002,
+    60194009,
+    91516004,
+    33479006,
+    9524002,
+    287846000,
+    174697009,
+    69036001,
+    76077004,
+    10611004,
+    1156529004,
+    1156528007,
+    33356009,
+    80347004,
+    312248006,
+    33195004,
+    50632006,
+    1156525005,
+    77613002,
+    228676000,
+    45643008,
+    1156506007,
+    1156526006,
+    1162782007,
+    169336005,
+    228672003,
+    228667007,
+    1204242009,
+    38104006,
+    228671005,
+    228666003,
+    24689001,
+    74023000,
+    228675001,
+    395096001,
+    446504008,
+    448461009,
+    115959002,
+    441799006,
+    11331000224100,
+    1156530009,
+    1156524009,
+    169314007
+}
+
+
+def match_codes(procedure):
+    match = False
+
+    if procedure["code_system"] == "http://snomed.info/sct":
+        if str(procedure["code"]) in [str(x) for x in pc_procedure_snomed]:
+            match = True
+
+    elif procedure["code_system"] == "http://www.ama-assn.org/go/cpt":
+        if str(procedure["code"]) in pc_procedure_cpt:
+            match = True
+
+    return match
+
 
 def procedure_match(request_body):
     """
@@ -60,15 +126,17 @@ def procedure_match(request_body):
     }
 
     date_of_claim = request_body["date_of_claim"]
-    date_of_claim_date = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
+    date_of_claim_datetime = datetime.strptime(date_of_claim, "%Y-%m-%d").date()
 
     for procedure in request_body["procedure"]:
-        if str(procedure["code"]) in pc_procedure:
+        match = match_codes(procedure)
+        status = procedure["status"].lower()
+        if match and status == "active":
+            procedure_match_calculation["procedure_within_six_months"] = True
+        elif match and status != "active":
             procedure_date = procedure["performed_date"]
             procedure_date_formatted = datetime.strptime(procedure_date, "%Y-%m-%d").date()
-            if (date_of_claim_date - procedure_date_formatted).days <= 180:
+            if (date_of_claim_datetime - procedure_date_formatted).days <= 180:
                 procedure_match_calculation["procedure_within_six_months"] = True
-            else:
-                continue
 
     return procedure_match_calculation
