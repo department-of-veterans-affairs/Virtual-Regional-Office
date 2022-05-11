@@ -18,11 +18,11 @@ from lib.algorithms.medication import medication_match
                     ],
                     "medication": [{"text": "5-fluorouracil",
                                     "code": "4492",
-                                    "date": "2022-04-01",
+                                    "authored_on": "2022-04-01",
                                     "status": "completed"},
                                    {"text": "Irinotecan",
                                     "code": "1726319",
-                                    "date": "2022-04-01",
+                                    "authored_on": "2022-04-01",
                                     "status": "completed"}
                                    ],
                     "procedure": [
@@ -53,11 +53,11 @@ from lib.algorithms.medication import medication_match
                     ],
                     "medication": [{"text": "5-fluorouracil",
                                     "code": "4492",
-                                    "date": "2022-04-01",
+                                    "authored_on": "2022-04-01",
                                     "status": "active"},
                                    {"text": "Irinotecan",
                                     "code": "1726319",
-                                    "date": "2022-04-01",
+                                    "authored_on": "2022-04-01",
                                     "status": "active"}
                                    ],
                     "procedure": [

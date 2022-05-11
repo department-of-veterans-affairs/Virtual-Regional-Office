@@ -19,11 +19,11 @@ from lib.algorithms.utils import validate_request_body
                     "medication": [{"text": "5-fluorouracil",
                                     "status": "active",
                                     "code": "4492",
-                                    "date": "2022-04-01"},
+                                    "authored_on": "2022-04-01"},
                                    {"text": "Irinotecan",
                                     "status": "active",
                                     "code": "1726319",
-                                    "date": "2022-04-01"}],
+                                    "authored_on": "2022-04-01"}],
                     "procedure": [
                         {
                             "code": "174710004",
@@ -52,11 +52,11 @@ from lib.algorithms.utils import validate_request_body
                     "medication": [{"text": 5,
                                     "code": "4492",
                                     "status": "active",
-                                    "date": "2022-04-01"},
+                                    "authored_on": "2022-04-01"},
                                    {"text": "Irinotecan",
                                     "code": "1726319",
                                     "status": "active",
-                                    "date": "2022-04-01"}],
+                                    "authored_on": "2022-04-01"}],
                     "procedure": [
                         {
                             "code": 174710004,

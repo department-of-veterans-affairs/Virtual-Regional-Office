@@ -18,11 +18,11 @@ from lib.algorithms.condition import active_cancer_condition
                     ],
                     "medication": [{"text": "5-fluorouracil",
                                     "code": "4492",
-                                    "date": "2022-04-01",
+                                    "authored_on": "2022-04-01",
                                     "status": "active"},
                                    {"text": "Irinotecan",
                                     "code": "1726319",
-                                    "date": "2022-04-01",
+                                    "authored_on": "2022-04-01",
                                     "status": "active"}],
                     "procedure": [
                         {

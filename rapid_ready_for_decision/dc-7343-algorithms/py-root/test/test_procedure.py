@@ -19,11 +19,11 @@ from lib.algorithms.procedure import procedure_match
                     "medication": [{"text": "5-fluorouracil",
                                     "code": "4492",
                                     "status": "stopped",
-                                    "date": "2022-04-01"},
+                                    "authored_on": "2022-04-01"},
                                    {"text": "Irinotecan",
                                     "code": "1726319",
                                     "status": "stopped",
-                                    "date": "2022-04-01"}],
+                                    "authored_on": "2022-04-01"}],
                     "procedure": [
                         {
                             "code": "174710004",
@@ -53,11 +53,11 @@ from lib.algorithms.procedure import procedure_match
              "medication": [{"text": "5-fluorouracil",
                              "code": "4492",
                              "status": "active",
-                             "date": "2022-04-01"},
+                             "authored_on": "2022-04-01"},
                             {"text": "Irinotecan",
                              "code": "1726319",
                              "status": "active",
-                             "date": "2022-04-01"}],
+                             "authored_on": "2022-04-01"}],
              "procedure": [
                  {
                      "code": "174710004",

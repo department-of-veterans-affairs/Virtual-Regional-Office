@@ -31,7 +31,6 @@ def validate_request_body(request_body):
                 "type": "dict",
                 "schema": {
                     "authored_on": {"type": "string"},
-                    "date": {"type": "string"},
                     "status": {"type": "string"},
                     "text": {"type": "string"},
                     "code": {"type": "string"}

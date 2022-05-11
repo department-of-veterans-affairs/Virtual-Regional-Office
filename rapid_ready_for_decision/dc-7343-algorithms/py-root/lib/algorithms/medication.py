@@ -344,7 +344,7 @@ def medication_match(request_body):
         if medication["text"].lower() in [x.lower() for x in pc_medications] or \
                 medication["code"] in [str(x) for x in pc_medication_rx]:
             if medication["status"].lower() != "active":
-                medication_date = medication["date"]
+                medication_date = medication["authored_on"]
                 medication_date_formatted = datetime.strptime(medication_date, "%Y-%m-%d").date()
                 if (date_of_claim_date - medication_date_formatted).days <= 180:
                     medication_match_calculation["continuous_medication_required"] = True
