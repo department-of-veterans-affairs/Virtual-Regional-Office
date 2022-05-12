@@ -1,6 +1,6 @@
 from typing import Dict
 from lib.lighthouse import authenticate_to_lighthouse, fetch_observation_data
-from lib.pdf_generator import generate_pdf_from_string
+from lib.pdf_generator import generate_template_file, generate_pdf_from_string
 
 
 def main(config: Dict, event):
@@ -16,7 +16,12 @@ def main(config: Dict, event):
 
     assert "html" in event
 
-    pdf = generate_pdf_from_string(event.get("html"))
+    pdf_data = {"test": "test"}
+
+    template = generate_template_file("hypertension", pdf_data)
+
+    # pdf = generate_pdf_from_string(event.get("html"))
+    pdf = generate_pdf_from_string(template)
 
     # TODO: WARNING!! Don't print sensitive data -
     # remove this when we use real data
