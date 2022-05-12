@@ -18,13 +18,8 @@ def load_config(
     if key_loc:
         secret = load_secret(key_loc)
     else:
-        secret = get_lighthouse_rsa_key(
+        secret, client_id = get_lighthouse_rsa_key(
             os.environ["LighthousePrivateRsaKeySecretArn"]
-        )
-
-    if not client_id:
-        client_id = get_secret_from_secrets_manager_by_name(
-            os.environ["VroLighthouseOAuthClientIdArn"]
         )
 
     return {

@@ -1,5 +1,6 @@
 import base64
 import boto3
+import ast
 
 
 # AWS CLI can't (easily) take params with newlines or spaces. Thus, we base64
@@ -10,9 +11,11 @@ def get_lighthouse_rsa_key(aws_secret_arn):  # pragma: no cover
     base64_encoded_pem = sm_client.get_secret_value(SecretId=aws_secret_arn)[
         "SecretString"
     ]
-    result_bytes = base64.b64decode(base64_encoded_pem)
-    print(result_bytes.decode())
-    return result_bytes.decode()
+    base64_encoded_pem = ast.literal_eval(base64_encoded_pem)
+    print(type(base64_encoded_pem))
+    result_bytes = base64.b64decode(base64_encoded_pem["VroLhPrivateRsaKey"])
+
+    return result_bytes.decode(), base64_encoded_pem["VroLighthouseOAuthClientId"]
 
 
 def get_secret_from_secrets_manager_by_name(

@@ -22,7 +22,7 @@ This script expects the following arguments, in order:
 def cli_main():
     cli_options = get_cli_args()
     config = load_config(
-        cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"], os.environ["LighthouseOAuthClientId"]
+        cli_options.icn
     )
 
     icn = config["lighthouse"]["icn"]
