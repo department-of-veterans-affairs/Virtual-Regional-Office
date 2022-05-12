@@ -1,16 +1,12 @@
 import os
 import argparse
 
-from typing import Union
-
 from dotenv import load_dotenv
 
 from lib.utils import load_config
-from lib.lighthouse import authenticate_to_lighthouse, fetch_observation_data
+from lib.lighthouse import authenticate_to_lighthouse, fetch_lh_data
 
 load_dotenv("../.env")
-
-Json = Union[dict, list]
 
 """
 Usage example:
@@ -26,10 +22,10 @@ This script expects the following arguments, in order:
 """
 
 
-def cli_main() -> None:
+def cli_main():
     cli_options = get_cli_args()
     config = load_config(
-        cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"]
+        cli_options.icn, os.environ["LighthousePrivateRsaKeyFilePath"], os.environ["LighthouseOAuthClientId"]
     )
 
     icn = config["lighthouse"]["icn"]
@@ -38,18 +34,16 @@ def cli_main() -> None:
         config["lighthouse"]["auth"], icn
     )
 
-    observation_response = fetch_observation_data(
-        config["lighthouse"]["vet_health_api_observation"], icn, access_token
-    )
+    observation_response = fetch_lh_data(config["lighthouse"]["vet_health_api_observation"], icn, access_token)
 
     handle_api_response(observation_response)
 
 
-def get_cli_args() -> argparse.Namespace:
+def get_cli_args():
     return setup_cli_parser().parse_args()
 
 
-def setup_cli_parser() -> argparse.ArgumentParser:
+def setup_cli_parser():
     # Configures argument parsing. See above for expected arguments.
     parser = argparse.ArgumentParser()
     args = ["icn"]
@@ -60,7 +54,7 @@ def setup_cli_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def handle_api_response(api_response: Json) -> None:
+def handle_api_response(api_response):
     print(api_response)
 
 

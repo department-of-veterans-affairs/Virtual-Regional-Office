@@ -9,7 +9,7 @@ import jwt
 Json = Union[dict, list]
 
 
-def build_token_params(data: dict, icn: str) -> dict:
+def build_token_params(data, icn):
     # Build the JWT and the params for posting to the token provider endpoint.
     payload = build_jwt_payload(data["jwt_aud_url"], data["client_id"])
     assertion = build_jwt(payload, data["secret"])
@@ -23,7 +23,7 @@ def build_token_params(data: dict, icn: str) -> dict:
     }
 
 
-def build_jwt_payload(audience: str, client_id: str) -> dict:
+def build_jwt_payload(audience, client_id):
     timestamp = int(datetime.datetime.now().timestamp())
 
     return {
@@ -36,19 +36,20 @@ def build_jwt_payload(audience: str, client_id: str) -> dict:
     }
 
 
-def build_jwt(payload: dict, secret: str) -> str:
+def build_jwt(payload, secret):
     return jwt.encode(payload, secret, algorithm="RS256")
 
 
-def build_api_params(params: dict, icn: str) -> dict:
+def build_api_params(params: dict, icn: str):
     return {
         "category": params["fhir_category"],
-        "code": params["fhir_loinc_code"],
+        #"code": params["fhir_code"],
+        #"clinical-status": params["fhir_clinical_status"],
         "patient": icn,
     }
 
 
-def authenticate_to_lighthouse(lh_auth_config: dict, icn: str) -> str:
+def authenticate_to_lighthouse(lh_auth_config, icn):
     token_params = build_token_params(lh_auth_config, icn)
 
     access_token = http_post_for_access_token(
@@ -65,22 +66,22 @@ def http_post_for_access_token(url: str, params: dict) -> str:
     return assertion_response.json()["access_token"]
 
 
-def fetch_observation_data(
-    lh_observation_config: dict, icn: str, access_token: str
-) -> str:
-    fhir_observation_params = build_api_params(lh_observation_config, icn)
+def fetch_lh_data(
+        lh_config, icn, access_token
+):
+    fhir_params = build_api_params(lh_config, icn)
     headers = {"Authorization": f"Bearer {access_token}"}
 
-    observation_response = http_get_api_request(
-        lh_observation_config["fhir_observation_endpoint"],
-        fhir_observation_params,
+    response = http_get_api_request(
+        lh_config["fhir_endpoint"],
+        fhir_params,
         headers,
     )
 
-    return observation_response
+    return response
 
 
-def http_get_api_request(url: str, params: dict, headers: dict) -> Json:
+def http_get_api_request(url, params, headers):
     api_response = requests.get(url, params=params, headers=headers)
     assert api_response.status_code == 200
 
