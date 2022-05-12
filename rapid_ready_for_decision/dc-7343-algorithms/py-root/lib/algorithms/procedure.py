@@ -99,13 +99,12 @@ pc_procedure_snomed = {
 
 def match_codes(procedure):
     match = False
+    code = str(procedure["code"])
+    if code in [str(x) for x in pc_procedure_snomed]:  # assume snomed code system for now
+        match = True
 
-    if procedure["code_system"] == "http://snomed.info/sct":
-        if str(procedure["code"]) in [str(x) for x in pc_procedure_snomed]:
-            match = True
-
-    elif procedure["code_system"] == "http://www.ama-assn.org/go/cpt":
-        if str(procedure["code"]) in pc_procedure_cpt:
+    if procedure["code_system"]:
+        if procedure["code_system"] == "http://www.ama-assn.org/go/cpt" and code in pc_procedure_cpt:
             match = True
 
     return match

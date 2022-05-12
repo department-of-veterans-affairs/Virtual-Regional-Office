@@ -17,11 +17,24 @@ def validate_request_body(request_body):
             "schema": {
                 "type": "dict",
                 "schema": {
-                    "code": {"type": "string"},
-                    "status": {"type": "string"},
-                    "text": {"type": "string"},
-                    "onset_date": {"type": "string"},
-                    "abatement_date": {"type": "string"}
+                    "code": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "status": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "onset_date": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "abatement_date": {
+                        "type": "string"
+                    }
                     }
                 }
             },
@@ -30,10 +43,21 @@ def validate_request_body(request_body):
             "schema": {
                 "type": "dict",
                 "schema": {
-                    "authored_on": {"type": "string"},
-                    "status": {"type": "string"},
-                    "text": {"type": "string"},
-                    "code": {"type": "string"}
+                    "authored_on": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "text": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "code": {
+                        "type": "string",
+                        "required": True
+                    }
                     }
                 }
             },
@@ -42,11 +66,24 @@ def validate_request_body(request_body):
             "schema": {
                 "type": "dict",
                 "schema": {
-                    "code": {"type": "string"},
-                    "code_system": {"type": "string"},
-                    "text": {"type": "string"},
-                    "performed_date": {"type": "string"},
-                    "status": {"type": "string"},
+                    "code": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "code_system": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "performed_date": {
+                        "type": "string",
+                        "required": True
+                    },
+                    "status": {
+                        "type": "string",
+                        "required": True
+                    },
                 }
             }
         }

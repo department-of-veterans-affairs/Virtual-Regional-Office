@@ -41,11 +41,9 @@ def active_cancer_condition(request_body):
     for condition in request_body["condition"]:
         condition_date = datetime.strptime(condition["onset_date"], "%Y-%m-%d").date()
         if condition["code"] in [str(x) for x in snomed_cancer]:
-            if condition["status"] == "active":
+            if condition["status"].lower() == "active":
                 active_cancer_result["active_cancer_present"] = True
             elif (date_of_claim_date - condition_date).days <= 180:
                 active_cancer_result["active_cancer_present"] = True
-            else:
-                continue
 
     return active_cancer_result
