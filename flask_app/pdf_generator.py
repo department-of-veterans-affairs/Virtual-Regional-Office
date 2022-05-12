@@ -5,7 +5,7 @@ import os
 import pdfkit
 
 lib_dir = os.path.dirname(__file__)
-WKHTMLTOPDF_PATH = Path(os.environ["WKHTMLTOPDF_PATH"]).resolve()
+# WKHTMLTOPDF_PATH = Path(os.environ["WKHTMLTOPDF_PATH"]).resolve()
 
 
 def get_template(template_name: str) -> str:
@@ -19,25 +19,24 @@ def get_template(template_name: str) -> str:
     return selected_template
 
 
-
 def generate_template_file(template_name: str, pdf_data) -> str:
     jinja_env = Environment(
-        loader=PackageLoader("lib"),
+        loader=PackageLoader("flask_app"),
         autoescape=select_autoescape()
     )
 
     template_file = get_template(template_name)
     placeholder_variables = json.load(open(os.path.join(lib_dir, f"pdf_variables/{template_file}.json")))
     filled_variables = {key: pdf_data.get(key, placeholder_variables[key]) for key in placeholder_variables}
-    template = jinja_env.get_template(os.path.join(lib_dir, f"pdf_templates/{template_file}.html"))
+    template = jinja_env.get_template(f"{template_file}.html")
     generated_html = template.render(**filled_variables)
     
     return generated_html
 
 
 def generate_pdf_from_string(html: str) -> bytes:
-    assert WKHTMLTOPDF_PATH.exists()
-    config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+    # assert WKHTMLTOPDF_PATH.exists()
+    # config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
     options = {
         "dpi": 300,
@@ -50,4 +49,4 @@ def generate_pdf_from_string(html: str) -> bytes:
         "zoom": "0.8"
     }
 
-    return pdfkit.from_string(html, False, options=options, configuration=config)
+    return pdfkit.from_string(html, False, options=options)
